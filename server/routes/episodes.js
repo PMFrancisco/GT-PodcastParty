@@ -16,6 +16,8 @@ const fetchFeed = async () => {
 router.get("/", async (req, res) => {
   try {
     const feed = await fetchFeed();
+    console.log(feed);
+    
 
     if (feed.items && feed.items.length > 0) {
       const last20Episodes = feed.items.slice(0, 20);

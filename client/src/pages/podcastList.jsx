@@ -1,53 +1,45 @@
-import { getPodcast } from "../services/data";
 import React, { useEffect, useState } from "react";
+import { getEpisodes } from "../services/data";  
 
-function PodcastList() {
-  const [podcastList, setPodcastList] = useState([]);
-  const [filteredPodcasts, setFilteredPodcasts] = useState([]);
+const PodcastList = () => {
+  const [episodes, setEpisodes] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    getPodcast().then((response) => {
-      setPodcastList(response);
-      setFilteredPodcasts(response);
-    });
+    const fetchEpisodes = async () => {
+      try {
+        const data = await getEpisodes();
+        console.log(data);  
+        
+        setEpisodes(data);
+      } catch (error) {
+        console.error('Error fetching episodes:', error); 
+        setError(`Error fetching episodes: ${error.message}`);  
+      }
+    };
+  
+    fetchEpisodes();
   }, []);
+  
 
-  const filterPodcasts = (searchTerm) => {
-    const filtered = podcastList.filter((podcast) => {
-      const podcastName = podcast.name.toLowerCase();
-      const artistName = podcast.author.toLowerCase();
-      return (
-        podcastName.includes(searchTerm.toLowerCase()) ||
-        artistName.includes(searchTerm.toLowerCase())
-      );
-    });
-    setFilteredPodcasts(filtered);
-  };
+  if (error) {
+    return <div>{error}</div>;
+  }
 
-  return podcastList.length ? (
-    <>
-      <header>¡Hola!</header>
-      <main>
-        {filteredPodcasts.length ? (
-          filteredPodcasts.map((eachPodcast) => (
-            <>
-              <img src={eachPodcast.img} alt="podcast-img" />
-              <h4>{eachPodcast.name}</h4>
-              <p>{eachPodcast.author}</p>
-              <audio controls>
-                <source src="https://api.spreaker.com/download/episode/61641297/web_reactiva_295.mp3" type="audio/mpeg" />
-                Your browser does not support the audio element.
-              </audio>
-              <p>{eachPodcast.link}</p>
-            </>
-          ))
-        ) : (
-          <div>We have not found any matches for your search</div>
-        )}
-      </main>
-    </>
-  ) : (
-    <div>Nada que mostrar</div>
+  return (
+    <div>
+      <h1>Últimos 20 episodios</h1>
+      <ul>
+        {episodes.map((episode) => (
+          <li key={episode.pubDate}>
+            {episode.title} - Duración: {episode.duration ? episode.duration : "Desconocida"} - <audio src={episodes.enclosure.url} controls></audio>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
-}
+  
+};
+
 export default PodcastList;
+

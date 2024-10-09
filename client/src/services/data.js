@@ -1,35 +1,29 @@
-async function getPodcast(){
-    try {
+const API_URL = "http://localhost:3000/episodes";
 
-        const response = await fetch(
-            'https://itunes.apple.com/us/rss/toppodcasts/limit=10/genre=1310/json'
-        );
-        if (!response.ok) {
-            throw new Error('Error en la solicitud');
-        }
-        const formattedResponse = await response.json();
-
-        const results = [];
-
-        console.log(formattedResponse);
-        
-
-        formattedResponse.feed.entry.forEach((podcast) => {
-            const result = {
-                id: podcast.id.attributes['im:id'],
-                img: podcast['im:image'][2].label,
-                name: podcast['im:name'].label,
-                author: podcast['im:artist'].label,
-                description: podcast.summary.label, 
-                link: podcast.link.attributes.href,
-            };
-            results.push(result);
-        });
-        return results;
+export const getEpisodes = async () => {
+  try {
+    const response = await fetch(API_URL);
+    if (!response.ok) {
+      throw new Error(`Server error: ${response.status}`);
     }
-    catch (error) {
-        console.error('Ocurrió un error:', error);
-    }
-}
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching episodes:', error);
+    throw error; 
+  }
+};
 
-export {getPodcast};
+export const getEpisodeByDate = async (pubDate) => {
+  try {
+    const response = await fetch(`${API_URL}/${pubDate}`);
+    if (!response.ok) {
+      throw new Error(`Server error: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Error fetching episode with pubDate ${pubDate}:`, error);
+    throw error;
+  }
+};
