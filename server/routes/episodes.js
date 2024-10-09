@@ -25,6 +25,7 @@ router.get("/", async (req, res) => {
         link: item.link,
         pubDate: item.pubDate,
         duration: item.itunes.duration,
+        audioInfo: item.enclosure
     }));
 
       res.json(formattedEpisodes);
@@ -50,6 +51,7 @@ router.get("/:pubDate", async (req, res) => {
         link: episode.link,
         pubDate: episode.pubDate,
         duration: episode.itunes.duration,
+        audioInfo: episode.enclosure
     });
     } else {
       res.status(404).json({ message: "No se encontró el episodio" });
