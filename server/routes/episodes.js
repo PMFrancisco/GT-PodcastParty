@@ -16,8 +16,6 @@ const fetchFeed = async () => {
 router.get("/", async (req, res) => {
   try {
     const feed = await fetchFeed();
-    console.log(feed);
-    
 
     if (feed.items && feed.items.length > 0) {
       const last20Episodes = feed.items.slice(0, 20);
@@ -27,7 +25,8 @@ router.get("/", async (req, res) => {
         link: item.link,
         pubDate: item.pubDate,
         duration: item.itunes.duration,
-    }));
+        audioInfo: item.enclosure,
+      }));
 
       res.json(formattedEpisodes);
     } else {
@@ -52,6 +51,7 @@ router.get("/:pubDate", async (req, res) => {
         link: episode.link,
         pubDate: episode.pubDate,
         duration: episode.itunes.duration,
+        audioInfo: episode.enclosure,
     });
     } else {
       res.status(404).json({ message: "No se encontró el episodio" });
