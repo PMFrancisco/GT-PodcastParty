@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getEpisodes } from "../services/data";  
 import AudioPlayer from "../components/AudioPlayer";
-import { formatTime } from "../utils/formatTime";  // Importar la función formatTime
+import { formatTime } from "../utils/formatTime";  
 import "../index.css"; 
 
 const PodcastList = () => {
