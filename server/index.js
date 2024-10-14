@@ -5,7 +5,6 @@ const swaggerDocs = require("./config/swagger").swaggerDocs;
 const swaggerUi = require("./config/swagger").swaggerUi;
 
 const app = express();
-
 const PORT = process.env.PORT || 3000;
 
 app.use(morgan("dev"));
