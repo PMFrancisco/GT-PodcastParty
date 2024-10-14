@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getEpisodes } from "../services/data";  
+import AudioPlayer from "../components/AudioPlayer";
+import { formatTime } from "../utils/formatTime";  // Importar la función formatTime
+import "../index.css"; 
 
 const PodcastList = () => {
   const [episodes, setEpisodes] = useState([]);
@@ -29,17 +32,17 @@ const PodcastList = () => {
   return (
     <div>
       <h1>Últimos 20 episodios</h1>
-      <ul>
+      <ul className="podcast__list">
         {episodes.map((episode) => (
-          <li key={episode.pubDate}>
-            {episode.title} - Duración: {episode.duration ? episode.duration : "Desconocida"} - <audio src={episodes.enclosure.url} controls></audio>
+          <li key={episode.pubDate} className="podcast__list-card">
+            <p>{episode.title}</p> 
+            <p>Duración: {episode.duration ? formatTime(episode.duration) : "Desconocida"}</p>
+            <AudioPlayer url={episode.audioInfo.url} />
           </li>
         ))}
       </ul>
     </div>
   );
-  
 };
 
 export default PodcastList;
-
