@@ -60,6 +60,7 @@ npm start
 | `pubDate`      | `string` | Fecha de publicación del episodio |
 | `id`      | `string` | ID numérico del episodio |
 | `duration`      | `string` | Longitud del episodio en segundos     |
+| `image`      | `string` | URL de imagen del episodio     |
 
 ```http
  404 Not Found
@@ -108,6 +109,8 @@ npm start
 | `link`      | `string` | Enlace al episodio |
 | `pubDate`      | `string` | Fecha de publicación del episodio |
 | `duration`      | `string` | Longitud del episodio en segundos     |
+| `image`      | `string` | URL de imagen del episodio     |
+
 
 ```http
  404 Not Found
