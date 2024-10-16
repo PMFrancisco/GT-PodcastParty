@@ -47,6 +47,7 @@ npm start
     "title": "Episode title",
     "link": "https://example.com/episode",
     "pubDate": "Wed, 15 Sep 2021 04:00:00 GMT",
+    "id": "61641297",
     "duration": "1149"
   },
   ...
@@ -57,6 +58,7 @@ npm start
 | `title`      | `string` | Título del episodio |
 | `link`      | `string` | Enlace al episodio |
 | `pubDate`      | `string` | Fecha de publicación del episodio |
+| `id`      | `string` | ID numérico del episodio |
 | `duration`      | `string` | Longitud del episodio en segundos     |
 
 ```http
@@ -78,12 +80,12 @@ npm start
 ### Recuperar un episodio
 
 ```http
-  GET /episodes/:pubDate
+  GET /episodes/:id
 ```
 
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `pubDate`      | `string` | **Required**. Fecha de publicación del episodio (en el formato exacto como aparece en los datos) |
+| `id`      | `string` | **Required**. ID numérico del episodio (extraído del GUID del RSS) |
 
 #### Respuestas
 
