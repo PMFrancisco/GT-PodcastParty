@@ -63,6 +63,9 @@ const fetchFeed = async () => {
  *                       type:
  *                         type: string
  *                         example: "audio/mpeg"
+ *                   image:
+ *                     type: string
+ *                     example: "http://example.com/image.jpg"
  *       '404':
  *         description: No episodes found
  *         content:
@@ -162,6 +165,9 @@ router.get("/", async (req, res) => {
  *                     type:
  *                       type: string
  *                       example: "audio/mpeg"
+ *                 image:
+ *                   type: string
+ *                   example: "http://example.com/image.jpg"
  *       '404':
  *         description: Episode not found
  *         content:
