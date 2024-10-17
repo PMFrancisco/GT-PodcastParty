@@ -14,16 +14,16 @@ export const getEpisodes = async () => {
   }
 };
 
-export const getEpisodeByDate = async (pubDate) => {
+export const getEpisodeById = async (id) => {
   try {
-    const response = await fetch(`${API_URL}/${pubDate}`);
+    const response = await fetch(`${API_URL}/${id}`);
     if (!response.ok) {
       throw new Error(`Server error: ${response.status}`);
     }
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error(`Error fetching episode with pubDate ${pubDate}:`, error);
+    console.error(`Error fetching episode with id ${id}:`, error);
     throw error;
   }
 };

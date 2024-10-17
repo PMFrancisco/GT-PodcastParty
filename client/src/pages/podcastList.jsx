@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getEpisodes } from "../services/data";  
 import AudioPlayer from "../components/AudioPlayer";
 import { formatTime } from "../utils/formatTime";  
-import "../index.css"; 
+import "./podcastList.css"; 
 
 const PodcastList = () => {
   const [episodes, setEpisodes] = useState([]);
@@ -14,6 +14,7 @@ const PodcastList = () => {
     const fetchEpisodes = async () => {
       try {
         const data = await getEpisodes();
+       
         setEpisodes(data);
       } catch (error) {
         console.error('Error fetching episodes:', error); 
@@ -24,7 +25,6 @@ const PodcastList = () => {
   }, []);
 
   const handleEpisodeClick = (index) => {
-    console.log('click', index);
     setCurrentEpisodeIndex(index);
     setIsPlayerVisible(true); 
   };
@@ -63,8 +63,8 @@ const PodcastList = () => {
             className="podcast__list-card"
             onClick={() => handleEpisodeClick(index)} 
           >
-            <p>{episode.title}</p> 
-            <p>Duración: {episode.duration ? formatTime(episode.duration) : "Desconocida"}</p>
+            <img src="https://placehold.co/200x150" alt="" />
+            <p className="podcast__list-title">{episode.title}</p> 
           </li>
         ))}
       </ul>
