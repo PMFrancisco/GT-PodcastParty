@@ -1,12 +1,28 @@
 import React, { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faPause, faForwardStep, faBackwardStep, faForward, faBackward, faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlay,
+  faPause,
+  faForwardStep,
+  faBackwardStep,
+  faForward,
+  faBackward,
+  faVolumeLow,
+  faCircleDown,
+  faVolumeHigh,
+  faVolumeMute
+} from "@fortawesome/free-solid-svg-icons";
 import "./AudioPlayer.css";
 import { formatTime } from "../utils/formatTime";
-import sample from '../assets/sample-img.png';
-import heart from '../assets/heart.svg';
+import sample from "../assets/sample-img.png";
+import heart from "../assets/heart.svg";
 
-const AudioPlayer = ({ url, onNextEpisode, onBackwardEpisode, titleEpisode }) => {
+const AudioPlayer = ({
+  url,
+  onNextEpisode,
+  onBackwardEpisode,
+  titleEpisode,
+}) => {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -43,13 +59,19 @@ const AudioPlayer = ({ url, onNextEpisode, onBackwardEpisode, titleEpisode }) =>
 
   const handleForward = () => {
     if (audioRef.current) {
-      audioRef.current.currentTime = Math.min(audioRef.current.currentTime + 15, audioRef.current.duration);
+      audioRef.current.currentTime = Math.min(
+        audioRef.current.currentTime + 15,
+        audioRef.current.duration
+      );
     }
   };
 
   const handleBackward = () => {
     if (audioRef.current) {
-      audioRef.current.currentTime = Math.max(audioRef.current.currentTime - 15, 0);
+      audioRef.current.currentTime = Math.max(
+        audioRef.current.currentTime - 15,
+        0
+      );
     }
   };
 
@@ -66,7 +88,9 @@ const AudioPlayer = ({ url, onNextEpisode, onBackwardEpisode, titleEpisode }) =>
 
   const updateVolumeBackground = (volumeValue) => {
     return {
-      background: `linear-gradient(to top, #fff ${volumeValue * 100}%, #c0c0c0 ${volumeValue * 100}%)`,
+      background: `linear-gradient(to top, #fff ${
+        volumeValue * 100
+      }%, #c0c0c0 ${volumeValue * 100}%)`,
     };
   };
 
@@ -76,9 +100,37 @@ const AudioPlayer = ({ url, onNextEpisode, onBackwardEpisode, titleEpisode }) =>
     if (audioRef.current) {
       audioRef.current.volume = newVolume;
     }
-    const volumeSlider = document.querySelector('.volume-slider');
+    const volumeSlider = document.querySelector(".volume-slider");
     if (volumeSlider) {
       volumeSlider.style = updateVolumeBackground(newVolume);
+    }
+  };
+
+  const playFromCache = async () => {
+    const cache = await caches.open('podcast-cache');
+    const cachedResponse = await cache.match(url);
+    if (cachedResponse) {
+      const audioBlob = await cachedResponse.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+      audioRef.current.src = audioUrl;
+      audioRef.current.play();
+    } else {
+      console.log('No hay audio en caché para reproducir.');
+    }
+  };
+  
+
+  const handleDownload = async () => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+
+      const cache = await caches.open("podcast-cache");
+      await cache.put(url, new Response(blob));
+
+      console.log(`Episodio descargado y almacenado en caché: ${titleEpisode}`);
+    } catch (error) {
+      console.error("Error al descargar el episodio:", error);
     }
   };
 
@@ -135,9 +187,23 @@ const AudioPlayer = ({ url, onNextEpisode, onBackwardEpisode, titleEpisode }) =>
       </div>
 
       <div className="audioplayer__extraicons">
+        <button onClick={handleDownload} className="download-btn">
+          <FontAwesomeIcon icon={faCircleDown} />
+        </button>
+
         <div className="volume-control">
-          <button onClick={() => setIsVolumeControlVisible(!isVolumeControlVisible)}>
-            <FontAwesomeIcon icon={faVolumeHigh} />
+          {volume === 1 
+          
+          }
+          <button
+            onClick={() => setIsVolumeControlVisible(!isVolumeControlVisible)}
+          >
+            <FontAwesomeIcon icon={faVolumeLow} />
+          </button>
+          <button
+            onClick={() => setIsVolumeControlVisible(!isVolumeControlVisible)}
+          >
+            <FontAwesomeIcon icon={faVolumeLow} />
           </button>
           {isVolumeControlVisible && (
             <input

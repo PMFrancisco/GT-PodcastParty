@@ -13,7 +13,7 @@ app.use(cors()); // CORS habilitado para todas las rutas
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/", require("./routes"));
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () =>  {
   console.log(`Server is running on http://localhost:${PORT}`);
   console.log(`Swagger Docs available at http://localhost:${PORT}/api-docs`);
 });
