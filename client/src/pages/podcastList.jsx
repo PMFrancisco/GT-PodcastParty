@@ -22,6 +22,9 @@ const PodcastList = () => {
     const fetchEpisodes = async () => {
       try {
         const data = await getEpisodes();
+        console.log(data);
+        
+       
         setEpisodes(data);
 
         if (location.state && location.state.episode) {
