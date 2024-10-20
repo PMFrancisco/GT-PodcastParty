@@ -14,7 +14,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "./AudioPlayer.css";
 import { formatTime } from "../utils/formatTime";
-import sample from "../assets/sample-img.png";
 import heart from "../assets/heart.svg";
 
 const AudioPlayer = ({
@@ -22,6 +21,7 @@ const AudioPlayer = ({
   onNextEpisode,
   onBackwardEpisode,
   titleEpisode,
+  podcastImage
 }) => {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -137,7 +137,7 @@ const AudioPlayer = ({
   return (
     <div className="container">
       <div className="audioplayer__info">
-        <img src={sample} alt="podcast-img" className="audioplayer__info-img" />
+        <img src={podcastImage} alt="podcast-img" className="audioplayer__info-img" />
         <p>{titleEpisode}</p>
         <img src={heart} alt="" className="audioplayer__info-fav" />
       </div>
