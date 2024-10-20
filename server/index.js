@@ -1,11 +1,14 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const connectDB = require("./config/mongodb")
 const swaggerDocs = require("./config/swagger").swaggerDocs;
 const swaggerUi = require("./config/swagger").swaggerUi;
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+connectDB();
 
 app.use(morgan("dev"));
 app.use(cors()); // CORS habilitado para todas las rutas
