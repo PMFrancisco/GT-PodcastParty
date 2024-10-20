@@ -16,6 +16,9 @@ const PodcastList = () => {
     const fetchEpisodes = async () => {
       try {
         const data = await getEpisodes();
+        console.log(data);
+        
+       
         setEpisodes(data);
 
         if (location.state && location.state.episode) {
@@ -69,8 +72,11 @@ const PodcastList = () => {
         sidebar
       </div>
       <div>
-        <div className="podcastList__title"></div>
-        <div><ul className="podcast__list">
+        <div className="podcastList__title"><h2>Title</h2>
+        <h3>Description</h3></div>
+        <div>
+          <h3>Lista de episodios</h3>
+          <ul className="podcast__list">
         {episodes.map((episode, index) => (
           <li 
             key={episode.pubDate} 

@@ -3,6 +3,8 @@
 }
 .podcastList__aside{
   width: 300px;
+  height: 100vh;
+  background-color: bisque;
 }
 .podcast__list-title {
   font-family: "Roboto", sans-serif;
