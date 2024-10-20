@@ -1,3 +1,9 @@
+.podcastList__main{
+  display: flex;
+}
+.podcastList__aside{
+  width: 300px;
+}
 .podcast__list-title {
   font-family: "Roboto", sans-serif;
   font-weight: 400;
@@ -5,7 +11,10 @@
   padding: 10px;
   align-self: center;
 }
-
+.podcastList__title{
+  height: 150px;
+  background-color: #56C2B7;
+}
 .podcast__list {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr; 

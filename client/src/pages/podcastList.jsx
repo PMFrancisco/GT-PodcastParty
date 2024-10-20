@@ -54,9 +54,13 @@ const PodcastList = () => {
   }
 
   return (
-    <div>
-      <h1>Últimos 20 episodios</h1>
-      <ul className="podcast__list">
+    <div className="podcastList__main">
+      <div className="podcastList__aside">
+        sidebar
+      </div>
+      <div>
+        <div className="podcastList__title"></div>
+        <div><ul className="podcast__list">
         {episodes.map((episode, index) => (
           <li 
             key={episode.pubDate} 
@@ -79,6 +83,9 @@ const PodcastList = () => {
           />
         </div>
       )}
+      </div>
+      </div>
+      
     </div>
   );
 };

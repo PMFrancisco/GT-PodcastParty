@@ -192,14 +192,6 @@ const AudioPlayer = ({
         </button>
 
         <div className="volume-control">
-          {volume === 1 
-          
-          }
-          <button
-            onClick={() => setIsVolumeControlVisible(!isVolumeControlVisible)}
-          >
-            <FontAwesomeIcon icon={faVolumeLow} />
-          </button>
           <button
             onClick={() => setIsVolumeControlVisible(!isVolumeControlVisible)}
           >
