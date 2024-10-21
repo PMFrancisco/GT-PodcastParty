@@ -17,6 +17,7 @@ const fetchFeed = async () => {
  * @swagger
  * tags:
  *   name: Episodes
+ *   description: Episode fetch
  */
 
 /**
