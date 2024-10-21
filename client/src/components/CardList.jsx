@@ -12,8 +12,6 @@ function CardList() {
           <Feature />
           <Feature />
           <Feature />
-          <Feature />
-          <Feature />
         </div>
       </div>
     </div>

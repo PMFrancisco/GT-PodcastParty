@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getEpisodes } from "../services/data";  
+import { useLocation } from 'react-router-dom';
 import AudioPlayer from "../components/AudioPlayer";
-import { formatTime } from "../utils/formatTime";  
 import "./podcastList.css"; 
 
 const PodcastList = () => {
@@ -10,19 +10,29 @@ const PodcastList = () => {
   const [isPlayerVisible, setIsPlayerVisible] = useState(false); 
   const [error, setError] = useState(null);
 
+  const location = useLocation();
+
   useEffect(() => {
     const fetchEpisodes = async () => {
       try {
         const data = await getEpisodes();
-       
         setEpisodes(data);
+
+        if (location.state && location.state.episode) {
+          const episodeIndex = data.findIndex(e => e.id === location.state.episode.id);
+          if (episodeIndex !== -1) {
+            setCurrentEpisodeIndex(episodeIndex);
+            setIsPlayerVisible(true);
+          }
+        }
+
       } catch (error) {
         console.error('Error fetching episodes:', error); 
         setError(`Error fetching episodes: ${error.message}`);  
       }
     };
     fetchEpisodes();
-  }, []);
+  }, [location.state]);
 
   const handleEpisodeClick = (index) => {
     setCurrentEpisodeIndex(index);
