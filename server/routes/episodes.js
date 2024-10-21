@@ -46,6 +46,9 @@ const fetchFeed = async () => {
  *                     type: string
  *                     format: date-time
  *                     example: "2023-10-01T00:00:00Z"
+ *                  content:
+ *                     type: string
+ *                     example: "Episode content"
  *                   id:
  *                     type: string
  *                     example: "61641297"
@@ -97,6 +100,7 @@ router.get("/", async (req, res) => {
           title: item.title,
           link: item.link,
           pubDate: item.pubDate,
+          content: item.content,
           id: idNumber,
           audioInfo: item.enclosure,
         };
