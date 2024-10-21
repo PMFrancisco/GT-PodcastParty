@@ -102,6 +102,7 @@ router.get("/", async (req, res) => {
           id: idNumber,
           duration: item.itunes.duration,
           audioInfo: item.enclosure,
+          image: item.itunes.image
         };
       });
 
@@ -198,6 +199,7 @@ router.get("/:id", async (req, res) => {
         pubDate: episode.pubDate,
         duration: episode.itunes.duration,
         audioInfo: episode.enclosure,
+        image: item.itunes.image
       });
     } else {
       res.status(404).json({ message: "No se encontró el episodio" });

@@ -2,6 +2,7 @@ import React from 'react'
 import CardList from '../components/CardList'
 import HeroSlider from '../components/HeroSlider'
 import RecommendedEpisodes from '../components/RecommendedEpisodes'
+import '../components/HomePage.css'
 
 const homePage = () => {
   return (
@@ -12,9 +13,6 @@ const homePage = () => {
         <h2>Episodios Recomendados</h2>
         <RecommendedEpisodes/>
       </section>
-      <div className="view-all">
-          <button href="/episodes" className='btn btn--login'>Ver todos los episodios</button>
-        </div>
     </div>
   )
 }
