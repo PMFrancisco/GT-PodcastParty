@@ -119,19 +119,18 @@ router.get("/", async (req, res) => {
  * @swagger
  * /episodes/{id}:
  *   get:
- *     summary: Get an episode by publication date
+ *     summary: Retrieve an episode by its ID
  *     tags: [Episodes]
  *     parameters:
  *       - in: path
- *         name/episodes: id
+ *         name: id
  *         required: true
- *         description: The publication date of the episode
+ *         description: ID of the episode (GUID suffix)
  *         schema:
  *           type: string
- *           format: date-time
  *     responses:
  *       '200':
- *         description: The episode with the specified publication date
+ *         description: The episode with the specified ID
  *         content:
  *           application/json:
  *             schema:
@@ -183,6 +182,7 @@ router.get("/", async (req, res) => {
  *                   type: string
  *                   example: "Error al obtener el feed RSS"
  */
+
 
 router.get("/:id", async (req, res) => {
   try {
