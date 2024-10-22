@@ -46,7 +46,7 @@ const fetchFeed = async () => {
  *                     type: string
  *                     format: date-time
  *                     example: "2023-10-01T00:00:00Z"
- *                  content:
+ *                   content:
  *                     type: string
  *                     example: "Episode content"
  *                   id:
