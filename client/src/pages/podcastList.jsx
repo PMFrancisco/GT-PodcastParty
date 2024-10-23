@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import { getEpisodes } from "../services/data";
 import AudioPlayer from "../components/AudioPlayer";
 import heart from "../assets/heart-purple.svg";
 import download from "../assets/circle-down-regular.svg";
 import { formatTime } from "../utils/formatTime";
-import sample from "../assets/sample-img.png";
+import { formatText } from "../utils/formatText";
+import mobileSection from "../assets/xcel2.png";
 import "./podcastList.css";
 
 const PodcastList = () => {
@@ -16,22 +17,22 @@ const PodcastList = () => {
 
   const location = useLocation();
 
+
   useEffect(() => {
     const fetchEpisodes = async () => {
       try {
         const data = await getEpisodes();
-        console.log(data);
-
         setEpisodes(data);
 
         if (location.state && location.state.episode) {
-          const episodeIndex = data.findIndex(e => e.id === location.state.episode.id);
+          const episodeIndex = data.findIndex(
+            (e) => e.id === location.state.episode.id
+          );
           if (episodeIndex !== -1) {
             setCurrentEpisodeIndex(episodeIndex);
             setIsPlayerVisible(true);
           }
         }
-
       } catch (error) {
         console.error("Error fetching episodes:", error);
         setError(`Error fetching episodes: ${error.message}`);
@@ -65,6 +66,11 @@ const PodcastList = () => {
     });
   };
 
+  const getFirstNWords = (text, n) => {
+    const words = text.split(" ");
+    return words.slice(0, n).join(" ") + (words.length > n ? "..." : ""); 
+  };
+
   if (error) {
     return <div>{error}</div>;
   }
@@ -72,56 +78,67 @@ const PodcastList = () => {
   return (
     <div className="podcastList__main">
       <div className="podcastList__aside">
-        <img src={sample} alt="logo" className="podcastList_img-aside"/>
-        <button>Sign in</button>
-        <button>Register</button>
+        <button className="podcastList__aside-button">Iniciar sesión</button>
+        <button className="podcastList__aside-button">Registrarte</button>
       </div>
       <div className="podcastList_cardGrid">
         <div className="podcastList__title">
-          <h2 className="title__sectionTitle">Title</h2>
-          <h3 className="title__sectionDescription">Description</h3>
+          <div className="podcast__section">
+            <h2 className="title__sectionTitle">
+              Audios para aprender donde quieras
+            </h2>
+            <h3 className="title__sectionDescription">
+              Desde la web o en tu podcatcher podrás acceder a la base de
+              conocimiento sobre programación, desarrollo web y carrera
+              profesional con cientos de horas de contenido.
+            </h3>
+          </div>
+          <img src={mobileSection} alt="" />
         </div>
         <div className="podcastList__episode">
           <h3>Lista de episodios</h3>
           <ul className="podcast__list">
-            {episodes.map((episode, index) => (
-              <li
-                key={episode.pubDate}
-                className="podcast__list-card"
-                onClick={() => handleEpisodeClick(index)}
-              >
-                <div className="podcast__infoList">
-                  <img
-                    src={episode.image}
-                    alt="podcast-img"
-                    className="podcast__list-img"
-                  />
-                  <div>
-                    <p className="podcast__list-titleEpisode">
-                      {episode.title}
-                    </p>
-                    <p className="podcast__list-titleEpisode">
-                      {episode.pubDate}
-                    </p>
+            {episodes.map((episode, index) => {
+              const content = formatText(episode.content);
+              const previewContent = getFirstNWords(content, 20);
+
+              return (
+                <li
+                  key={episode.pubDate}
+                  className="podcast__list-card"
+                  onClick={() => handleEpisodeClick(index)}
+                >
+                  <div className="podcast__infoList">
+                    <img
+                      src={episode.image}
+                      alt="podcast-img"
+                      className="podcast__list-img"
+                    />
+                    <div>
+                      <p className="podcast__list-titleEpisode">
+                        {episode.title}
+                      </p>
+                      <p>{previewContent}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="podcast_extra">
-                  <div className="podcast__buttonList">
-                    <button>
-                      <img
-                        src={download}
-                        alt="download-icon"
-                        className="download_icon"
-                      />
-                    </button>
-                    <button>
-                      <img src={heart} alt="fav-icon" className="fav_icon" />
-                    </button>
+                  <div className="podcast_extra">
+                    <div className="podcast__buttonList">
+                      <button>
+                        <img
+                          src={download}
+                          alt="download-icon"
+                          className="download_icon"
+                        />
+                      </button>
+                      <button>
+                        <img src={heart} alt="fav-icon" className="fav_icon" />
+                      </button>
+                    </div>
+                    <p>{formatTime(episode.duration)}</p>
                   </div>
-                  <p>{formatTime(episode.duration)}</p>
-                </div>
-              </li>
-            ))}
+                </li>
+              );
+            })}
           </ul>
 
           {isPlayerVisible && currentEpisodeIndex !== null && (
@@ -132,6 +149,7 @@ const PodcastList = () => {
                 onNextEpisode={handleNextEpisode}
                 onBackwardEpisode={handlePreviousEpisode}
                 podcastImage={episodes[currentEpisodeIndex].image}
+                
               />
             </div>
           )}
