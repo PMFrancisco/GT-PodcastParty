@@ -4,6 +4,7 @@
 .podcastList__main {
   display: flex;
   margin-right: 80px;
+  margin-right: 80px;
 }
 .podcastList__aside {
   display: flex;
@@ -31,6 +32,7 @@
   flex-direction: column;
   justify-content: center;
 }
+.podcast__list-titleEpisode {
 .podcast__list-titleEpisode {
   font-weight: 400;
   font-style: normal;
