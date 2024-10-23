@@ -52,6 +52,9 @@ const fetchFeed = async () => {
  *                   id:
  *                     type: string
  *                     example: "61641297"
+ *                   duration:
+ *                     type: string
+ *                     example: "00:30:00"
  *                   audioInfo:
  *                     type: object
  *                     properties:
@@ -102,6 +105,7 @@ router.get("/", async (req, res) => {
           pubDate: item.pubDate,
           content: item.content,
           id: idNumber,
+          duration: item.itunes.duration,
           audioInfo: item.enclosure,
           image: item.itunes.image
         };
@@ -147,6 +151,9 @@ router.get("/", async (req, res) => {
  *                   type: string
  *                   format: date-time
  *                   example: "2023-10-01T00:00:00Z"
+ *                 duration:
+ *                     type: string
+ *                     example: "00:30:00"
  *                 audioInfo:
  *                   type: object
  *                   properties:
@@ -195,6 +202,7 @@ router.get("/:id", async (req, res) => {
         title: episode.title,
         link: episode.link,
         pubDate: episode.pubDate,
+        duration: item.itunes.duration,
         audioInfo: episode.enclosure,
         image: item.itunes.image
       });
