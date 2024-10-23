@@ -2,9 +2,18 @@
   font-family: "Roboto", sans-serif;
 }
 .podcastList__main {
+* {
+  font-family: "Roboto", sans-serif;
+}
+.podcastList__main {
   display: flex;
   margin-right: 80px;
 }
+.podcastList__aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 .podcastList__aside {
   display: flex;
   flex-direction: column;
