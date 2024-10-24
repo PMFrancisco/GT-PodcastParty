@@ -127,3 +127,117 @@ npm start
   "message": "Error message"
 }
 ```
+
+### Registrar un nuevo usuario
+
+```http
+  POST /auth/register
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `email`      | `string` | **Required**. Email del usuario |
+| `password`      | `string` | **Required**. Contraseña del usuario |
+
+
+#### Respuestas
+
+```http
+ 201 Created
+  
+{
+  "message": "User registered successfully",
+  "token": "JWT token"
+}
+
+```
+
+```http
+ 500 Internal Server Error
+  
+{
+  "message": "Error message"
+}
+```
+
+### Inicio de sesión
+
+```http
+  POST /auth/login
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `email`      | `string` | **Required**. Email del usuario |
+| `password`      | `string` | **Required**. Contraseña del usuario |
+
+
+#### Respuestas
+
+```http
+ 200 OK
+  
+{
+  "message": "Login successful",
+  "token": "JWT token"
+}
+
+```
+
+```http
+ 400 Bad Request
+  
+{
+  "message": "Invalid credentials"
+}
+```
+
+```http
+ 404 Not Found
+  
+{
+  "message": "User not found"
+}
+```
+
+```http
+ 500 Internal Server Error
+  
+{
+  "message": "Error message"
+}
+```
+
+### Acceder a una ruta protegida
+
+```http
+  POST /auth/protected
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `email`      | `string` | **Required**. Email del usuario |
+| `password`      | `string` | **Required**. Contraseña del usuario |
+
+
+#### Respuestas
+
+```http
+ 200 OK
+  
+{
+  "message": "You are authorized",
+  "user": {
+    "email": "user@example.com"
+  }
+}
+
+```
+
+```http
+ 401 Unauthorized
+  
+{
+  "message": "Unauthorized"
+}
+```
