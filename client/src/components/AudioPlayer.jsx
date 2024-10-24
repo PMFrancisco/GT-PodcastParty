@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlay,
@@ -14,7 +14,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "./AudioPlayer.css";
 import { formatTime } from "../utils/formatTime";
-import sample from "../assets/sample-img.png";
 import heart from "../assets/heart.svg";
 
 const AudioPlayer = ({
@@ -22,6 +21,7 @@ const AudioPlayer = ({
   onNextEpisode,
   onBackwardEpisode,
   titleEpisode,
+  podcastImage,
 }) => {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -88,9 +88,7 @@ const AudioPlayer = ({
 
   const updateVolumeBackground = (volumeValue) => {
     return {
-      background: `linear-gradient(to top, #fff ${
-        volumeValue * 100
-      }%, #c0c0c0 ${volumeValue * 100}%)`,
+      background: `linear-gradient(to top, #fff ${volumeValue * 100}%, #c0c0c0 ${volumeValue * 100}%)`,
     };
   };
 
@@ -106,38 +104,38 @@ const AudioPlayer = ({
     }
   };
 
-  const playFromCache = async () => {
-    const cache = await caches.open('podcast-cache');
-    const cachedResponse = await cache.match(url);
-    if (cachedResponse) {
-      const audioBlob = await cachedResponse.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
-      audioRef.current.src = audioUrl;
-      audioRef.current.play();
-    } else {
-      console.log('No hay audio en caché para reproducir.');
-    }
-  };
-  
-
   const handleDownload = async () => {
     try {
       const response = await fetch(url);
       const blob = await response.blob();
-
       const cache = await caches.open("podcast-cache");
       await cache.put(url, new Response(blob));
-
       console.log(`Episodio descargado y almacenado en caché: ${titleEpisode}`);
     } catch (error) {
       console.error("Error al descargar el episodio:", error);
     }
   };
 
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    if (audio && url) {
+      audio.src = url;
+      audio.play(); 
+      setIsPlaying(true); 
+    }
+
+    return () => {
+      if (audio) {
+        audio.pause();
+      }
+    };
+  }, [url]);
+
   return (
     <div className="container">
       <div className="audioplayer__info">
-        <img src={sample} alt="podcast-img" className="audioplayer__info-img" />
+        <img src={podcastImage} alt="podcast-img" className="audioplayer__info-img" />
         <p>{titleEpisode}</p>
         <img src={heart} alt="" className="audioplayer__info-fav" />
       </div>
@@ -145,7 +143,6 @@ const AudioPlayer = ({
       <div className="custom-audio-player">
         <audio
           ref={audioRef}
-          src={url}
           onTimeUpdate={handleTimeUpdate}
           onLoadedMetadata={handleLoadData}
         />
