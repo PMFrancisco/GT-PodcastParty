@@ -31,4 +31,25 @@ router.post(
   }
 );
 
+router.delete("/:podcastId", passport.authenticate("jwt", { session: false }), async (req, res) => {
+  const { id } = req.user;
+  const podcastId = req.params.podcastId;
+
+  try {
+    const user = await User.findById(id);
+
+    const favoriteIndex = user.favorites.indexOf(podcastId);
+    if (favoriteIndex === -1) {
+      return res.status(400).json({ message: "Podcast not found in favorites" });
+    }
+
+    user.favorites.splice(favoriteIndex, 1);
+    await user.save();
+
+    res.status(200).json({ message: "Podcast removed from favorites successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;
