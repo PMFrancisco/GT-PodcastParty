@@ -170,49 +170,4 @@ router.post("/login", async (req, res) => {
   }
 });
 
-/**
- * @swagger
- * /auth/protected:
- *   get:
- *     summary: Access protected route (requires authentication)
- *     tags: [Authentication]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       '200':
- *         description: Access granted
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "You are authorized"
- *                 user:
- *                   type: object
- *                   properties:
- *                     email:
- *                       type: string
- *                       example: "user@example.com"
- *       '401':
- *         description: Unauthorized
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Unauthorized"
- */
-
-router.get(
-  "/protected",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    res.json({ message: "You are authorized", user: req.user });
-  }
-);
-
 module.exports = router;
