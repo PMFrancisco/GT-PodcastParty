@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getEpisodes } from '../services/data';
 import './HomePage.css';
 import { useNavigate } from 'react-router-dom';
-import { IoIosPlay } from "react-icons/io";
+import { IoIosPlay, IoIosClose } from "react-icons/io";
 
 const RecommendedEpisodes = () => {
   const [episodes, setEpisodes] = useState([]);
@@ -65,7 +65,7 @@ const RecommendedEpisodes = () => {
                     {episode.title}
                   </h3>
                   {isExpanded && selectedEpisode === episode && (
-                    <button className="close-details" onClick={handleCloseClick}>X</button>
+                    <button className="close-details" onClick={handleCloseClick}><IoIosClose /></button>
                   )}
                 </div>
                 {isExpanded && selectedEpisode === episode && (
@@ -73,7 +73,7 @@ const RecommendedEpisodes = () => {
                     <p className="episode-description">
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel libero non justo pulvinar tempus.
                     </p>
-                    <button className="listen-now" onClick={handlePlayEpisode}><IoIosPlay />Escuchar ahora</button>
+                    <button className="listen-now" onClick={handlePlayEpisode}><IoIosPlay/>Escuchar ahora</button>
                   </>
                 )}
               </div>
