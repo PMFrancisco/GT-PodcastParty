@@ -229,5 +229,23 @@ router.post("/refresh-token", async (req, res) => {
   }
 });
 
+router.post("/logout", async (req, res) => {
+  const { refreshToken } = req.body;
+  if (!refreshToken)
+    return res.status(401).json({ message: "Refresh token required" });
+
+  try {
+    const user = await User.findOne({ refreshToken });
+    if (!user)
+      return res.status(403).json({ message: "Invalid refresh token" });
+
+    user.refreshToken = null;
+    await user.save();
+
+    res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 module.exports = router;
