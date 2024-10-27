@@ -3,7 +3,6 @@ const router = express.Router();
 const User = require("../models/user");
 const bCrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const passport = require("passport");
 
 /**
  * @swagger
@@ -70,12 +69,12 @@ router.post("/register", async (req, res) => {
     });
 
     const accessToken = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-      expiresIn: "1m",
+      expiresIn: "1h",
     });
     const refreshToken = jwt.sign(
       { id: newUser._id },
       process.env.JWT_REFRESH_SECRET,
-      { expiresIn: "3m" }
+      { expiresIn: "30d" }
     );
 
     newUser.refreshToken = refreshToken;
@@ -168,12 +167,12 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
 
     const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1m",
+      expiresIn: "1h",
     });
     const refreshToken = jwt.sign(
       { id: user._id },
       process.env.JWT_REFRESH_SECRET,
-      { expiresIn: "3m" }
+      { expiresIn: "30d" }
     );
 
     user.refreshToken = refreshToken;
@@ -186,6 +185,68 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+/**
+ * @swagger
+ * /auth/refresh-token:
+ *   post:
+ *     summary: Refresh JWT token
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               refreshToken:
+ *                 type: string
+ *                 example: "Refresh token"
+ *     responses:
+ *       '200':
+ *         description: Token refreshed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 accessToken:
+ *                   type: string
+ *                   example: "New access token"
+ *                 refreshToken:
+ *                   type: string
+ *                   example: "New refresh token"
+ *       '401':
+ *         description: Refresh token required
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Refresh token required"
+ *       '403':
+ *         description: Invalid refresh token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid refresh token"
+ *       '500':
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error"
+ */
 
 router.post("/refresh-token", async (req, res) => {
   const { refreshToken } = req.body;
@@ -207,12 +268,12 @@ router.post("/refresh-token", async (req, res) => {
         const newAccessToken = jwt.sign(
           { id: decoded.id },
           process.env.JWT_SECRET,
-          { expiresIn: "1m" }
+          { expiresIn: "1h" }
         );
         const newRefreshToken = jwt.sign(
           { id: decoded.id },
           process.env.JWT_REFRESH_SECRET,
-          { expiresIn: "3m" }
+          { expiresIn: "30d" }
         );
 
         user.refreshToken = newRefreshToken;
@@ -228,6 +289,65 @@ router.post("/refresh-token", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+/**
+ * @swagger
+ * /auth/logout:
+ *   post:
+ *     summary: Logout user and invalidate refresh token
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               refreshToken:
+ *                 type: string
+ *                 example: "Refresh token"
+ *     responses:
+ *       '200':
+ *         description: Logout successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Logout successful"
+ *       '401':
+ *         description: Refresh token required
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Refresh token required"
+ *       '403':
+ *         description: Invalid refresh token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid refresh token"
+ *       '500':
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error"
+ */
 
 router.post("/logout", async (req, res) => {
   const { refreshToken } = req.body;
