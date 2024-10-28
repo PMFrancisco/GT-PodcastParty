@@ -1,0 +1,47 @@
+/* HEADER ------------------------------------------*/
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 30px;
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 100;
+  }
+  
+  .header__logo img {
+    height: 20px;
+    width: 150px;
+    cursor: pointer;
+    padding: 24px 0px 24px 40px;
+  
+  }
+  
+  .header__nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;
+    gap: 30px;
+  }
+  
+  .nav__links a {
+    text-decoration: none;
+    color: black;
+    transition: color 0.3s ease;
+  }
+  
+  .nav__links a:hover {
+    color: #9747ff;
+    font-weight: 500;
+  }
+  .header__login{
+    background-color: #e6715c;
+    padding: 12px 10px 12px 10px;
+    border-radius: 8px;
+    font-family: 'Roboto';
+    color: #fff;
+  }
