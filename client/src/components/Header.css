@@ -1,47 +1,127 @@
-/* HEADER ------------------------------------------*/
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 30px;
-    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
-    background-color: #fff;
-    z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 30px;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 100;
+}
+
+.header__logo img {
+  height: 15px;
+  cursor: pointer;
+}
+
+.header__right {
+  display: flex;
+  align-items: center;
+}
+
+.header__nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  padding: 0;
+  margin: 0;
+}
+
+.nav__links a {
+  text-decoration: none;
+  color: #9747FF;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.nav__links a:hover {
+  color: #6831af;
+  font-weight: 500;
+}
+
+.header__auth {
+  display: flex;
+  gap: 34px;
+  margin-left: 34px;
+}
+
+.btn {
+  border: none;
+  cursor: pointer;
+  height: 40px;
+  width: 120px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.header__back {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 5px 15px;
+    height: 60px;
   }
-  
-  .header__logo img {
-    height: 20px;
-    width: 150px;
+
+  .header__logo {
+    margin-left: 0;
+    padding-right: 15px;
+  }
+
+  .header__back {
+    display: block;
     cursor: pointer;
-    padding: 24px 0px 24px 40px;
-  
+    font-size: 20px;
+    color: #9747FF;
+    margin-right: auto;
+    padding: 17px;
   }
-  
-  .header__nav ul {
-    list-style: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 !important;
-    gap: 30px;
+
+  .header__menu-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    padding-right: 15px;
   }
-  
-  .nav__links a {
-    text-decoration: none;
-    color: black;
-    transition: color 0.3s ease;
-  }
-  
-  .nav__links a:hover {
-    color: #9747ff;
-    font-weight: 500;
-  }
-  .header__login{
-    background-color: #e6715c;
-    padding: 12px 10px 12px 10px;
+
+  .header__dropdown-menu {
+    position: absolute;
+    top: 50px;
+    right: 15px;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    font-family: 'Roboto';
-    color: #fff;
+    padding: 10px;
+    width: 150px;
   }
+
+  .header__dropdown-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .header__dropdown-menu ul li {
+    margin-bottom: 10px;
+    text-align: right;
+  }
+
+  .header__dropdown-menu ul li a,
+  .header__dropdown-menu ul li button {
+    text-decoration: none;
+    color: #9747FF;
+    font-size: 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .header__right,
+  .header__nav,
+  .header__auth {
+    display: none;
+  }
+}
