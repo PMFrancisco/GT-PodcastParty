@@ -97,9 +97,15 @@ router.get("/", async (req, res) => {
     const feed = await fetchFeed();
 
     if (feed.items && feed.items.length > 0) {
-      const last20Episodes = feed.items.slice(0, 20);
+      const page = parseInt(req.query.page) || 1;
+      const limit = 20;
 
-      const formattedEpisodes = last20Episodes.map((item) => {
+      const startIndex = (page - 1) * limit;
+      const endIndex = page * limit;
+
+      const paginatedEpisodes = feed.items.slice(startIndex, endIndex);
+
+      const formattedEpisodes = paginatedEpisodes.map((item) => {
         const idNumber = item.guid.match(/\d+$/)[0];
 
         return {
@@ -110,7 +116,7 @@ router.get("/", async (req, res) => {
           id: idNumber,
           duration: item.itunes.duration,
           audioInfo: item.enclosure,
-          image: item.itunes.image
+          image: item.itunes.image,
         };
       });
 
@@ -194,7 +200,6 @@ router.get("/", async (req, res) => {
  *                   example: "Error al obtener el feed RSS"
  */
 
-
 router.get("/:id", async (req, res) => {
   try {
     const feed = await fetchFeed();
@@ -210,7 +215,7 @@ router.get("/:id", async (req, res) => {
         pubDate: episode.pubDate,
         duration: item.itunes.duration,
         audioInfo: episode.enclosure,
-        image: item.itunes.image
+        image: item.itunes.image,
       });
     } else {
       res.status(404).json({ message: "No se encontró el episodio" });
