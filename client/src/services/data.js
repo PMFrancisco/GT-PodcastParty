@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/episodes";
+const API_URL = "https://gt-podcastparty-so1e.onrender.com/episodes";
 
 export const getEpisodes = async () => {
   try {
