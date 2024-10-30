@@ -1,4 +1,4 @@
-.register__main {
+.login__main {
     width: 100vw;
     height: 92.5vh;
     display: flex;
@@ -6,7 +6,7 @@
     align-items: center;
 }
 
-.register__container {
+.login__component {
     display: flex;
     flex-direction: column;
     width: 495px;
@@ -16,80 +16,70 @@
     border-radius: 8px;
 }
 
-.register__title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
-    margin-bottom: 24px;
-}
-
-.register__form {
+.login__form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 8px;
 }
 
-.register__label {
-    font-size: 16px;
-    margin-bottom: 8px;
+.login__form-label {
+    margin-top: 24px;
 }
 
-.register__input {
-    width: 450px;
+.login__form-input {
     border-radius: 8px;
     outline: 1px solid #d9d9d9;
     border: none;
     padding: 12px 16px;
+    width: 450px;
     font-size: 16px;
 }
 
-.register__button {
+.login__form-button {
     width: 450px;
     background-color: #9747FF;
-    color: #fff;
     display: flex;
     justify-content: center;
-    align-items: center;
     padding: 16px;
-    border: none;
     border-radius: 8px;
-    cursor: pointer;
     margin-top: 24px;
 }
 
-.register__button:hover {
-    background-color: #8037d3;
-}
-
-.register__link {
+.login__form-register {
     display: flex;
     justify-content: center;
-    font-size: 14px;
     text-decoration: none;
-    margin-top: 16px;
+    margin-top: 24px;
+    color: #000;
 }
 
 @media (max-width: 768px) {
-    .register__container {
+    .login__component,
+    .login__form {
         width: 90%;
-        max-width: 366px;
-        padding: 18px;
+        max-width: 300px;
+        padding: 10px;
+        padding-right: 25px; 
+        background-color: #f3f3f3; 
+        border-radius: 10px; 
     }
 
-    .register__title {
-        font-size: 20px;
-    }
-
-    .register__input, .register__button {
+    .login__form-input,
+    .login__form-button {
         width: 100%;
+        max-width: 100%;
     }
-    
-    .register__input {
+
+    .login__form-input {
         padding: 10px 14px;
     }
 
-    .register__button {
+    .login__form-button {
         padding: 14px;
+    }
+
+    .login__form-label,
+    .login__form-register {
+        margin-top: 20px;
     }
 }

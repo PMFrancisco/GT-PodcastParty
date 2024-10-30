@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import './loginPage.css';
 
 const LoginPage = ({ onAuthenticate }) => {
   const [email, setEmail] = useState('');
@@ -30,27 +31,33 @@ const LoginPage = ({ onAuthenticate }) => {
   };
 
   return (
-    <div>
-      <h2>Iniciar Sesión</h2>
-      <form onSubmit={handleSubmit}>
+    <main className='login__main'>
+    <div className='login__component'>
+      <form onSubmit={handleSubmit} className='login__form'>
+        <label htmlFor="email" className='login__form-label'>Correo electrónico</label>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Correo electrónico"
           required
+          className='login__form-input'
         />
+      <label htmlFor="paswword" className='login__form-label'>Contraseña</label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Contraseña"
           required
+          className='login__form-input'
         />
-        <button type="submit">Iniciar Sesión</button>
+        <button type="submit" className="login__form-button">Iniciar Sesión</button>
+        <Link to="/register" className="login__form-register">¿Aún no te registraste?</Link>
       </form>
       {error && <p>{error}</p>}
     </div>
+    </main>
   );
 };
 
