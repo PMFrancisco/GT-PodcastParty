@@ -1,5 +1,6 @@
 MONGO_URI=
 PORT=
+VERIFICATION_URL_BASE=
 
 //Json Web Token
 

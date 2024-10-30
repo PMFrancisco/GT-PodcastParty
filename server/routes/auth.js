@@ -3,6 +3,8 @@ const router = express.Router();
 const User = require("../models/user");
 const bCrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const transporter = require("../config/nodemailer");
+require("dotenv").config();
 
 /**
  * @swagger
@@ -68,23 +70,20 @@ router.post("/register", async (req, res) => {
       password: hashedPassword,
     });
 
-    const accessToken = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-    const refreshToken = jwt.sign(
-      { id: newUser._id },
-      process.env.JWT_REFRESH_SECRET,
-      { expiresIn: "30d" }
-    );
-
-    newUser.refreshToken = refreshToken;
     await newUser.save();
 
-    res.status(201).json({
-      message: "User registered successfully",
-      accessToken,
-      refreshToken,
-    });
+    const verificationLink = `${process.env.VERIFICATION_URL_BASE}?userId=${newUser._id}`;
+
+    const mailOptions = {
+      from: process.env.GMAIL_USER,
+      to: email,
+      subject: "Verificación de correo electrónico",
+      text: `Por favor, haz clic en el siguiente enlace para verificar tu correo electrónico: ${verificationLink}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -363,6 +362,24 @@ router.post("/logout", async (req, res) => {
     await user.save();
 
     res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.get("/verify/:userId", async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.isVerified = true;
+    await user.save();
+
+    res.status(200).json({ message: "User verified successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
