@@ -1,4 +1,12 @@
-MONGO_URI=mongodb+srv://franciscoperezmunoz:VOmKBzV4eyaEGHYF@maincluster.mlzcf.mongodb.net/?retryWrites=true&w=majority&appName=MainCluster
+MONGO_URI=
+PORT=
+
+//Json Web Token
+
 JWT_SECRET=
 JWT_REFRESH_SECRET=
-PORT=
+
+//Nodemailer
+
+GMAIL_USER=
+GMAIL_PASS=
