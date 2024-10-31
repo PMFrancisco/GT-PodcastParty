@@ -373,16 +373,18 @@ router.get("/verify/:userId", async (req, res) => {
   try {
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ redirectUrl: "/homepage", message: "User not found" });
     }
 
     user.isVerified = true;
     await user.save();
 
-    res.status(200).json({ message: "User verified successfully" });
+    res.status(200).json({ redirectUrl: "/homepage", message: "User verified successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ redirectUrl: "/homepage", message: error.message });
   }
 });
+
+
 
 module.exports = router;
