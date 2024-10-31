@@ -15,44 +15,30 @@ const PodcastList = () => {
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
   const [error, setError] = useState(null);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = 15;
   const location = useLocation();
 
+  const fetchEpisodes = async (page) => {
+    try {
+      const data = await getEpisodes(page);
+      console.log("Data de la API:", data);
+
+      setEpisodes(data);
+    } catch (error) {
+      console.error("Error fetching episodes:", error);
+      setError(`Error fetching episodes: ${error.message}`);
+    }
+  };
 
   useEffect(() => {
-    const fetchEpisodes = async () => {
-      try {
-        const data = await getEpisodes();
-        console.log(data);
-
-        setEpisodes(data);
-
-        if (location.state && location.state.episode) {
-          const episodeIndex = data.findIndex(
-            (e) => e.id === location.state.episode.id
-          );
-          if (episodeIndex !== -1) {
-            setCurrentEpisodeIndex(episodeIndex);
-            setIsPlayerVisible(true);
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching episodes:", error);
-        setError(`Error fetching episodes: ${error.message}`);
-      }
-    };
-    fetchEpisodes();
-  }, [location.state]);
+    fetchEpisodes(currentPage);
+  }, [currentPage, location.state]);
 
   const handleEpisodeClick = (index) => {
     setCurrentEpisodeIndex(index);
     setIsPlayerVisible(true);
   };
-
-  useEffect(() => {
-    if (currentEpisodeIndex !== null) {
-      console.log("current", currentEpisodeIndex);
-    }
-  }, [currentEpisodeIndex]);
 
   const handleNextEpisode = () => {
     setCurrentEpisodeIndex((prevIndex) => {
@@ -66,6 +52,10 @@ const PodcastList = () => {
       const previousIndex = prevIndex - 1;
       return previousIndex < 0 ? episodes.length - 1 : previousIndex;
     });
+  };
+
+  const goToPage = (page) => {
+    setCurrentPage(page);
   };
 
   const getFirstNWords = (text, n) => {
@@ -97,10 +87,11 @@ const PodcastList = () => {
           </div>
           <img src={mobileSection} alt="" />
         </div>
+        
         <div className="podcastList__episode">
           <h3>Lista de episodios</h3>
           <ul className="podcast__list">
-            {episodes.map((episode, index) => {
+            {episodes.map((episode, index) => { 
               const content = formatText(episode.content);
               const previewContent = getFirstNWords(content, 20);
 
@@ -143,6 +134,27 @@ const PodcastList = () => {
             })}
           </ul>
 
+          <div className="pagination">
+            <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
+              Anterior
+            </button>
+            {[...Array(totalPages)].map((_, index) => {
+              const pageNum = index + 1;
+              return (
+                <button
+                  key={pageNum}
+                  onClick={() => goToPage(pageNum)}
+                  className={pageNum === currentPage ? "active" : ""}
+                >
+                  {pageNum}
+                </button>
+              );
+            })}
+            <button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>
+              Siguiente
+            </button>
+          </div>
+
           {isPlayerVisible && currentEpisodeIndex !== null && (
             <div className="player-popup">
               <AudioPlayer
@@ -151,7 +163,6 @@ const PodcastList = () => {
                 onNextEpisode={handleNextEpisode}
                 onBackwardEpisode={handlePreviousEpisode}
                 podcastImage={episodes[currentEpisodeIndex].image}
-                
               />
             </div>
           )}
