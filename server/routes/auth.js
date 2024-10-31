@@ -72,7 +72,7 @@ router.post("/register", async (req, res) => {
 
     await newUser.save();
 
-    const verificationLink = `${process.env.VERIFICATION_URL_BASE}?userId=${newUser._id}`;
+    const verificationLink = `${process.env.VERIFICATION_URL_BASE}${newUser._id}`;
 
     const mailOptions = {
       from: process.env.GMAIL_USER,
