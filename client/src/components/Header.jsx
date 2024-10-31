@@ -5,7 +5,7 @@ import Logo from '../assets/logo.png';
 import arrowIcon from '../assets/arrow-icon.png';
 import menuIcon from '../assets/menu.png';
 
-const Header = () => {
+const Header = ({ isAuthenticated, onLogout }) => { 
   const navigate = useNavigate();
   const location = useLocation();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -25,11 +25,14 @@ const Header = () => {
       {isMobile ? (
         <>
           {isEpisodesPage && (
-            <><div className="header__back" onClick={() => navigate(-1)}>
-              <img src={arrowIcon} alt="arrow-back" />
-            </div><Link to="/" className="header__logo">
+            <>
+              <div className="header__back" onClick={() => navigate(-1)}>
+                <img src={arrowIcon} alt="arrow-back" />
+              </div>
+              <Link to="/" className="header__logo">
                 <img src={Logo} alt="Podcast Party Logo" />
-              </Link></>
+              </Link>
+            </>
           )}
           {isHomePage && (
             <>
@@ -46,8 +49,17 @@ const Header = () => {
                 <div className="header__dropdown-menu">
                   <ul>
                     <li><Link to="/episodes" onClick={() => setIsMenuOpen(false)}>Episodios</Link></li>
-                    <li><Link to="/" onClick={() => setIsMenuOpen(false)}>Registrarse</Link></li>
-                    <li><Link to="/" onClick={() => setIsMenuOpen(false)}>Iniciar Sesión</Link></li>
+                    {isAuthenticated ? (
+                      <>
+                        <li><Link to="/favorites" onClick={() => setIsMenuOpen(false)}>Favoritos</Link></li>
+                        <li><Link onClick={() => { onLogout(); setIsMenuOpen(false); }}>Logout</Link></li>
+                      </>
+                    ) : (
+                      <>
+                        <li><Link to="/register" onClick={() => setIsMenuOpen(false)}>Registrarse</Link></li>
+                        <li><Link to="/login" onClick={() => setIsMenuOpen(false)}>Iniciar Sesión</Link></li>
+                      </>
+                    )}
                   </ul>
                 </div>
               )}
@@ -66,12 +78,19 @@ const Header = () => {
             <nav className="header__nav">
               <ul className="nav__links">
                 <li><Link to="/episodes">Episodios</Link></li>
+                {isAuthenticated ? (
+                  <>
+                    <li><Link to="/favorites">Favoritos</Link></li>
+                    <li><Link onClick={onLogout}>Logout</Link></li>
+                  </>
+                ) : (
+                  <>
+                    <li><Link to="/register">Registrarse</Link></li>
+                    <li><Link to="/login">Iniciar Sesión</Link></li>
+                  </>
+                )}
               </ul>
             </nav>
-            <div className="header__auth">
-              <button className="btn__register">Registrarse</button>
-              <button className="btn btn--login">Iniciar Sesión</button>
-            </div>
           </div>
         </>
       )}
