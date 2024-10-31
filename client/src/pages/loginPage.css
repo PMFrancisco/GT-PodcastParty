@@ -1,0 +1,85 @@
+.login__main {
+    width: 100vw;
+    height: 92.5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login__component {
+    display: flex;
+    flex-direction: column;
+    width: 495px;
+    max-width: 100%;
+    padding: 24px;
+    background-color: #f3f3f3;
+    border-radius: 8px;
+}
+
+.login__form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.login__form-label {
+    margin-top: 24px;
+}
+
+.login__form-input {
+    border-radius: 8px;
+    outline: 1px solid #d9d9d9;
+    border: none;
+    padding: 12px 16px;
+    width: 450px;
+    font-size: 16px;
+}
+
+.login__form-button {
+    width: 450px;
+    background-color: #9747FF;
+    display: flex;
+    justify-content: center;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 24px;
+}
+
+.login__form-register {
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    margin-top: 24px;
+    color: #000;
+}
+
+@media (max-width: 768px) {
+    .login__component,
+    .login__form {
+        width: 90%;
+        max-width: 300px;
+        padding: 10px;
+        padding-right: 25px; 
+        background-color: #f3f3f3; 
+        border-radius: 10px; 
+    }
+
+    .login__form-input,
+    .login__form-button {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .login__form-input {
+        padding: 10px 14px;
+    }
+
+    .login__form-button {
+        padding: 14px;
+    }
+
+    .login__form-label,
+    .login__form-register {
+        margin-top: 20px;
+    }
+}
