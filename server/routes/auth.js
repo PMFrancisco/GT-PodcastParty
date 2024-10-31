@@ -43,9 +43,6 @@ require("dotenv").config();
  *                 message:
  *                   type: string
  *                   example: "User registered successfully"
- *                 token:
- *                   type: string
- *                   example: "JWT token"
  *       '500':
  *         description: Internal server error
  *         content:
@@ -366,6 +363,61 @@ router.post("/logout", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+/**
+ * @swagger
+ * /auth/verify/{userId}:
+ *   get:
+ *     summary: Verify a user's email using user ID
+ *     tags: [Authentication]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the user to verify
+ *     responses:
+ *       '200':
+ *         description: User verified successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 redirectUrl:
+ *                   type: string
+ *                   example: "/homepage"
+ *                 message:
+ *                   type: string
+ *                   example: "User verified successfully"
+ *       '404':
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 redirectUrl:
+ *                   type: string
+ *                   example: "/homepage"
+ *                 message:
+ *                   type: string
+ *                   example: "User not found"
+ *       '500':
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 redirectUrl:
+ *                   type: string
+ *                   example: "/homepage"
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error"
+ */
 
 router.get("/verify/:userId", async (req, res) => {
   const { userId } = req.params;
