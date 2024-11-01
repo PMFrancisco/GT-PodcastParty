@@ -16,21 +16,22 @@ const PodcastList = () => {
   const [error, setError] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const totalPages = 15;
   const location = useLocation();
 
   const fetchEpisodes = async (page) => {
+    setIsLoading(true);
     try {
       const data = await getEpisodes(page);
-      console.log("Data de la API:", data);
-
       setEpisodes(data);
     } catch (error) {
       console.error("Error fetching episodes:", error);
       setError(`Error fetching episodes: ${error.message}`);
+    } finally {
+      setIsLoading(false);
     }
   };
-
   useEffect(() => {
     fetchEpisodes(currentPage);
   }, [currentPage, location.state]);
@@ -60,12 +61,49 @@ const PodcastList = () => {
 
   const getFirstNWords = (text, n) => {
     const words = text.split(" ");
-    return words.slice(0, n).join(" ") + (words.length > n ? "..." : ""); 
+    return words.slice(0, n).join(" ") + (words.length > n ? "..." : "");
   };
 
   if (error) {
     return <div>{error}</div>;
   }
+
+  const renderPageNumbers = () => {
+    const pages = [];
+    const pageRange = 2;
+
+    for (let i = 1; i <= totalPages; i++) {
+      if (
+        i <= 3 ||
+        i > totalPages - 3 ||
+        (i >= currentPage - pageRange && i <= currentPage + pageRange)
+      ) {
+        pages.push(
+          <a
+            key={i}
+            onClick={() => goToPage(i)}
+            className={
+              i === currentPage
+                ? "active podcastlist__pagination-active"
+                : "podcastlist__pagination-button"
+            }
+          >
+            {i}
+          </a>
+        );
+      } else if (
+        (i === 4 && currentPage > 5) ||
+        (i === totalPages - 3 && currentPage < totalPages - 4)
+      ) {
+        pages.push(
+          <span key={`dots-${i}`} className="pagination-dots">
+            ...
+          </span>
+        );
+      }
+    }
+    return pages;
+  };
 
   return (
     <div className="podcastList__main">
@@ -87,72 +125,76 @@ const PodcastList = () => {
           </div>
           <img src={mobileSection} alt="" />
         </div>
-        
-        <div className="podcastList__episode">
-          <h3>Lista de episodios</h3>
-          <ul className="podcast__list">
-            {episodes.map((episode, index) => { 
-              const content = formatText(episode.content);
-              const previewContent = getFirstNWords(content, 20);
 
-              return (
-                <li
-                  key={episode.pubDate}
-                  className="podcast__list-card"
-                  onClick={() => handleEpisodeClick(index)}
-                >
-                  <div className="podcast__infoList">
-                    <img
-                      src={episode.image}
-                      alt="podcast-img"
-                      className="podcast__list-img"
-                    />
-                    <div>
-                      <p className="podcast__list-titleEpisode">
-                        {episode.title}
-                      </p>
-                      <p>{previewContent}</p>
+        <div className="podcastList__episode">
+          <h3 className="podcastList__episode-title">Lista de episodios</h3>
+          {isLoading ? (
+            <div className="spinner"></div>
+          ) : (
+            <ul className="podcast__list">
+              {episodes.map((episode, index) => {
+                const content = formatText(episode.content);
+                const previewContent = getFirstNWords(content, 20);
+
+                return (
+                  <li
+                    key={episode.pubDate}
+                    className={`podcast__list-card ${
+                      currentEpisodeIndex === index ? "active" : ""
+                    }`}
+                    onClick={() => handleEpisodeClick(index)}
+                  >
+                    <div className="podcast__infoList">
+                      <img
+                        src={episode.image}
+                        alt="podcast-img"
+                        className="podcast__list-img"
+                      />
+                      <div>
+                        <p className="podcast__list-titleEpisode">
+                          {episode.title}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="podcast_extra">
-                    <div className="podcast__buttonList">
-                      <button>
-                        <img
-                          src={download}
-                          alt="download-icon"
-                          className="download_icon"
-                        />
-                      </button>
-                      <button>
-                        <img src={heart} alt="fav-icon" className="fav_icon" />
-                      </button>
+                    <div className="podcast_extra">
+                      <div className="podcast__buttonList">
+                        <button>
+                          <img
+                            src={download}
+                            alt="download-icon"
+                            className="download_icon"
+                          />
+                        </button>
+                        <button>
+                          <img
+                            src={heart}
+                            alt="fav-icon"
+                            className="fav_icon"
+                          />
+                        </button>
+                      </div>
+                      <p>{formatTime(episode.duration)}</p>
                     </div>
-                    <p>{formatTime(episode.duration)}</p>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
 
           <div className="pagination">
-            <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
+            <a
+              onClick={() => goToPage(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
               Anterior
-            </button>
-            {[...Array(totalPages)].map((_, index) => {
-              const pageNum = index + 1;
-              return (
-                <button
-                  key={pageNum}
-                  onClick={() => goToPage(pageNum)}
-                  className={pageNum === currentPage ? "active" : ""}
-                >
-                  {pageNum}
-                </button>
-              );
-            })}
-            <button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>
+            </a>
+            {renderPageNumbers()}
+            <a
+              onClick={() => goToPage(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
               Siguiente
-            </button>
+            </a>
           </div>
 
           {isPlayerVisible && currentEpisodeIndex !== null && (

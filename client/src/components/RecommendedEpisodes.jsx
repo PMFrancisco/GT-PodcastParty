@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getEpisodes } from '../services/data';
-import './RecommendedEpisodes.css';
+import './HomePage.css';
 import { useNavigate } from 'react-router-dom';
 import { IoIosPlay, IoIosClose } from "react-icons/io";
 

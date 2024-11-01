@@ -138,6 +138,8 @@ span {
   .container {
     grid-template-columns: 1fr;
     text-align: center;
+    width: 100%;
+
   }
 
   .audioplayer__info,  
