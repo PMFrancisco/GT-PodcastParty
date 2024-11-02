@@ -1,5 +1,5 @@
 import React from 'react'
-import './HomePage.css'
+import './HeroSlider.css'
 import HeroImage from '../assets/imageHero.png'
 
 function HeroSlider() {
@@ -14,8 +14,6 @@ function HeroSlider() {
           prácticas y nuevos colegas.</p>
         <button className="btn__hero">Regístrate</button>
       </div>
-
-      
     </section>
   )
 }

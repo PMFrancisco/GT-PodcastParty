@@ -1,5 +1,5 @@
 import React from 'react'
-import './HomePage.css'
+import './CardList.css'
 import heartIcon from '../assets/heart.png';
 import historyIcon from '../assets/history.png';
 import recomendationIcon from '../assets/recomendation.png';
