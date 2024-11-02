@@ -7,6 +7,7 @@ import download from "../assets/circle-down-regular.svg";
 import { formatTime } from "../utils/formatTime";
 import { formatText } from "../utils/formatText";
 import mobileSection from "../assets/xcel2.png";
+import next from "../assets/next.svg";
 import "./podcastList.css";
 
 const PodcastList = () => {
@@ -182,19 +183,18 @@ const PodcastList = () => {
           )}
 
           <div className="pagination">
-            <a
+            <img src={next}
               onClick={() => goToPage(currentPage - 1)}
               disabled={currentPage === 1}
-            >
-              Anterior
-            </a>
+              className="pagination__previous-icon"
+            />
             {renderPageNumbers()}
-            <a
+            <img
+              src={next}
               onClick={() => goToPage(currentPage + 1)}
               disabled={currentPage === totalPages}
-            >
-              Siguiente
-            </a>
+              className="pagination__next-icon"
+            />
           </div>
 
           {isPlayerVisible && currentEpisodeIndex !== null && (
