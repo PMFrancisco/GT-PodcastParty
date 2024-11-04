@@ -7,6 +7,7 @@ import download from "../assets/circle-down-regular.svg";
 import { formatTime } from "../utils/formatTime";
 import { formatText } from "../utils/formatText";
 import mobileSection from "../assets/xcel2.png";
+import next from "../assets/next.svg";
 import "./podcastList.css";
 
 const PodcastList = () => {
@@ -15,44 +16,31 @@ const PodcastList = () => {
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
   const [error, setError] = useState(null);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const totalPages = 15;
   const location = useLocation();
 
-
+  const fetchEpisodes = async (page) => {
+    setIsLoading(true);
+    try {
+      const data = await getEpisodes(page);
+      setEpisodes(data);
+    } catch (error) {
+      console.error("Error fetching episodes:", error);
+      setError(`Error fetching episodes: ${error.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchEpisodes = async () => {
-      try {
-        const data = await getEpisodes();
-        console.log(data);
-
-        setEpisodes(data);
-
-        if (location.state && location.state.episode) {
-          const episodeIndex = data.findIndex(
-            (e) => e.id === location.state.episode.id
-          );
-          if (episodeIndex !== -1) {
-            setCurrentEpisodeIndex(episodeIndex);
-            setIsPlayerVisible(true);
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching episodes:", error);
-        setError(`Error fetching episodes: ${error.message}`);
-      }
-    };
-    fetchEpisodes();
-  }, [location.state]);
+    fetchEpisodes(currentPage);
+  }, [currentPage, location.state]);
 
   const handleEpisodeClick = (index) => {
     setCurrentEpisodeIndex(index);
     setIsPlayerVisible(true);
   };
-
-  useEffect(() => {
-    if (currentEpisodeIndex !== null) {
-      console.log("current", currentEpisodeIndex);
-    }
-  }, [currentEpisodeIndex]);
 
   const handleNextEpisode = () => {
     setCurrentEpisodeIndex((prevIndex) => {
@@ -68,14 +56,55 @@ const PodcastList = () => {
     });
   };
 
+  const goToPage = (page) => {
+    setCurrentPage(page);
+  };
+
   const getFirstNWords = (text, n) => {
     const words = text.split(" ");
-    return words.slice(0, n).join(" ") + (words.length > n ? "..." : ""); 
+    return words.slice(0, n).join(" ") + (words.length > n ? "..." : "");
   };
 
   if (error) {
     return <div>{error}</div>;
   }
+
+  const renderPageNumbers = () => {
+    const pages = [];
+    const pageRange = 2;
+
+    for (let i = 1; i <= totalPages; i++) {
+      if (
+        i <= 3 ||
+        i > totalPages - 3 ||
+        (i >= currentPage - pageRange && i <= currentPage + pageRange)
+      ) {
+        pages.push(
+          <a
+            key={i}
+            onClick={() => goToPage(i)}
+            className={
+              i === currentPage
+                ? "active podcastlist__pagination-active"
+                : "podcastlist__pagination-button"
+            }
+          >
+            {i}
+          </a>
+        );
+      } else if (
+        (i === 4 && currentPage > 5) ||
+        (i === totalPages - 3 && currentPage < totalPages - 4)
+      ) {
+        pages.push(
+          <span key={`dots-${i}`} className="pagination-dots">
+            ...
+          </span>
+        );
+      }
+    }
+    return pages;
+  };
 
   return (
     <div className="podcastList__main">
@@ -97,51 +126,76 @@ const PodcastList = () => {
           </div>
           <img src={mobileSection} alt="" />
         </div>
-        <div className="podcastList__episode">
-          <h3>Lista de episodios</h3>
-          <ul className="podcast__list">
-            {episodes.map((episode, index) => {
-              const content = formatText(episode.content);
-              const previewContent = getFirstNWords(content, 20);
 
-              return (
-                <li
-                  key={episode.pubDate}
-                  className="podcast__list-card"
-                  onClick={() => handleEpisodeClick(index)}
-                >
-                  <div className="podcast__infoList">
-                    <img
-                      src={episode.image}
-                      alt="podcast-img"
-                      className="podcast__list-img"
-                    />
-                    <div>
-                      <p className="podcast__list-titleEpisode">
-                        {episode.title}
-                      </p>
-                      <p>{previewContent}</p>
+        <div className="podcastList__episode">
+          <h3 className="podcastList__episode-title">Lista de episodios</h3>
+          {isLoading ? (
+            <div className="spinner"></div>
+          ) : (
+            <ul className="podcast__list">
+              {episodes.map((episode, index) => {
+                const content = formatText(episode.content);
+                const previewContent = getFirstNWords(content, 20);
+
+                return (
+                  <li
+                    key={episode.pubDate}
+                    className={`podcast__list-card ${
+                      currentEpisodeIndex === index ? "active" : ""
+                    }`}
+                    onClick={() => handleEpisodeClick(index)}
+                  >
+                    <div className="podcast__infoList">
+                      <img
+                        src={episode.image}
+                        alt="podcast-img"
+                        className="podcast__list-img"
+                      />
+                      <div>
+                        <p className="podcast__list-titleEpisode">
+                          {episode.title}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="podcast_extra">
-                    <div className="podcast__buttonList">
-                      <button>
-                        <img
-                          src={download}
-                          alt="download-icon"
-                          className="download_icon"
-                        />
-                      </button>
-                      <button>
-                        <img src={heart} alt="fav-icon" className="fav_icon" />
-                      </button>
+                    <div className="podcast_extra">
+                      <div className="podcast__buttonList">
+                        <button>
+                          <img
+                            src={download}
+                            alt="download-icon"
+                            className="download_icon"
+                          />
+                        </button>
+                        <button>
+                          <img
+                            src={heart}
+                            alt="fav-icon"
+                            className="fav_icon"
+                          />
+                        </button>
+                      </div>
+                      <p>{formatTime(episode.duration)}</p>
                     </div>
-                    <p>{formatTime(episode.duration)}</p>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+
+          <div className="pagination">
+            <img src={next}
+              onClick={() => goToPage(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="pagination__previous-icon"
+            />
+            {renderPageNumbers()}
+            <img
+              src={next}
+              onClick={() => goToPage(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="pagination__next-icon"
+            />
+          </div>
 
           {isPlayerVisible && currentEpisodeIndex !== null && (
             <div className="player-popup">
@@ -151,7 +205,6 @@ const PodcastList = () => {
                 onNextEpisode={handleNextEpisode}
                 onBackwardEpisode={handlePreviousEpisode}
                 podcastImage={episodes[currentEpisodeIndex].image}
-                
               />
             </div>
           )}
