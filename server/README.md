@@ -32,41 +32,77 @@ npm start
 
 ## Referencia de API
 
-### Recupera los 20 últimos episodios
+### Registrar un nuevo usuario
 
 ```http
-  GET /episodes
+  POST /auth/register
 ```
 
+| Body | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `email`      | `string` | **Required**. Email del usuario |
+| `password`      | `string` | **Required**. Contraseña del usuario |
+
+
 #### Respuestas
+
+```http
+ 201 Created
+  
+{
+  "message": "User registered successfully",
+  "accessToken": "JWT token",
+  "refreshToken": "JWT refresh token"
+}
+
+```
+
+```http
+ 500 Internal Server Error
+  
+{
+  "message": "Mensaje de error"
+}
+```
+
+### Inicio de sesión
+
+```http
+  POST /auth/login
+```
+
+| Body | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `email`      | `string` | **Required**. Email del usuario |
+| `password`      | `string` | **Required**. Contraseña del usuario |
+
+
+#### Respuestas
+
 ```http
  200 OK
   
-[
-  {
-    "title": "Episode title",
-    "link": "https://example.com/episode",
-    "pubDate": "Wed, 15 Sep 2021 04:00:00 GMT",
-    "id": "61641297",
-    "duration": "1149"
-  },
-  ...
-]
+{
+  "message": "Login successful",
+  "accessToken": "JWT token",
+  "refreshToken": "JWT refresh token"
+}
+
 ```
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `title`      | `string` | Título del episodio |
-| `link`      | `string` | Enlace al episodio |
-| `pubDate`      | `string` | Fecha de publicación del episodio |
-| `id`      | `string` | ID numérico del episodio |
-| `duration`      | `string` | Longitud del episodio en segundos     |
-| `image`      | `string` | URL de imagen del episodio     |
+
+```http
+ 400 Bad Request
+  
+{
+  "message": "Invalid credentials"
+}
+```
 
 ```http
  404 Not Found
   
 {
-  "message": "No se encontraron episodios"
+  "message": "User not found"
 }
 ```
 
@@ -74,7 +110,150 @@ npm start
  500 Internal Server Error
   
 {
-  "message": "Error message"
+  "message": "Mensaje de error"
+}
+```
+
+### Actualizar JWT token
+
+```http
+  POST /auth/refresh-token
+```
+
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `refreshToken`      | `string` | **Required**. JWT refresh token |
+
+
+#### Respuestas
+
+```http
+ 200 OK
+  
+{
+  "accessToken": "New access token",
+  "refreshToken": "New refresh token"
+}
+
+```
+
+```http
+ 401 Unauthorized
+  
+{
+  "message": "Refresh token required"
+}
+
+```
+```http
+ 403 Forbidden
+  
+{
+  "message": "Invalid refresh token"
+}
+
+```
+```http
+ 500 Internal Server Error
+  
+{
+  "message": "Mensaje de error"
+}
+
+```
+
+### Cerrar sesión e invalidar el token de refresco
+
+```http
+  POST /auth/logout
+```
+
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `refreshToken`      | `string` | **Required**. JWT refresh token |
+
+
+#### Respuestas
+
+```http
+ 200 OK
+  
+{
+  "message": "Logout successful"
+}
+
+```
+
+```http
+ 401 Unauthorized
+  
+{
+  "message": "Refresh token required"
+}
+
+```
+```http
+ 403 Forbidden
+  
+{
+  "message": "Invalid refresh token"
+}
+
+```
+```http
+ 500 Internal Server Error
+  
+{
+  "message": "Mensaje de error"
+}
+
+```
+
+### Recupera episodio por páginas
+
+```http
+  GET /episodes
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `page`      | `integer` | `Optional`. Número de página a recuperar (default 1) |
+
+#### Respuestas
+```http
+ 200 OK
+  
+[
+    {
+      "title": "Episode Title",
+      "link": "http://example.com/episode",
+      "pubDate": "2023-10-01T00:00:00Z",
+      "content": "Episode content",
+      "id": "61641297",
+      "duration": "00:30:00",
+      "audioInfo": {
+        "url": "http://example.com/audio.mp3",
+        "length": "12345678",
+        "type": "audio/mpeg"
+      },
+      "image": "http://example.com/image.jpg"
+    },
+    ...
+  ]
+```
+
+```http
+ 404 Not Found
+  
+{
+  "message": "No se encontró el episodio"
+}
+```
+
+```http
+ 500 Internal Server Error
+  
+{
+  "message": "Mensaje de error"
 }
 ```
 
@@ -103,20 +282,12 @@ npm start
   ...
 ]
 ```
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `title`      | `string` | Título del episodio |
-| `link`      | `string` | Enlace al episodio |
-| `pubDate`      | `string` | Fecha de publicación del episodio |
-| `duration`      | `string` | Longitud del episodio en segundos     |
-| `image`      | `string` | URL de imagen del episodio     |
-
 
 ```http
- 404 Not Found
-  
+404 Not Found
+
 {
-  "message": "No se encontraron episodios"
+  "message": "No se encontró el episodio"
 }
 ```
 
@@ -124,120 +295,117 @@ npm start
  500 Internal Server Error
   
 {
-  "message": "Error message"
+  "message": "Mensaje de error"
 }
 ```
-
-### Registrar un nuevo usuario
+### Agregar un episodio a favoritos
 
 ```http
-  POST /auth/register
+  POST /fav/:podcastId
 ```
 
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `email`      | `string` | **Required**. Email del usuario |
-| `password`      | `string` | **Required**. Contraseña del usuario |
+| `podcastId`      | `string` | **Required**. ID del episodio a agregar a favoritos |
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `accessToken`      | `string` | **Required**. JWT access token |
 
 
 #### Respuestas
 
 ```http
- 201 Created
-  
-{
-  "message": "User registered successfully",
-  "token": "JWT token"
-}
+200 OK
 
-```
-
-```http
- 500 Internal Server Error
-  
 {
-  "message": "Error message"
+  "message": "Podcast added to favorites successfully"
 }
 ```
 
-### Inicio de sesión
+```http
+400 Bad Request
+
+{
+  "message": "Podcast already favorited"
+}
+```
 
 ```http
-  POST /auth/login
+500 Internal Server Error
+
+{
+  "message": "Mensaje de error"
+}
+```
+### Eliminar un episodio de favoritos
+
+```http
+  DELETE /fav/:podcastId
 ```
 
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `email`      | `string` | **Required**. Email del usuario |
-| `password`      | `string` | **Required**. Contraseña del usuario |
+| `podcastId`      | `string` | **Required**. ID del episodio a eliminar a favoritos |
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `accessToken`      | `string` | **Required**. JWT access token |
 
 
 #### Respuestas
 
 ```http
- 200 OK
-  
-{
-  "message": "Login successful",
-  "token": "JWT token"
-}
+200 OK
 
-```
-
-```http
- 400 Bad Request
-  
 {
-  "message": "Invalid credentials"
+  "message": "Podcast removed from favorites successfully"
 }
 ```
 
 ```http
- 404 Not Found
-  
+400 Bad Request
+
+{
+  "message": "Podcast not found in favorites"
+}
+```
+
+```http
+500 Internal Server Error
+
+{
+  "message": "Mensaje de error"
+}
+```
+
+### Obtener detalles del usuario
+
+```http
+  GET /users
+```
+
+#### Respuestas
+
+```http
+200 OK
+
+{
+  "favorites": ["episode1", "episode2"],
+  "lastListened": "episode3"
+}
+```
+
+```http
+404 Not Found
+
 {
   "message": "User not found"
 }
 ```
 
 ```http
- 500 Internal Server Error
-  
+500 Internal Server Error
+
 {
-  "message": "Error message"
-}
-```
-
-### Acceder a una ruta protegida
-
-```http
-  POST /auth/protected
-```
-
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `email`      | `string` | **Required**. Email del usuario |
-| `password`      | `string` | **Required**. Contraseña del usuario |
-
-
-#### Respuestas
-
-```http
- 200 OK
-  
-{
-  "message": "You are authorized",
-  "user": {
-    "email": "user@example.com"
-  }
-}
-
-```
-
-```http
- 401 Unauthorized
-  
-{
-  "message": "Unauthorized"
+  "message": "Mensaje de error"
 }
 ```
