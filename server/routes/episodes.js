@@ -40,18 +40,6 @@ const fetchFeed = async () => {
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 currentPage:
- *                   type: integer
- *                   example: 1
- *                 totalItems:
- *                   type: integer
- *                   example: 100
- *                 totalPages:
- *                   type: integer
- *                   example: 5
- *                 episodes:
  *                   type: array
  *                   items:
  *                     type: object

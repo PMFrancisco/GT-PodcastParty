@@ -26,9 +26,11 @@ const jwt = require("jsonwebtoken");
  *             properties:
  *               email:
  *                 type: string
+ *                 description: User's email address
  *                 example: "user@example.com"
  *               password:
  *                 type: string
+ *                 description: User's password
  *                 example: "password123"
  *     responses:
  *       '201':
@@ -41,9 +43,12 @@ const jwt = require("jsonwebtoken");
  *                 message:
  *                   type: string
  *                   example: "User registered successfully"
- *                 token:
+ *                 accessToken:
  *                   type: string
  *                   example: "JWT token"
+ *                 refreshToken:
+ *                   type: string
+ *                   example: "JWT refresh token"
  *       '500':
  *         description: Internal server error
  *         content:
@@ -51,7 +56,7 @@ const jwt = require("jsonwebtoken");
  *             schema:
  *               type: object
  *               properties:
- *                 error:
+ *                 message:
  *                   type: string
  *                   example: "Internal server error"
  */
@@ -94,7 +99,7 @@ router.post("/register", async (req, res) => {
  * @swagger
  * /auth/login:
  *   post:
- *     summary: Login user and get JWT token
+ *     summary: Login user and obtain JWT tokens
  *     tags: [Authentication]
  *     requestBody:
  *       required: true
@@ -105,9 +110,11 @@ router.post("/register", async (req, res) => {
  *             properties:
  *               email:
  *                 type: string
+ *                 description: User's email address
  *                 example: "user@example.com"
  *               password:
  *                 type: string
+ *                 description: User's password
  *                 example: "password123"
  *     responses:
  *       '200':
@@ -120,9 +127,12 @@ router.post("/register", async (req, res) => {
  *                 message:
  *                   type: string
  *                   example: "Login successful"
- *                 token:
+ *                 accessToken:
  *                   type: string
  *                   example: "JWT token"
+ *                 refreshToken:
+ *                   type: string
+ *                   example: "JWT refresh token"
  *       '400':
  *         description: Invalid credentials
  *         content:
@@ -150,7 +160,7 @@ router.post("/register", async (req, res) => {
  *             schema:
  *               type: object
  *               properties:
- *                 error:
+ *                 message:
  *                   type: string
  *                   example: "Internal server error"
  */
@@ -190,7 +200,7 @@ router.post("/login", async (req, res) => {
  * @swagger
  * /auth/refresh-token:
  *   post:
- *     summary: Refresh JWT token
+ *     summary: Refresh the JWT access token
  *     tags: [Authentication]
  *     requestBody:
  *       required: true
@@ -201,6 +211,7 @@ router.post("/login", async (req, res) => {
  *             properties:
  *               refreshToken:
  *                 type: string
+ *                 description: Refresh token to request new access token
  *                 example: "Refresh token"
  *     responses:
  *       '200':
@@ -305,6 +316,7 @@ router.post("/refresh-token", async (req, res) => {
  *             properties:
  *               refreshToken:
  *                 type: string
+ *                 description: Refresh token to be invalidated
  *                 example: "Refresh token"
  *     responses:
  *       '200':
