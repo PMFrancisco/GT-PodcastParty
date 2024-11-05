@@ -234,9 +234,9 @@ router.get("/:id", async (req, res) => {
         title: episode.title,
         link: episode.link,
         pubDate: episode.pubDate,
-        duration: item.itunes.duration,
+        duration: episode.itunes.duration,
         audioInfo: episode.enclosure,
-        image: item.itunes.image,
+        image: episode.itunes.image,
       });
     } else {
       res.status(404).json({ message: "No se encontró el episodio" });
