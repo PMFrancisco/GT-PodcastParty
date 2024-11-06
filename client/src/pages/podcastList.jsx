@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { getEpisodes } from "../services/data";
 import AudioPlayer from "../components/AudioPlayer";
+import EpisodeDetail from "../components/EpisodeDetail";
+
 import heart from "../assets/heart-purple.svg";
 import useMediaSession from "../utils/mediaSession"; 
 import download from "../assets/circle-down-regular.svg";
@@ -9,6 +11,7 @@ import { formatTime } from "../utils/formatTime";
 import { formatText } from "../utils/formatText";
 import mobileSection from "../assets/xcel2.png";
 import next from "../assets/next.svg";
+
 import "./podcastList.css";
 
 const PodcastList = () => {
@@ -17,6 +20,9 @@ const PodcastList = () => {
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
   const [error, setError] = useState(null);
   const audioRef = useRef(null); 
+  const [selectedEpisode, setSelectedEpisode] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const totalPages = 15;
@@ -34,13 +40,20 @@ const PodcastList = () => {
       setIsLoading(false);
     }
   };
+
   useEffect(() => {
     fetchEpisodes(currentPage);
   }, [currentPage, location.state]);
 
   const handleEpisodeClick = (index) => {
-    setCurrentEpisodeIndex(index);
+    setSelectedEpisode(episodes[index]);
+    setIsModalOpen(true);
+  };
+
+  const handlePlay = () => {
+    setCurrentEpisodeIndex(episodes.findIndex(ep => ep.pubDate === selectedEpisode.pubDate));
     setIsPlayerVisible(true);
+    setIsModalOpen(false);
   };
 
   const handleNextEpisode = () => {
@@ -125,6 +138,14 @@ const PodcastList = () => {
         <button className="podcastList__aside-button">Registrarte</button>
       </div>
       <div className="podcastList_cardGrid">
+        {selectedEpisode && (
+          <EpisodeDetail
+            episode={selectedEpisode}
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onPlay={handlePlay}
+          />
+        )}
         <div className="podcastList__title">
           <div className="podcast__section">
             <h2 className="title__sectionTitle">
@@ -136,7 +157,7 @@ const PodcastList = () => {
               profesional con cientos de horas de contenido.
             </h3>
           </div>
-          <img src={mobileSection} alt="mobile-img" className="title__image"/>
+          <img src={mobileSection} alt="" className="podcastList__ImgSlide" />
         </div>
 
         <div className="podcastList__episode">
@@ -152,9 +173,8 @@ const PodcastList = () => {
                 return (
                   <li
                     key={episode.pubDate}
-                    className={`podcast__list-card ${
-                      currentEpisodeIndex === index ? "active" : ""
-                    }`}
+                    className={`podcast__list-card ${currentEpisodeIndex === index ? "active" : ""
+                      }`}
                     onClick={() => handleEpisodeClick(index)}
                   >
                     <div className="podcast__infoList">
@@ -222,6 +242,7 @@ const PodcastList = () => {
           )}
         </div>
       </div>
+
     </div>
   );
 };
