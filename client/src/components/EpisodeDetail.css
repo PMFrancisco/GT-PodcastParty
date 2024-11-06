@@ -1,0 +1,141 @@
+.modal-overlay {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  top: auto;
+  border-radius: 20px;
+}
+
+.modal-content {
+  position: fixed;
+  padding: 10px;
+  background-color: white;
+  border-radius: 10px;
+  width: calc(100dvw - 360px);
+  height: calc(100dvh - 90px);
+  border-radius: 20px;
+  z-index: 1001;
+}
+
+.modal-top {
+ 
+  min-height: 70%;
+  border-radius: 20px; 
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 20px;
+  background-size: cover;
+  background-position: center; 
+  
+  
+}
+
+.modal-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+  padding: 10px;
+}
+
+.modal-close:hover {
+  color: #000;
+}
+
+.modal-episode-title {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 20px;
+}
+
+.modal-title-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 20px;
+}
+
+
+.modal-play-button {
+  background-color: #56C2B7FA;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.modal-play-button:hover {
+  background-color: #8033FF;
+}
+
+
+.modal-icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.modal-icon-button:hover {
+  background-color: #f0f0f0;
+}
+
+.modal-bottom {
+  flex: 2;
+}
+
+.modal-episode-content {
+  display: flex;
+  gap: 30px;
+}
+
+.modal-episode-description {
+  color: black;
+  line-height: 1.5;
+}
+
+.modal-epispde-titles{
+  color: #79747E;
+  line-height: 1.5;
+}
+
+.modal-episode-description-overflow {
+  max-height: 100px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+
+.modal-episode-actions {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .modal-episode-content {
+    flex-direction: column;
+  }
+
+  .modal-episode-image {
+    width: 120px;
+    height: 120px;
+  }
+
+  .modal-content {
+    width: 95%;
+    margin: 10px;
+  }
+}
