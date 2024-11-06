@@ -29,9 +29,6 @@ const Header = ({ isAuthenticated, onLogout }) => {
               <div className="header__back" onClick={() => navigate(-1)}>
                 <img src={arrowIcon} alt="arrow-back" />
               </div>
-              <Link to="/" className="header__logo">
-                <img src={Logo} alt="Podcast Party Logo" />
-              </Link>
             </>
           )}
           {isHomePage && (
