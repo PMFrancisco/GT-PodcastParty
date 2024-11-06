@@ -72,12 +72,12 @@ const PodcastList = () => {
 
   const renderPageNumbers = () => {
     const pages = [];
-    const pageRange = 2;
+    const pageRange = 1;
 
     for (let i = 1; i <= totalPages; i++) {
       if (
-        i <= 3 ||
-        i > totalPages - 3 ||
+        i <= 2 ||
+        i > totalPages - 2 ||
         (i >= currentPage - pageRange && i <= currentPage + pageRange)
       ) {
         pages.push(
@@ -95,7 +95,7 @@ const PodcastList = () => {
         );
       } else if (
         (i === 4 && currentPage > 5) ||
-        (i === totalPages - 3 && currentPage < totalPages - 4)
+        (i === totalPages - 2 && currentPage < totalPages - 4)
       ) {
         pages.push(
           <span key={`dots-${i}`} className="pagination-dots">
@@ -113,12 +113,9 @@ const PodcastList = () => {
     title: currentEpisode ? currentEpisode.title : '',
     artist: "Web Reactiva",
     artwork: currentEpisode ? [{ src: currentEpisode.image, sizes: '96x96', type: 'image/png' }] : [],
-    onPlay: () => audioRef.current?.play(),
-    onPause: () => audioRef.current?.pause(),
     onNext: handleNextEpisode,
     onPrevious: handlePreviousEpisode,
   });
-  console.log(currentEpisode);
   
 
   return (
@@ -139,7 +136,7 @@ const PodcastList = () => {
               profesional con cientos de horas de contenido.
             </h3>
           </div>
-          <img src={mobileSection} alt="" />
+          <img src={mobileSection} alt="mobile-img" className="title__image"/>
         </div>
 
         <div className="podcastList__episode">
