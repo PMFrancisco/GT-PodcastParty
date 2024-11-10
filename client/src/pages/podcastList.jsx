@@ -5,34 +5,43 @@ import AudioPlayer from "../components/AudioPlayer";
 import EpisodeDetail from "../components/EpisodeDetail";
 
 import heart from "../assets/heart-purple.svg";
+import heartFilled from "../assets/heart-fill.svg";
 import useMediaSession from "../utils/mediaSession"; 
 import download from "../assets/circle-down-regular.svg";
 import { formatTime } from "../utils/formatTime";
 import { formatText } from "../utils/formatText";
 import mobileSection from "../assets/xcel2.png";
 import next from "../assets/next.svg";
+import { useFavorites } from "../context/FavoritesContext"; 
+
 
 import "./podcastList.css";
 
-const PodcastList = () => {
+const PodcastList = ({ showFavoritesOnly = false }) => {
   const [episodes, setEpisodes] = useState([]);
   const [currentEpisodeIndex, setCurrentEpisodeIndex] = useState(null);
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
   const [error, setError] = useState(null);
-  const audioRef = useRef(null); 
   const [selectedEpisode, setSelectedEpisode] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const totalPages = 15;
+  const episodesPerPage = 20;
   const location = useLocation();
+
+  const { favorites } = useFavorites(); 
+  const isFavoritesPage = location.pathname === '/favorites';
 
   const fetchEpisodes = async (page) => {
     setIsLoading(true);
     try {
       const data = await getEpisodes(page);
-      setEpisodes(data);
+      const filteredEpisodes = showFavoritesOnly || isFavoritesPage
+        ? data.filter((episode) => favorites.includes(episode.id))
+        : data;
+      setEpisodes(filteredEpisodes);
     } catch (error) {
       console.error("Error fetching episodes:", error);
       setError(`Error fetching episodes: ${error.message}`);
@@ -43,7 +52,7 @@ const PodcastList = () => {
 
   useEffect(() => {
     fetchEpisodes(currentPage);
-  }, [currentPage, location.state]);
+  }, [currentPage, location.pathname]);
 
   const handleEpisodeClick = (index) => {
     setSelectedEpisode(episodes[index]);
@@ -130,7 +139,6 @@ const PodcastList = () => {
     onPrevious: handlePreviousEpisode,
   });
   
-
   return (
     <div className="podcastList__main">
       <div className="podcastList__aside">
@@ -161,7 +169,9 @@ const PodcastList = () => {
         </div>
 
         <div className="podcastList__episode">
-          <h3 className="podcastList__episode-title">Lista de episodios</h3>
+          <h3 className="podcastList__episode-title">
+          {isFavoritesPage ? "Episodios Favoritos" : "Lista de episodios"}
+          </h3>
           {isLoading ? (
             <div className="spinner"></div>
           ) : (
@@ -169,7 +179,6 @@ const PodcastList = () => {
               {episodes.map((episode, index) => {
                 const content = formatText(episode.content);
                 const previewContent = getFirstNWords(content, 20);
-
                 return (
                   <li
                     key={episode.pubDate}
@@ -200,7 +209,7 @@ const PodcastList = () => {
                         </button>
                         <button>
                           <img
-                            src={heart}
+                            src={favorites.includes(episode.id) ? heartFilled : heart}
                             alt="fav-icon"
                             className="fav_icon"
                           />
@@ -214,20 +223,21 @@ const PodcastList = () => {
             </ul>
           )}
 
-          <div className="pagination">
-            <img src={next}
-              onClick={() => goToPage(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="pagination__previous-icon"
-            />
-            {renderPageNumbers()}
-            <img
-              src={next}
-              onClick={() => goToPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="pagination__next-icon"
-            />
-          </div>
+            <div className="pagination">
+              <img src={next}
+                onClick={() => goToPage(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="pagination__previous-icon"
+              />
+              {renderPageNumbers()}
+              <img
+                src={next}
+                onClick={() => goToPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="pagination__next-icon"
+              />
+            </div>
+
 
           {isPlayerVisible && currentEpisodeIndex !== null && (
             <div className="player-popup">

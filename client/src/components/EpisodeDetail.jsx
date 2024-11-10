@@ -1,5 +1,7 @@
 import React from 'react';
-import heart from "../assets/heart-purple.svg";
+import { useFavorites } from "../context/FavoritesContext";
+import heart from "../assets/heart.svg";
+import heartFilled from "../assets/heart-fill.svg";
 import download from "../assets/circle-down-regular.svg";
 import episodeBackground from "../assets/ModalBackground.png";
 import { formatText } from '../utils/formatText';
@@ -9,6 +11,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faPlay} from "@fortawesome/free-solid-svg-icons";
 
 const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
+  const { favorites, toggleFavorite } = useFavorites();
+  const isFavorite = favorites.includes(episode.id);
+  console.log("Episode ID:", episode.id);
+  
   if (!isOpen) return null;
   return (
     <>
@@ -26,8 +32,11 @@ const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
               <button className="modal-icon-button">
                 <img src={download} alt="download" className="fav_icon" />
               </button>
-              <button className="modal-icon-button">
-                <img src={heart} alt="favorito" className="fav_icon" />
+              <button onClick={() => toggleFavorite(episode.id)} className="modal-icon-button">
+                <img 
+                  src={isFavorite ? heartFilled : heart}
+                  alt="favorito" 
+                  className="fav_icon" />
               </button>
             </div>
           </div>
