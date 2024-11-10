@@ -166,7 +166,9 @@ const PodcastList = () => {
         <div className="podcastList__episode">
           <h3 className="podcastList__episode-title">Lista de episodios</h3>
           {isLoading ? (
-            <div className="spinner"></div>
+            <div className="spinner">
+              <div className="spinner-whitespace"></div>
+            </div>
           ) : (
             <ul className="podcast__list">
               {episodes.map((episode, index) => {
