@@ -5,12 +5,15 @@ import AudioPlayer from "../components/AudioPlayer";
 import EpisodeDetail from "../components/EpisodeDetail";
 
 import heart from "../assets/heart-purple.svg";
-import useMediaSession from "../utils/mediaSession"; 
+import heartFilled from "../assets/heart-fill.svg";
 import download from "../assets/circle-down-regular.svg";
+import next from "../assets/next.svg";
+import mobileSection from "../assets/xcel2.png";
+
+import useMediaSession from "../utils/mediaSession"; 
 import { formatTime } from "../utils/formatTime";
 import { formatText } from "../utils/formatText";
-import mobileSection from "../assets/xcel2.png";
-import next from "../assets/next.svg";
+import { useFavorites } from "../context/FavoritesContext"; 
 
 import "./podcastList.css";
 
@@ -19,7 +22,6 @@ const PodcastList = () => {
   const [currentEpisodeIndex, setCurrentEpisodeIndex] = useState(null);
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
   const [error, setError] = useState(null);
-  const audioRef = useRef(null); 
   const [selectedEpisode, setSelectedEpisode] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -27,6 +29,8 @@ const PodcastList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const totalPages = 15;
   const location = useLocation();
+
+  const { favorites, toggleFavorite } = useFavorites();
 
   const fetchEpisodes = async (page) => {
     setIsLoading(true);
@@ -130,7 +134,6 @@ const PodcastList = () => {
     onPrevious: handlePreviousEpisode,
   });
   
-
   return (
     <div className="podcastList__main">
       <div className="podcastList__aside">
@@ -169,7 +172,7 @@ const PodcastList = () => {
               {episodes.map((episode, index) => {
                 const content = formatText(episode.content);
                 const previewContent = getFirstNWords(content, 20);
-
+                const isFavorite = favorites.includes(episode.id);
                 return (
                   <li
                     key={episode.pubDate}
@@ -198,9 +201,9 @@ const PodcastList = () => {
                             className="download_icon"
                           />
                         </button>
-                        <button>
+                        <button onClick={(e) => { e.stopPropagation(); toggleFavorite(episode.id); }}>
                           <img
-                            src={heart}
+                            src={isFavorite ? heartFilled : heart}
                             alt="fav-icon"
                             className="fav_icon"
                           />
@@ -214,20 +217,20 @@ const PodcastList = () => {
             </ul>
           )}
 
-          <div className="pagination">
-            <img src={next}
-              onClick={() => goToPage(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="pagination__previous-icon"
-            />
-            {renderPageNumbers()}
-            <img
-              src={next}
-              onClick={() => goToPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="pagination__next-icon"
-            />
-          </div>
+            <div className="pagination">
+              <img src={next}
+                onClick={() => goToPage(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="pagination__previous-icon"
+              />
+              {renderPageNumbers()}
+              <img
+                src={next}
+                onClick={() => goToPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="pagination__next-icon"
+              />
+            </div>
 
           {isPlayerVisible && currentEpisodeIndex !== null && (
             <div className="player-popup">
@@ -242,7 +245,6 @@ const PodcastList = () => {
           )}
         </div>
       </div>
-
     </div>
   );
 };
