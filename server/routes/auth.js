@@ -26,12 +26,12 @@ const jwt = require("jsonwebtoken");
  *             properties:
  *               email:
  *                 type: string
- *                 description: User's email address
+ *                 description: User's email address (automatically converted to lowercase)
  *                 example: "user@example.com"
  *               password:
  *                 type: string
- *                 description: User's password
- *                 example: "password123"
+ *                 description: User's password (must be at least 8 characters, include one number and one special character)
+ *                 example: "password123!"
  *     responses:
  *       '201':
  *         description: User registered successfully
@@ -49,6 +49,16 @@ const jwt = require("jsonwebtoken");
  *                 refreshToken:
  *                   type: string
  *                   example: "JWT refresh token"
+ *       '400':
+ *         description: Invalid email format or password requirements not met
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid email format or password does not meet requirements"
  *       '500':
  *         description: Internal server error
  *         content:
@@ -62,7 +72,23 @@ const jwt = require("jsonwebtoken");
  */
 
 router.post("/register", async (req, res) => {
-  const { email, password } = req.body;
+  let { email, password } = req.body;
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/;
+
+  email = email.toLowerCase();
+
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ message: "Invalid email format" });
+  }
+
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({
+      message:
+        "Password must be at least 8 characters long and include at least one number and one special character",
+    });
+  }
 
   try {
     const salt = await bCrypt.genSalt(10);
