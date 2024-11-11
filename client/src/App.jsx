@@ -1,12 +1,13 @@
-// src/App.js
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 import PodcastList from './pages/podcastList';
 import HomePage from './pages/homePage';
 import Header from './components/Header';
+import FavoritesPage from './pages/FavoritesPage';
 import './App.css';
 import RegisterPage from './pages/registerPage';
 import LoginPage from './pages/loginPage';
+import { FavoritesProvider } from './context/FavoritesContext';
 import { getTokens, storeTokens, clearTokens } from './utils/indexedDB';
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
       if (tokens) {
         const currentTime = new Date().getTime();
         const createdAt = tokens.createdAt;
-        const tokenLifetime = 30 * 24 * 60 * 60 * 1000; // 30 días en milisegundos
+        const tokenLifetime = 30 * 24 * 60 * 60 * 1000;
 
         if (currentTime - createdAt < tokenLifetime) {
           setIsAuthenticated(true);
@@ -42,7 +43,7 @@ function App() {
   };
 
   return (
-    <>
+    <FavoritesProvider>
       <Router>
         <Header isAuthenticated={isAuthenticated} onLogout={handleLogout} />
         <Routes>
@@ -56,9 +57,17 @@ function App() {
             path="/login" 
             element={<LoginPage onAuthenticate={handleAuthentication} />} 
           />
+          <Route 
+            path="/favorites" 
+            element={<FavoritesPage />} 
+          />
+          <Route 
+            path="*"
+            element={<Navigate to={isAuthenticated ? "/" : "/login"} />}
+          />
         </Routes>
       </Router>
-    </>
+    </FavoritesProvider>
   );
 }
 

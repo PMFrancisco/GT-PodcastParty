@@ -8,6 +8,8 @@
   background-color: #fff;
   z-index: 100;
   height: 60px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .header__logo img {
