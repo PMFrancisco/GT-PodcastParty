@@ -21,6 +21,15 @@ cd GT-PodcastParty/server
 ```bash
 npm install
 ```
+4. Crea un archivo `.env` en la raíz del directorio `server` y añade las siguientes variables de entorno:
+
+```plaintext
+MONGO_URI=<direccion_de_tu_DB>
+JWT_SECRET=<tu_jwt_secret>
+JWT_REFRESH_SECRET=<tu_jwt_refresh_secret>
+PORT=<puerto_deseado>
+CORS_WHITELIST=<dominios_permitidos>
+```
 5. Inicia el servidor en modo desarrollo
 ```bash
 npm run dev
