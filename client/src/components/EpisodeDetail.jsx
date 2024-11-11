@@ -13,8 +13,7 @@ import {faPlay} from "@fortawesome/free-solid-svg-icons";
 const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
   const { favorites, toggleFavorite } = useFavorites();
   const isFavorite = favorites.includes(episode.id);
-  console.log("Episode ID:", episode.id);
-  
+
   if (!isOpen) return null;
   return (
     <>

@@ -33,18 +33,26 @@ export const getEpisodeById = async (id) => {
   }
 };
 
-export const getFavorites = async () => {
+export const getUsersData = async () => {
   try {
     const tokens = await getTokens();
     if (!tokens || !tokens.accessToken) throw new Error("No token found");
 
     const response = await fetch(`${API_URL}/users`, {
+      method: "GET",
       headers: {
         Authorization: `Bearer ${tokens.accessToken}`,
+        "Content-Type": "application/json",
       },
     });
+    
     if (!response.ok) throw new Error(`Server error: ${response.status}`);
-    return await response.json();
+    const data = await response.json();
+    return {
+      favorites: data.favorites,
+      lastListened: data.lastListened,
+    };
+    
   } catch (error) {
     console.error("Error fetching favorites:", error);
     throw error;

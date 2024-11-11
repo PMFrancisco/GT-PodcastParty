@@ -6,18 +6,18 @@ import EpisodeDetail from "../components/EpisodeDetail";
 
 import heart from "../assets/heart-purple.svg";
 import heartFilled from "../assets/heart-fill.svg";
-import useMediaSession from "../utils/mediaSession"; 
 import download from "../assets/circle-down-regular.svg";
+import next from "../assets/next.svg";
+import mobileSection from "../assets/xcel2.png";
+
+import useMediaSession from "../utils/mediaSession"; 
 import { formatTime } from "../utils/formatTime";
 import { formatText } from "../utils/formatText";
-import mobileSection from "../assets/xcel2.png";
-import next from "../assets/next.svg";
 import { useFavorites } from "../context/FavoritesContext"; 
-
 
 import "./podcastList.css";
 
-const PodcastList = ({ showFavoritesOnly = false }) => {
+const PodcastList = () => {
   const [episodes, setEpisodes] = useState([]);
   const [currentEpisodeIndex, setCurrentEpisodeIndex] = useState(null);
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
@@ -28,20 +28,15 @@ const PodcastList = ({ showFavoritesOnly = false }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const totalPages = 15;
-  const episodesPerPage = 20;
   const location = useLocation();
 
-  const { favorites } = useFavorites(); 
-  const isFavoritesPage = location.pathname === '/favorites';
+  const { favorites, toggleFavorite } = useFavorites();
 
   const fetchEpisodes = async (page) => {
     setIsLoading(true);
     try {
       const data = await getEpisodes(page);
-      const filteredEpisodes = showFavoritesOnly || isFavoritesPage
-        ? data.filter((episode) => favorites.includes(episode.id))
-        : data;
-      setEpisodes(filteredEpisodes);
+      setEpisodes(data);
     } catch (error) {
       console.error("Error fetching episodes:", error);
       setError(`Error fetching episodes: ${error.message}`);
@@ -52,7 +47,7 @@ const PodcastList = ({ showFavoritesOnly = false }) => {
 
   useEffect(() => {
     fetchEpisodes(currentPage);
-  }, [currentPage, location.pathname]);
+  }, [currentPage, location.state]);
 
   const handleEpisodeClick = (index) => {
     setSelectedEpisode(episodes[index]);
@@ -169,9 +164,7 @@ const PodcastList = ({ showFavoritesOnly = false }) => {
         </div>
 
         <div className="podcastList__episode">
-          <h3 className="podcastList__episode-title">
-          {isFavoritesPage ? "Episodios Favoritos" : "Lista de episodios"}
-          </h3>
+          <h3 className="podcastList__episode-title">Lista de episodios</h3>
           {isLoading ? (
             <div className="spinner"></div>
           ) : (
@@ -179,6 +172,7 @@ const PodcastList = ({ showFavoritesOnly = false }) => {
               {episodes.map((episode, index) => {
                 const content = formatText(episode.content);
                 const previewContent = getFirstNWords(content, 20);
+                const isFavorite = favorites.includes(episode.id);
                 return (
                   <li
                     key={episode.pubDate}
@@ -207,9 +201,9 @@ const PodcastList = ({ showFavoritesOnly = false }) => {
                             className="download_icon"
                           />
                         </button>
-                        <button>
+                        <button onClick={(e) => { e.stopPropagation(); toggleFavorite(episode.id); }}>
                           <img
-                            src={favorites.includes(episode.id) ? heartFilled : heart}
+                            src={isFavorite ? heartFilled : heart}
                             alt="fav-icon"
                             className="fav_icon"
                           />
@@ -238,7 +232,6 @@ const PodcastList = ({ showFavoritesOnly = false }) => {
               />
             </div>
 
-
           {isPlayerVisible && currentEpisodeIndex !== null && (
             <div className="player-popup">
               <AudioPlayer
@@ -252,7 +245,6 @@ const PodcastList = ({ showFavoritesOnly = false }) => {
           )}
         </div>
       </div>
-
     </div>
   );
 };

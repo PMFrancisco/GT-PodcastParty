@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 import PodcastList from './pages/podcastList';
 import HomePage from './pages/homePage';
 import Header from './components/Header';
+import FavoritesPage from './pages/FavoritesPage';
 import './App.css';
 import RegisterPage from './pages/registerPage';
 import LoginPage from './pages/loginPage';
@@ -58,7 +59,11 @@ function App() {
           />
           <Route 
             path="/favorites" 
-            element={<PodcastList showFavoritesOnly={true} />} 
+            element={<FavoritesPage />} 
+          />
+          <Route 
+            path="*"
+            element={<Navigate to={isAuthenticated ? "/" : "/login"} />}
           />
         </Routes>
       </Router>
