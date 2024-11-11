@@ -3,6 +3,7 @@ import { getEpisodes } from '../services/data';
 import './RecommendedEpisodes.css';
 import { useNavigate } from 'react-router-dom';
 import { IoIosPlay, IoIosClose } from "react-icons/io";
+import { formatText } from '../utils/formatText';
 
 const RecommendedEpisodes = () => {
   const [episodes, setEpisodes] = useState([]);
@@ -71,7 +72,7 @@ const RecommendedEpisodes = () => {
                 {isExpanded && selectedEpisode === episode && (
                   <>
                     <p className="episode-description">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel libero non justo pulvinar tempus.
+                    {formatText(episode.content)}
                     </p>
                     <button className="listen-now" onClick={handlePlayEpisode}><IoIosPlay/>Escuchar ahora</button>
                   </>

@@ -97,7 +97,6 @@
   }
   
   .episode-title {
-    margin-top: 10px;
     font-size: 20px; 
     font-weight: bold;
     color: #333;
@@ -116,9 +115,11 @@
   .episode-description {
     font-size: 18px;
     color: black;
-    margin-top: 10px;
     width: 434px;
     height: 230px;
+    overflow: scroll;
+    scrollbar-width: none;
+    margin-bottom: 10px;
   }
   
   .listen-now {
