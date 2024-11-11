@@ -1,21 +1,29 @@
 import React from 'react'
-import Feature from './Feature'
-import './HomePage.css'
+import './CardList.css'
+import heartIcon from '../assets/heart.png';
+import historyIcon from '../assets/history.png';
+import recomendationIcon from '../assets/recomendation.png';
+import downloadIcon from '../assets/download.png';
 
-function CardList() {
+const CardList = () => {
+
+  const items = [
+    { id: 1, icon: heartIcon, label: 'Favoritos' },
+    { id: 2, icon: historyIcon, label: 'Historial' },
+    { id: 3, icon: recomendationIcon, label: 'Recomendados' },
+    { id: 4, icon: downloadIcon, label: 'Descarga' },
+  ];
+
   return (
-    <div >
-      <div className='cardList-Content'>
-        <p> FEATURES </p>
-        <div className='cardList'>
-          <Feature />
-          <Feature />
-          <Feature />
-          <Feature />
+  <div className="card-list">
+      {items.map(item => (
+        <div className="card" key={item.id}>
+          <img src={item.icon} alt={item.label} className="icon" />
+          <div className="label">{item.label}</div>
         </div>
-      </div>
+      ))}
     </div>
-  )
-}
+  );
+};
 
-export default CardList
+export default CardList;

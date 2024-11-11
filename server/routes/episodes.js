@@ -24,52 +24,60 @@ const fetchFeed = async () => {
  * @swagger
  * /episodes:
  *   get:
- *     summary: Get the latest 20 episodes
+ *     summary: Get paginated episodes
+ *     description: Retrieve episodes in paginated format. Each page contains 20 episodes.
  *     tags: [Episodes]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number to retrieve (default is 1)
  *     responses:
  *       '200':
- *         description: A list of the latest 20 episodes
+ *         description: A list of episodes for the specified page
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   title:
- *                     type: string
- *                     example: "Episode Title"
- *                   link:
- *                     type: string
- *                     example: "http://example.com/episode"
- *                   pubDate:
- *                     type: string
- *                     format: date-time
- *                     example: "2023-10-01T00:00:00Z"
- *                   content:
- *                     type: string
- *                     example: "Episode content"
- *                   id:
- *                     type: string
- *                     example: "61641297"
- *                   duration:
- *                     type: string
- *                     example: "00:30:00"
- *                   audioInfo:
+ *                   type: array
+ *                   items:
  *                     type: object
  *                     properties:
- *                       url:
+ *                       title:
  *                         type: string
- *                         example: "http://example.com/audio.mp3"
- *                       length:
+ *                         example: "Episode Title"
+ *                       link:
  *                         type: string
- *                         example: "12345678"
- *                       type:
+ *                         example: "http://example.com/episode"
+ *                       pubDate:
  *                         type: string
- *                         example: "audio/mpeg"
- *                   image:
- *                     type: string
- *                     example: "http://example.com/image.jpg"
+ *                         format: date-time
+ *                         example: "2023-10-01T00:00:00Z"
+ *                       content:
+ *                         type: string
+ *                         example: "Episode content"
+ *                       id:
+ *                         type: string
+ *                         example: "61641297"
+ *                       duration:
+ *                         type: string
+ *                         example: "00:30:00"
+ *                       audioInfo:
+ *                         type: object
+ *                         properties:
+ *                           url:
+ *                             type: string
+ *                             example: "http://example.com/audio.mp3"
+ *                           length:
+ *                             type: string
+ *                             example: "12345678"
+ *                           type:
+ *                             type: string
+ *                             example: "audio/mpeg"
+ *                       image:
+ *                         type: string
+ *                         example: "http://example.com/image.jpg"
  *       '404':
  *         description: No episodes found
  *         content:
@@ -92,14 +100,21 @@ const fetchFeed = async () => {
  *                   example: "Error al obtener el feed RSS"
  */
 
+
 router.get("/", async (req, res) => {
   try {
     const feed = await fetchFeed();
 
     if (feed.items && feed.items.length > 0) {
-      const last20Episodes = feed.items.slice(0, 20);
+      const page = parseInt(req.query.page) || 1;
+      const limit = 20;
 
-      const formattedEpisodes = last20Episodes.map((item) => {
+      const startIndex = (page - 1) * limit;
+      const endIndex = page * limit;
+
+      const paginatedEpisodes = feed.items.slice(startIndex, endIndex);
+
+      const formattedEpisodes = paginatedEpisodes.map((item) => {
         const idNumber = item.guid.match(/\d+$/)[0];
 
         return {
@@ -110,7 +125,7 @@ router.get("/", async (req, res) => {
           id: idNumber,
           duration: item.itunes.duration,
           audioInfo: item.enclosure,
-          image: item.itunes.image
+          image: item.itunes.image,
         };
       });
 
@@ -194,7 +209,6 @@ router.get("/", async (req, res) => {
  *                   example: "Error al obtener el feed RSS"
  */
 
-
 router.get("/:id", async (req, res) => {
   try {
     const feed = await fetchFeed();
@@ -208,9 +222,9 @@ router.get("/:id", async (req, res) => {
         title: episode.title,
         link: episode.link,
         pubDate: episode.pubDate,
-        duration: item.itunes.duration,
+        duration: episode.itunes.duration,
         audioInfo: episode.enclosure,
-        image: item.itunes.image
+        image: episode.itunes.image,
       });
     } else {
       res.status(404).json({ message: "No se encontró el episodio" });

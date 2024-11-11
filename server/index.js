@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const connectDB = require("./config/mongodb")
+const passport = require("./config/passport");
 const swaggerDocs = require("./config/swagger").swaggerDocs;
 const swaggerUi = require("./config/swagger").swaggerUi;
 
@@ -10,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 
 connectDB();
 
+app.use(passport.initialize());
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors()); // CORS habilitado para todas las rutas
