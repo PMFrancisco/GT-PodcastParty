@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import { useFavorites } from "../context/FavoritesContext";
 import heart from "../assets/heart.svg";
 import heartFilled from "../assets/heart-fill.svg";
 import download from "../assets/circle-down-regular.svg";
 import episodeBackground from "../assets/ModalBackground.png";
-import { formatText } from '../utils/formatText';
 import { formatTime } from '../utils/formatTime';
 import './EpisodeDetail.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,12 +23,17 @@ const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
   const { favorites, toggleFavorite } = useFavorites();
   const isFavorite = favorites.includes(episode.id);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    const handleResize = () => setIsMobile(window.innerWidth <= 420);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  const handlePlay = () => {
+    navigate(`/player/${episode.id}`, { state: { episode } }); 
+  };
 
   if (!isOpen) return null;
 
@@ -43,7 +48,7 @@ const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
             <div>
               <h2 className="modal-episode-title">{episode.title}</h2>
               <div className="modal-title-container">
-                <button className="modal-play-button" onClick={onPlay}>
+                <button className="modal-play-button" onClick={handlePlay}>
                   <FontAwesomeIcon icon={faPlay} /> Escuchar Ahora
                 </button>
                 <button className="modal-icon-button">

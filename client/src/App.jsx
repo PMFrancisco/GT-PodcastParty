@@ -7,6 +7,7 @@ import FavoritesPage from './pages/FavoritesPage';
 import './App.css';
 import RegisterPage from './pages/registerPage';
 import LoginPage from './pages/loginPage';
+import MobilePlayer from './pages/mobilePlayer';
 import { FavoritesProvider } from './context/FavoritesContext';
 import { getTokens, storeTokens, clearTokens } from './utils/indexedDB';
 
@@ -64,6 +65,10 @@ function App() {
           <Route 
             path="*"
             element={<Navigate to={isAuthenticated ? "/" : "/login"} />}
+          />
+           <Route 
+            path="/player/:id" 
+            element={<MobilePlayer />} 
           />
         </Routes>
       </Router>
