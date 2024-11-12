@@ -40,18 +40,6 @@ const fetchFeed = async () => {
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 currentPage:
- *                   type: integer
- *                   example: 1
- *                 totalItems:
- *                   type: integer
- *                   example: 100
- *                 totalPages:
- *                   type: integer
- *                   example: 5
- *                 episodes:
  *                   type: array
  *                   items:
  *                     type: object
@@ -234,9 +222,9 @@ router.get("/:id", async (req, res) => {
         title: episode.title,
         link: episode.link,
         pubDate: episode.pubDate,
-        duration: item.itunes.duration,
+        duration: episode.itunes.duration,
         audioInfo: episode.enclosure,
-        image: item.itunes.image,
+        image: episode.itunes.image,
       });
     } else {
       res.status(404).json({ message: "No se encontró el episodio" });

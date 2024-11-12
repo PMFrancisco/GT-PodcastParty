@@ -26,10 +26,12 @@ const jwt = require("jsonwebtoken");
  *             properties:
  *               email:
  *                 type: string
+ *                 description: User's email address (automatically converted to lowercase)
  *                 example: "user@example.com"
  *               password:
  *                 type: string
- *                 example: "password123"
+ *                 description: User's password (must be at least 8 characters, include one number and one special character)
+ *                 example: "password123!"
  *     responses:
  *       '201':
  *         description: User registered successfully
@@ -41,9 +43,22 @@ const jwt = require("jsonwebtoken");
  *                 message:
  *                   type: string
  *                   example: "User registered successfully"
- *                 token:
+ *                 accessToken:
  *                   type: string
  *                   example: "JWT token"
+ *                 refreshToken:
+ *                   type: string
+ *                   example: "JWT refresh token"
+ *       '400':
+ *         description: Invalid email format or password requirements not met
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid email format or password does not meet requirements"
  *       '500':
  *         description: Internal server error
  *         content:
@@ -51,13 +66,29 @@ const jwt = require("jsonwebtoken");
  *             schema:
  *               type: object
  *               properties:
- *                 error:
+ *                 message:
  *                   type: string
  *                   example: "Internal server error"
  */
 
 router.post("/register", async (req, res) => {
-  const { email, password } = req.body;
+  let { email, password } = req.body;
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/;
+
+  email = email.toLowerCase();
+
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ message: "Invalid email format" });
+  }
+
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({
+      message:
+        "Password must be at least 8 characters long and include at least one number and one special character",
+    });
+  }
 
   try {
     const salt = await bCrypt.genSalt(10);
@@ -94,7 +125,7 @@ router.post("/register", async (req, res) => {
  * @swagger
  * /auth/login:
  *   post:
- *     summary: Login user and get JWT token
+ *     summary: Login user and obtain JWT tokens
  *     tags: [Authentication]
  *     requestBody:
  *       required: true
@@ -105,9 +136,11 @@ router.post("/register", async (req, res) => {
  *             properties:
  *               email:
  *                 type: string
+ *                 description: User's email address
  *                 example: "user@example.com"
  *               password:
  *                 type: string
+ *                 description: User's password
  *                 example: "password123"
  *     responses:
  *       '200':
@@ -120,9 +153,12 @@ router.post("/register", async (req, res) => {
  *                 message:
  *                   type: string
  *                   example: "Login successful"
- *                 token:
+ *                 accessToken:
  *                   type: string
  *                   example: "JWT token"
+ *                 refreshToken:
+ *                   type: string
+ *                   example: "JWT refresh token"
  *       '400':
  *         description: Invalid credentials
  *         content:
@@ -150,7 +186,7 @@ router.post("/register", async (req, res) => {
  *             schema:
  *               type: object
  *               properties:
- *                 error:
+ *                 message:
  *                   type: string
  *                   example: "Internal server error"
  */
@@ -190,7 +226,7 @@ router.post("/login", async (req, res) => {
  * @swagger
  * /auth/refresh-token:
  *   post:
- *     summary: Refresh JWT token
+ *     summary: Refresh the JWT access token
  *     tags: [Authentication]
  *     requestBody:
  *       required: true
@@ -201,6 +237,7 @@ router.post("/login", async (req, res) => {
  *             properties:
  *               refreshToken:
  *                 type: string
+ *                 description: Refresh token to request new access token
  *                 example: "Refresh token"
  *     responses:
  *       '200':
@@ -305,6 +342,7 @@ router.post("/refresh-token", async (req, res) => {
  *             properties:
  *               refreshToken:
  *                 type: string
+ *                 description: Refresh token to be invalidated
  *                 example: "Refresh token"
  *     responses:
  *       '200':
