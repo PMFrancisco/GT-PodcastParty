@@ -4,7 +4,6 @@ import { getEpisodes } from "../services/data";
 import { useFavorites } from "../context/FavoritesContext"; 
 import EpisodeDetail from "../components/EpisodeDetail";
 import heartFilled from "../assets/heart-fill.svg";
-import heart from "../assets/heart.svg";
 import { formatTime } from "../utils/formatTime";
 
 import "./FavoritesPage.css";

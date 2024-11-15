@@ -49,8 +49,8 @@ export const getUsersData = async () => {
     if (!response.ok) throw new Error(`Server error: ${response.status}`);
     const data = await response.json();
     return {
-      favorites: data.favorites,
-      lastListened: data.lastListened,
+      favorites: data.favorites || [],
+      lastListened: data.lastListened || [],
     };
     
   } catch (error) {
@@ -96,6 +96,27 @@ export const removeFavorite = async (podcastId) => {
     return await response.json();
   } catch (error) {
     console.error("Error removing favorite:", error);
+    throw error;
+  }
+};
+
+export const addToLastListened = async (podcastId) => {
+  try {
+    const tokens = await getTokens();
+    if (!tokens || !tokens.accessToken) throw new Error("No token found");
+
+    const response = await fetch(`${API_URL}/users/lastListened/${podcastId}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${tokens.accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) throw new Error(`Server error: ${response.status}`);
+    console.log("Podcast agregado a lastListened exitosamente:", podcastId);
+  } catch (error) {
+    console.error("Error al agregar podcast a lastListened:", error);
     throw error;
   }
 };

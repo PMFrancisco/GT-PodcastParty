@@ -9,10 +9,20 @@ import { formatTime } from '../utils/formatTime';
 import './EpisodeDetail.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faPlay} from "@fortawesome/free-solid-svg-icons";
+import { addToLastListened } from '../services/data';
 
 const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
   const { favorites, toggleFavorite } = useFavorites();
   const isFavorite = favorites.includes(episode.id);
+
+  const handlePlayClick = async () => {
+    try {
+      onPlay();
+      await addToLastListened(episode.id);
+    }catch (error){
+      console.error ('Error al agregar el episodio en lastListened', error);
+    }
+  }
 
   if (!isOpen) return null;
   return (
@@ -25,7 +35,7 @@ const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
           <div>
             <h2 className="modal-episode-title">{episode.title}</h2>
             <div className='modal-title-container'>
-              <button className="modal-play-button" onClick={onPlay}>
+              <button className="modal-play-button" onClick={handlePlayClick}>
               <FontAwesomeIcon icon={faPlay} /> Escuchar Ahora
               </button>
               <button className="modal-icon-button">

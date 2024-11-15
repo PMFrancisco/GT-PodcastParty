@@ -49,6 +49,7 @@ const Header = ({ isAuthenticated, onLogout }) => {
                     {isAuthenticated ? (
                       <>
                         <li><Link to="/favorites" onClick={() => setIsMenuOpen(false)}>Favoritos</Link></li>
+                        <li><Link to="/history" onClick={() => setIsMenuOpen(false)}>Historial</Link></li>
                         <li><Link onClick={() => { onLogout(); setIsMenuOpen(false); }}>Logout</Link></li>
                       </>
                     ) : (
@@ -78,6 +79,7 @@ const Header = ({ isAuthenticated, onLogout }) => {
                 {isAuthenticated ? (
                   <>
                     <li><Link to="/favorites">Favoritos</Link></li>
+                    <li><Link to="/history">Historial</Link></li>
                     <li><Link onClick={onLogout}>Logout</Link></li>
                   </>
                 ) : (

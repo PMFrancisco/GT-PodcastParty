@@ -4,6 +4,7 @@ import PodcastList from './pages/podcastList';
 import HomePage from './pages/homePage';
 import Header from './components/Header';
 import FavoritesPage from './pages/FavoritesPage';
+import HistoryPage from './pages/HistoryPage';
 import './App.css';
 import RegisterPage from './pages/registerPage';
 import LoginPage from './pages/loginPage';
@@ -60,6 +61,10 @@ function App() {
           <Route 
             path="/favorites" 
             element={<FavoritesPage />} 
+          />
+          <Route 
+            path="/history" 
+            element={<HistoryPage />} 
           />
           <Route 
             path="*"
