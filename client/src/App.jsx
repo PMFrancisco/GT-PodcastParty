@@ -47,7 +47,7 @@ function App() {
       <Router>
         <Header isAuthenticated={isAuthenticated} onLogout={handleLogout} />
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<HomePage isAuthenticated={isAuthenticated}/>} />
           <Route path="/episodes" element={<PodcastList />} />
           <Route 
             path="/register" 

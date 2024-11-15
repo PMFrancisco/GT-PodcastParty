@@ -1,13 +1,14 @@
 import React from 'react'
 import CardList from '../components/CardList'
 import HeroSlider from '../components/HeroSlider'
+import HeroSliderIn from '../components/HeroSliderIn'
 import RecommendedEpisodes from '../components/RecommendedEpisodes'
 import Footer from '../components/Footer'
 
-const homePage = () => {
+const homePage = ({isAuthenticated}) => {
   return (
     <div>
-      <HeroSlider />
+      {isAuthenticated ? <HeroSliderIn/> : <HeroSlider/>}
       <CardList />
         <RecommendedEpisodes/>
         <Footer></Footer>
