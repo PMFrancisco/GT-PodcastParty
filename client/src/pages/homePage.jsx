@@ -11,7 +11,7 @@ const homePage = ({isAuthenticated}) => {
       {isAuthenticated ? <HeroSliderIn/> : <HeroSlider/>}
       <CardList />
         <RecommendedEpisodes/>
-        <Footer></Footer>
+      {isAuthenticated ? null : <Footer/>}  
     </div>
   )
 }

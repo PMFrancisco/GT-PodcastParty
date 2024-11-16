@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import './Header.css';
 import Logo from '../assets/logo.png';
+import LogoMobile from '../assets/IconMobile.png'
 import arrowIcon from '../assets/arrow-icon.png';
 import menuIcon from '../assets/menu.png';
 
@@ -33,8 +34,8 @@ const Header = ({ isAuthenticated, onLogout }) => {
           )}
           {isHomePage && (
             <>
-              <Link to="/" className="header__logo">
-                <img src={Logo} alt="Podcast Party Logo" />
+              <Link to="/" className={`header__logo ${isMobile ? 'header__logo--mobile' : ''}`}>
+              <img src={isMobile ? LogoMobile : Logo} alt="Podcast Party Logo" />
               </Link>
               <button
                 className="header__menu-button"
@@ -45,16 +46,28 @@ const Header = ({ isAuthenticated, onLogout }) => {
               {isMenuOpen && (
                 <div className="header__dropdown-menu">
                   <ul>
-                    <li><Link to="/episodes" onClick={() => setIsMenuOpen(false)}>Episodios</Link></li>
+                    <div className='header__dropdown-menu-block'></div>
+                    <li>
+                      <Link to="/episodes" onClick={() => setIsMenuOpen(false)}>Episodios</Link>
+                    </li>
                     {isAuthenticated ? (
                       <>
-                        <li><Link to="/favorites" onClick={() => setIsMenuOpen(false)}>Favoritos</Link></li>
-                        <li><Link onClick={() => { onLogout(); setIsMenuOpen(false); }}>Logout</Link></li>
+                        <li>
+                          <Link to="/favorites" onClick={() => setIsMenuOpen(false)}>Favoritos</Link>
+                        </li>
+                        <li className='header__dropdown_textOcupasional'>Historial</li>
+                        <li>
+                          <Link onClick={() => { onLogout(); setIsMenuOpen(false); }}>Cerrar Sesión</Link>
+                        </li>
                       </>
                     ) : (
                       <>
-                        <li><Link to="/register" onClick={() => setIsMenuOpen(false)}>Registrarse</Link></li>
-                        <li><Link to="/login" onClick={() => setIsMenuOpen(false)}>Iniciar Sesión</Link></li>
+                        <li>
+                          <Link to="/register" onClick={() => setIsMenuOpen(false)}>Registrarse</Link>
+                        </li>
+                        <li>
+                          <Link to="/login" onClick={() => setIsMenuOpen(false)}>Iniciar Sesión</Link>
+                        </li>
                       </>
                     )}
                   </ul>

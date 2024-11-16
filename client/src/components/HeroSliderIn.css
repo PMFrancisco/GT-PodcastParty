@@ -36,9 +36,10 @@
 @media (max-width: 768px){
   .hero-slider-in {
     height: 160px;
-    width: 100%;
+    overflow: hidden;
     border-radius: 10px;
     margin: 0%;
+    position: relative;
   }
 
   .responsive-text {
