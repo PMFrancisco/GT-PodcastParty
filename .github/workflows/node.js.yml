@@ -1,0 +1,24 @@
+name: Sync to Remote Repository
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Push files to public repository
+      uses: nkoppel/push-files-to-another-repository@v1.1.3
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      with:
+        source-files: './'
+        destination-username: 'PMFrancisco'
+        destination-repository: 'clon-podcastParty'
+        destination-directory: '.' 
+        commit-email: '<CORREO_DE_LA_CUENTA'
+        commit-message: 'Sync from private repository'
