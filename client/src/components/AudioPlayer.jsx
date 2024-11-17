@@ -9,10 +9,9 @@ import {
   faBackward,
   faVolumeLow,
   faCircleDown,
-  faVolumeHigh,
-  faVolumeMute
 } from "@fortawesome/free-solid-svg-icons";
 import "./AudioPlayer.css";
+import { useParams } from "react-router-dom";
 import { formatTime } from "../utils/formatTime";
 import heart from "../assets/heart.svg";
 
@@ -29,7 +28,9 @@ const AudioPlayer = ({
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isVolumeControlVisible, setIsVolumeControlVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [volume, setVolume] = useState(1);
+  const { id } = useParams(); 
 
   const togglePlayPause = () => {
     const audio = audioRef.current;
@@ -42,6 +43,12 @@ const AudioPlayer = ({
 
     setIsPlaying(!isPlaying);
   };
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleTimeUpdate = () => {
     const audio = audioRef.current;
@@ -132,82 +139,123 @@ const AudioPlayer = ({
     };
   }, [url]);
 
+  const isMobilePage = isMobile && id;
+
   return (
-    <div className="container">
-      <div className="audioplayer__info">
-        <img src={podcastImage} alt="podcast-img" className="audioplayer__info-img" />
-        <p>{titleEpisode}</p>
-        <img src={heart} alt="" className="audioplayer__info-fav" />
-      </div>
-
-      <div className="custom-audio-player">
-        <audio
-          ref={audioRef}
-          onTimeUpdate={handleTimeUpdate}
-          onLoadedMetadata={handleLoadData}
-        />
-        <div className="controls">
-          <button onClick={onBackwardEpisode} className="previous-btn">
-            <FontAwesomeIcon icon={faBackwardStep} />
-          </button>
-          <button onClick={handleBackward} className="previous-btn">
-            <FontAwesomeIcon icon={faBackward} />
-          </button>
-          <button onClick={togglePlayPause} className="play-pause-btn">
-            {isPlaying ? (
-              <FontAwesomeIcon icon={faPause} />
-            ) : (
-              <FontAwesomeIcon icon={faPlay} />
-            )}
-          </button>
-          <button onClick={handleForward} className="next-btn">
-            <FontAwesomeIcon icon={faForward} />
-          </button>
-          <button onClick={onNextEpisode} className="next-btn">
-            <FontAwesomeIcon icon={faForwardStep} />
-          </button>
-        </div>
-
-        <div className="progress-container">
-          <span>{formatTime(currentTime)}</span>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={isNaN(progress) ? 0 : progress}
-            onChange={handleProgressChange}
-            style={updateRangeBackground(progress)}
-            className="audioplayer__progressBar"
-          />
-          <span>{formatTime(duration)}</span>
-        </div>
-      </div>
-
-      <div className="audioplayer__extraicons">
-        <button onClick={handleDownload} className="download-btn">
-          <FontAwesomeIcon icon={faCircleDown} />
-        </button>
-
-        <div className="volume-control">
-          <button  className="button-audioplayer"
-            onClick={() => setIsVolumeControlVisible(!isVolumeControlVisible)}
-          >
-            <FontAwesomeIcon icon={faVolumeLow} />
-          </button>
-          {isVolumeControlVisible && (
+    <div className={isMobilePage ? "container-mobile" : "container"}>
+      {isMobilePage ? (
+        <div className="audioplayer-mobile">
+          <img src={podcastImage} alt="podcast" className="mobile-img" />
+          <div className="mobile-info">
+            <p className="mobile-title">{titleEpisode}</p>
+            <img src={heart} alt="favorite" className="mobile-fav-icon" />
+          </div>
+          <div className="mobile-controls">
+            <button onClick={onBackwardEpisode} className="mobile-btn">
+              <FontAwesomeIcon icon={faBackwardStep} />
+            </button>
+            <button onClick={togglePlayPause} className="mobile-play-btn">
+              {isPlaying ? (
+                <FontAwesomeIcon icon={faPause} />
+              ) : (
+                <FontAwesomeIcon icon={faPlay} />
+              )}
+            </button>
+            <button onClick={onNextEpisode} className="mobile-btn">
+              <FontAwesomeIcon icon={faForwardStep} />
+            </button>
+          </div>
+          <div className="mobile-progress">
+            <span className="mobile-progess__span">{formatTime(currentTime)}</span>
             <input
               type="range"
               min="0"
-              max="1"
-              step="0.01"
-              value={volume}
-              onChange={handleVolumeChange}
-              style={updateVolumeBackground(volume)}
-              className="volume-slider"
+              max="100"
+              value={isNaN(progress) ? 0 : progress}
+              onChange={handleProgressChange}
+              className="mobile-progress-bar"
             />
-          )}
+            <span className="mobile-progess__span">{formatTime(duration)}</span>
+          </div>
+          <div className="mobile-extra">
+            <button onClick={handleDownload} className="mobile-download-btn">
+              <FontAwesomeIcon icon={faCircleDown} />
+            </button>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="container">
+          <div className="audioplayer__info">
+            <img src={podcastImage} alt="podcast-img" className="audioplayer__info-img" />
+            <p>{titleEpisode}</p>
+            <img src={heart} alt="" className="audioplayer__info-fav" />
+          </div>
+
+          <div className="custom-audio-player">
+            <audio
+              ref={audioRef}
+              onTimeUpdate={handleTimeUpdate}
+              onLoadedMetadata={() => setDuration(audioRef.current.duration)}
+            />
+            <div className="controls">
+              <button onClick={onBackwardEpisode} className="previous-btn">
+                <FontAwesomeIcon icon={faBackwardStep} />
+              </button>
+              <button onClick={() => (audioRef.current.currentTime -= 15)} className="previous-btn">
+                <FontAwesomeIcon icon={faBackward} />
+              </button>
+              <button onClick={togglePlayPause} className="play-pause-btn">
+                {isPlaying ? (
+                  <FontAwesomeIcon icon={faPause} />
+                ) : (
+                  <FontAwesomeIcon icon={faPlay} />
+                )}
+              </button>
+              <button onClick={() => (audioRef.current.currentTime += 15)} className="next-btn">
+                <FontAwesomeIcon icon={faForward} />
+              </button>
+              <button onClick={onNextEpisode} className="next-btn">
+                <FontAwesomeIcon icon={faForwardStep} />
+              </button>
+            </div>
+
+            <div className="progress-container">
+              <span className="mobile-progess__span">{formatTime(currentTime)}</span>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={isNaN(progress) ? 0 : progress}
+                onChange={handleProgressChange}
+                className="audioplayer__progressBar"
+              />
+              <span className="mobile-progess__span">{formatTime(duration)}</span>
+            </div>
+          </div>
+
+          <div className="audioplayer__extraicons">
+            <button onClick={handleDownload} className="download-btn">
+              <FontAwesomeIcon icon={faCircleDown} />
+            </button>
+            <div className="volume-control">
+              <button className="button-audioplayer" onClick={() => setIsVolumeControlVisible(!isVolumeControlVisible)}>
+                <FontAwesomeIcon icon={faVolumeLow} />
+              </button>
+              {isVolumeControlVisible && (
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={volume}
+                  onChange={handleVolumeChange}
+                  className="volume-slider"
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
