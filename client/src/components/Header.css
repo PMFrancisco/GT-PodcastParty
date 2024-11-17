@@ -93,12 +93,6 @@
     color: #9747FF;
   }
 
-  .header__logo--mobile img {
-    width: 50px; 
-    height: auto;
-    display: block;
-  }
-
   .header__menu-button {
     background: none;
     border: none;
