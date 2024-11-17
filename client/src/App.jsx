@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import PodcastList from './pages/podcastList';
 import HomePage from './pages/homePage';
 import Header from './components/Header';
 import FavoritesPage from './pages/FavoritesPage';
-import './App.css';
 import RegisterPage from './pages/registerPage';
 import LoginPage from './pages/loginPage';
 import MobilePlayer from './pages/mobilePlayer';
 import { FavoritesProvider } from './context/FavoritesContext';
 import { getTokens, storeTokens, clearTokens } from './utils/indexedDB';
+import { getAllEpisodes } from './services/data'; 
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [episodes, setEpisodes] = useState([]); 
+  const [episodeIds, setEpisodeIds] = useState([]); 
 
   useEffect(() => {
     const checkTokens = async () => {
@@ -43,13 +45,30 @@ function App() {
     setIsAuthenticated(false);
   };
 
+  useEffect(() => {
+    const fetchEpisodes = async () => {
+      try {
+        const allEpisodes = await getAllEpisodes();
+        setEpisodes(allEpisodes);
+        setEpisodeIds(allEpisodes.map(episode => episode.id));
+      } catch (error) {
+        console.error("Error fetching episodes:", error);
+      }
+    };
+
+    fetchEpisodes();
+  }, []);
+
   return (
     <FavoritesProvider>
       <Router>
         <Header isAuthenticated={isAuthenticated} onLogout={handleLogout} />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/episodes" element={<PodcastList />} />
+          <Route 
+            path="/episodes" 
+            element={<PodcastList episodes={episodes} />} 
+          />
           <Route 
             path="/register" 
             element={<RegisterPage onAuthenticate={handleAuthentication} />} 
@@ -63,12 +82,12 @@ function App() {
             element={<FavoritesPage />} 
           />
           <Route 
+            path="/player/:id" 
+            element={<MobilePlayer episodeIds={episodeIds} />} 
+          />
+          <Route 
             path="*"
             element={<Navigate to={isAuthenticated ? "/" : "/login"} />}
-          />
-           <Route 
-            path="/player/:id" 
-            element={<MobilePlayer />} 
           />
         </Routes>
       </Router>
@@ -77,4 +96,5 @@ function App() {
 }
 
 export default App;
+
 

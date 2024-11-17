@@ -166,7 +166,7 @@ const AudioPlayer = ({
             </button>
           </div>
           <div className="mobile-progress">
-            <span>{formatTime(currentTime)}</span>
+            <span className="mobile-progess__span">{formatTime(currentTime)}</span>
             <input
               type="range"
               min="0"
@@ -175,7 +175,7 @@ const AudioPlayer = ({
               onChange={handleProgressChange}
               className="mobile-progress-bar"
             />
-            <span>{formatTime(duration)}</span>
+            <span className="mobile-progess__span">{formatTime(duration)}</span>
           </div>
           <div className="mobile-extra">
             <button onClick={handleDownload} className="mobile-download-btn">
@@ -220,7 +220,7 @@ const AudioPlayer = ({
             </div>
 
             <div className="progress-container">
-              <span>{formatTime(currentTime)}</span>
+              <span className="mobile-progess__span">{formatTime(currentTime)}</span>
               <input
                 type="range"
                 min="0"
@@ -229,7 +229,7 @@ const AudioPlayer = ({
                 onChange={handleProgressChange}
                 className="audioplayer__progressBar"
               />
-              <span>{formatTime(duration)}</span>
+              <span className="mobile-progess__span">{formatTime(duration)}</span>
             </div>
           </div>
 

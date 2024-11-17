@@ -4,7 +4,7 @@
 .podcastList__main {
   display: flex;
   margin-right: 80px;
-  max-width: 100%;
+  width: 100%;
 }
 .podcastList__aside {
   position: sticky;
@@ -242,6 +242,7 @@ background-color: #e6715c;
   }
   .podcast__list {
     grid-template-columns: 1fr 1fr 1fr;
+    width: 80vw;
   }
   .title__sectionDescription{
     display: none;
@@ -262,6 +263,7 @@ background-color: #e6715c;
   .podcast__list {
     grid-template-columns: 1fr 1fr;
     gap: 15px;
+    width: 80vw;
   }
 
   .podcast__list-card {
@@ -281,6 +283,8 @@ background-color: #e6715c;
   .podcast__list {
     grid-template-columns: 1fr;
     gap: 20px;
+    width: 80vw;
+
   }
   .podcastList__episode-title{
     margin-bottom: 16px;
