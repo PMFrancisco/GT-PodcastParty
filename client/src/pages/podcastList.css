@@ -4,7 +4,7 @@
 .podcastList__main {
   display: flex;
   margin-right: 80px;
-  max-width: 100%;
+  width: 100%;
 }
 .podcastList__aside {
   position: sticky;
@@ -206,16 +206,27 @@
 .pagination__next-icon:hover{
 background-color: #e6715c;
 }
+
 .spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border-left-color: #e6715c;
+  position: relative;
   animation: spin 1s ease infinite;
   margin: auto;
+  background: linear-gradient(45deg, #E6715C, #9747FF, #56C2B7);;
+  background-origin: border-box; 
+  background-clip: content-box, border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
+.spinner-whitespace{
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  border-radius: 50%;
+}
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -225,13 +236,13 @@ background-color: #e6715c;
   }
 }
 
-
 @media (max-width: 1024px) {
   .podcastList__aside{
     display: none;
   }
   .podcast__list {
     grid-template-columns: 1fr 1fr 1fr;
+    width: 80vw;
   }
   .title__sectionDescription{
     display: none;
@@ -252,6 +263,7 @@ background-color: #e6715c;
   .podcast__list {
     grid-template-columns: 1fr 1fr;
     gap: 15px;
+    width: 80vw;
   }
 
   .podcast__list-card {
@@ -271,6 +283,8 @@ background-color: #e6715c;
   .podcast__list {
     grid-template-columns: 1fr;
     gap: 20px;
+    width: 80vw;
+
   }
   .podcastList__episode-title{
     margin-bottom: 16px;
