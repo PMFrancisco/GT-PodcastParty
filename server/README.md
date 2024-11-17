@@ -418,3 +418,51 @@ npm start
   "message": "Mensaje de error"
 }
 ```
+
+
+### Actualizar último episodio escuchado
+
+```http
+  POST /lastListened/:podcastId
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `podcastId`      | `string` | **Required**. ID del episodio escuchado recientemente |
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `accessToken`      | `string` | **Required**. JWT access token |
+
+#### Respuestas
+
+```http
+200 OK
+
+{
+  "message": "Podcast moved to the top of last listened"
+}
+```
+
+```http
+200 OK
+
+{
+  "message": "Podcast added to last listened"
+}
+```
+
+```http
+400 Bad Request
+
+{
+  "message": "Podcast ID is required"
+}
+```
+
+```http
+500 Internal Server Error
+
+{
+  "message": "Mensaje de error"
+}
+```
