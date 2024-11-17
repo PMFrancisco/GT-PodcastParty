@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useFavorites } from "../context/FavoritesContext";
 import heart from "../assets/heart.svg";
 import heartFilled from "../assets/heart-fill.svg";
 import download from "../assets/circle-down-regular.svg";
 import episodeBackground from "../assets/ModalBackground.png";
-import { formatTime } from '../utils/formatTime';
-import './EpisodeDetail.css';
+import { formatTime } from "../utils/formatTime";
+import "./EpisodeDetail.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 
@@ -22,17 +22,17 @@ const ContenidoRenderizado = ({ texto }) => {
 const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
   const { favorites, toggleFavorite } = useFavorites();
   const isFavorite = favorites.includes(episode.id);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 420);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const handleResize = () => setIsMobile(window.innerWidth <= 480);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handlePlay = () => {
-    navigate(`/player/${episode.id}`, { state: { episode } }); 
+    navigate(`/player/${episode.id}`, { state: { episode } });
   };
 
   if (!isOpen) return null;
@@ -41,9 +41,14 @@ const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
     <>
       {isMobile ? (
         <div className="modal-content modal-content-mobile">
-          <div className="modal-top" style={{ backgroundImage: `url(${episodeBackground})` }}>
+          <div
+            className="modal-top"
+            style={{ backgroundImage: `url(${episodeBackground})` }}
+          >
             <div className="modal-header">
-              <button className="modal-close" onClick={onClose}>✕</button>
+              <button className="modal-close" onClick={onClose}>
+                ✕
+              </button>
             </div>
             <div>
               <h2 className="modal-episode-title">{episode.title}</h2>
@@ -54,7 +59,10 @@ const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
                 <button className="modal-icon-button">
                   <img src={download} alt="download" className="fav_icon" />
                 </button>
-                <button onClick={() => toggleFavorite(episode.id)} className="modal-icon-button">
+                <button
+                  onClick={() => toggleFavorite(episode.id)}
+                  className="modal-icon-button"
+                >
                   <img
                     src={isFavorite ? heartFilled : heart}
                     alt="favorito"
@@ -67,16 +75,23 @@ const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
           <div className="modal-episode-content">
             <div>
               <p className="modal-episode-titles">Escrito por: Daniel Primo</p>
-              <p className="modal-episode-titles">Duración total: {formatTime(episode.duration)} min</p>
+              <p className="modal-episode-titles">
+                Duración total: {formatTime(episode.duration)} min
+              </p>
               <ContenidoRenderizado texto={episode.content} />
             </div>
           </div>
         </div>
       ) : (
         <div className="modal-content">
-          <div className="modal-top" style={{ backgroundImage: `url(${episodeBackground})` }}>
+          <div
+            className="modal-top"
+            style={{ backgroundImage: `url(${episodeBackground})` }}
+          >
             <div className="modal-header">
-              <button className="modal-close" onClick={onClose}>✕</button>
+              <button className="modal-close" onClick={onClose}>
+                ✕
+              </button>
             </div>
             <div>
               <h2 className="modal-episode-title">{episode.title}</h2>
@@ -87,7 +102,10 @@ const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
                 <button className="modal-icon-button">
                   <img src={download} alt="download" className="fav_icon" />
                 </button>
-                <button onClick={() => toggleFavorite(episode.id)} className="modal-icon-button">
+                <button
+                  onClick={() => toggleFavorite(episode.id)}
+                  className="modal-icon-button"
+                >
                   <img
                     src={isFavorite ? heartFilled : heart}
                     alt="favorito"
@@ -100,7 +118,9 @@ const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
           <div className="modal-episode-content">
             <div>
               <p className="modal-episode-titles">Escrito por: Daniel Primo</p>
-              <p className="modal-episode-titles">Duración total: {formatTime(episode.duration)} min</p>
+              <p className="modal-episode-titles">
+                Duración total: {formatTime(episode.duration)} min
+              </p>
               <ContenidoRenderizado texto={episode.content} />
             </div>
           </div>

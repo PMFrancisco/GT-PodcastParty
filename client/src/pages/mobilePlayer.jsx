@@ -1,113 +1,213 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom"; // Para capturar el ID desde la URL
+import { useFavorites } from "../context/FavoritesContext";
 import "./mobilePlayer.css";
 import { formatTime } from "../utils/formatTime";
-import favicon from '../assets/favicon.png'
-
+import favicon from "../assets/favicon.png";
+import heart from "../assets/heart-purple.svg";
+import heartFilled from "../assets/heart-fill.svg";
+import fiveplus from "../assets/five-plus.png";
+import fiveminus from "../assets/five-minus.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlay,
   faPause,
   faForwardStep,
   faBackwardStep,
-  faForward,
-  faBackward,
-  faVolumeLow,
-  faCircleDown,
 } from "@fortawesome/free-solid-svg-icons";
+import { getEpisodeById } from "../services/data";
 
-const MobilePlayer = () => {
+const MobilePlayer = ({ episodeIds }) => {
+  const { id: initialEpisodeId } = useParams(); // Capturamos el ID del primer episodio desde los params
   const audioRef = useRef(null);
-  const location = useLocation();
   const [episode, setEpisode] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(null);
+  const { favorites, toggleFavorite } = useFavorites();
 
+  // Buscar el índice inicial basado en el ID de los params
+  useEffect(() => {
+    if (initialEpisodeId && episodeIds) {
+      const index = episodeIds.findIndex((id) => id === initialEpisodeId);
+      if (index !== -1) {
+        setCurrentIndex(index); // Configura el índice inicial
+        fetchEpisodeById(initialEpisodeId); // Obtén el episodio inicial
+      } else {
+        console.error("Initial episode ID not found in episodeIds array.");
+      }
+    }
+  }, [initialEpisodeId, episodeIds]);
+
+  const fetchEpisodeById = async (id) => {
+    try {
+      const fetchedEpisode = await getEpisodeById(id);
+      setEpisode(fetchedEpisode);
+    } catch (error) {
+      console.error("Error fetching episode:", error);
+    }
+  };
 
   useEffect(() => {
-    if (location.state && location.state.episode) {
-      setEpisode(location.state.episode);
+    const audio = audioRef.current;
+    if (audio) {
+      const setAudioDuration = () => setDuration(audio.duration);
+      audio.addEventListener("loadedmetadata", setAudioDuration);
+      return () => audio.removeEventListener("loadedmetadata", setAudioDuration);
     }
-  }, [location]);
+  }, [episode]);
 
-  if (!episode) {
-    return <p>No se encontró el episodio</p>;
-  }
+  const updateProgressBarColor = () => {
+    const progressPercent = isNaN(progress) ? 0 : progress;
+    const progressBar = document.querySelector(".mobile__progress-bar");
+
+    if (progressBar) {
+      progressBar.style.background = `linear-gradient(to right, #9747ff ${progressPercent}%, black ${progressPercent}%)`;
+    }
+  };
+
+  useEffect(() => {
+    updateProgressBarColor();
+  }, [progress]);
 
   const handleTimeUpdate = () => {
     const audio = audioRef.current;
-    const progress = (audio.currentTime / audio.duration) * 100;
-    setProgress(progress);
-    setCurrentTime(audio.currentTime);
+    if (audio && audio.duration) {
+      const newProgress = (audio.currentTime / audio.duration) * 100;
+      setProgress(newProgress);
+      setCurrentTime(audio.currentTime);
+    }
   };
 
   const handleProgressChange = (event) => {
     const audio = audioRef.current;
-    const newTime = (event.target.value / 100) * audio.duration;
-    audio.currentTime = newTime;
-    setProgress(event.target.value);
+    if (audio && audio.duration) {
+      const newTime = (event.target.value / 100) * audio.duration;
+      audio.currentTime = newTime;
+      setProgress(event.target.value);
+    }
   };
 
   const togglePlayPause = () => {
     const audio = audioRef.current;
+    if (audio) {
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
-    if (isPlaying) {
-      audio.pause();
-    } else {
-      audio.play();
+  const fetchAdjacentEpisode = async (direction) => {
+    if (currentIndex === null || !episodeIds || episodeIds.length === 0) return;
+
+    let newIndex;
+    if (direction === "next") {
+      newIndex = (currentIndex + 1) % episodeIds.length; // Circular next
+    } else if (direction === "previous") {
+      newIndex = (currentIndex - 1 + episodeIds.length) % episodeIds.length; // Circular previous
     }
 
-    setIsPlaying(!isPlaying);
-  };
-  const handleNextEpisode = () => {
-    setCurrentEpisodeIndex((prevIndex) => {
-      const nextIndex = prevIndex + 1;
-      return nextIndex >= episodes.length ? 0 : nextIndex;
-    });
+    const nextEpisodeId = episodeIds[newIndex];
+    try {
+      const newEpisode = await getEpisodeById(nextEpisodeId);
+      setEpisode(newEpisode);
+      setCurrentIndex(newIndex); // Actualiza el índice
+      setIsPlaying(false); // Pausar por defecto
+      setProgress(0); // Reiniciar progreso
+      setCurrentTime(0);
+    } catch (error) {
+      console.error("Error fetching adjacent episode:", error);
+    }
   };
 
-  const handlePreviousEpisode = () => {
-    setCurrentEpisodeIndex((prevIndex) => {
-      const previousIndex = prevIndex - 1;
-      return previousIndex < 0 ? episodes.length - 1 : previousIndex;
-    });
-  };
+  if (!episode) {
+    return <p>Cargando episodio...</p>;
+  }
+
+  const isFavorite = episode && favorites.includes(episode.id);
 
   return (
     <div className="player-page">
       <div className="mobilePage__main">
         <img src={favicon} alt="favicon" />
-        <img src={episode.image} className="mobilePlayer__image" alt="" />
-        <p>{episode.title}</p>
-        <audio ref={audioRef} src={episode.audioInfo.url} preload="metadata" />
-        <div className="mobilePage-controls">
-          <button onClick={handlePreviousEpisode} className="mobile-btn">
-            <FontAwesomeIcon icon={faBackwardStep} />
-          </button>
-          <button onClick={togglePlayPause} className="mobile-play-btn">
-            {isPlaying ? (
-              <FontAwesomeIcon icon={faPause} />
-            ) : (
-              <FontAwesomeIcon icon={faPlay} />
-            )}
-          </button>
-          <button onClick={handleNextEpisode} className="mobile-btn">
-            <FontAwesomeIcon icon={faForwardStep} />
+        <img
+          src={episode.image}
+          className="mobilePlayer__image"
+          alt="Episodio"
+        />
+        <div className="mobilePage__main-title">
+          <span>{episode.title}</span>
+          <button
+            onClick={() => toggleFavorite(episode.id)}
+            className="modal-icon-button"
+          >
+            <img
+              src={isFavorite ? heartFilled : heart}
+              alt="Favorito"
+              className="fav_icon"
+            />
           </button>
         </div>
-        <div className="mobile-progress">
-          <span>{formatTime(currentTime)}</span>
+        <audio
+          ref={audioRef}
+          src={episode.audioInfo.url}
+          preload="metadata"
+          onTimeUpdate={handleTimeUpdate}
+        />
+
+        <div className="mobile__progress">
           <input
             type="range"
             min="0"
             max="100"
             value={isNaN(progress) ? 0 : progress}
             onChange={handleProgressChange}
-            className="mobile-progress-bar"
+            className="mobile__progress-bar"
           />
-          <span>{formatTime(duration)}</span>
+          <div className="mobile__progress-time">
+            <span>{formatTime(currentTime)}</span>
+            <span>{formatTime(duration)}</span>
+          </div>
+        </div>
+        <div className="mobilePage-controls">
+          <button
+            onClick={() => (audioRef.current.currentTime -= 5)}
+            className="previous-btn"
+          >
+            <img src={fiveminus} alt="five-minus-time" />
+          </button>
+          <div className="mobilePage__principalControls">
+            <button
+              onClick={() => fetchAdjacentEpisode("previous")}
+              className="mobile-btn"
+            >
+              <FontAwesomeIcon icon={faBackwardStep} />
+            </button>
+            <button onClick={togglePlayPause} className="mobile-play-btn">
+              {isPlaying ? (
+                <FontAwesomeIcon icon={faPause} />
+              ) : (
+                <FontAwesomeIcon icon={faPlay} />
+              )}
+            </button>
+            <button
+              onClick={() => fetchAdjacentEpisode("next")}
+              className="mobile-btn"
+            >
+              <FontAwesomeIcon icon={faForwardStep} />
+            </button>
+          </div>
+          <button
+            onClick={() => (audioRef.current.currentTime += 5)}
+            className="next-btn"
+          >
+            <img src={fiveplus} alt="five-plus-time" />
+          </button>
         </div>
       </div>
     </div>
