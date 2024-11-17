@@ -1,4 +1,3 @@
-
 # Backend de Podcast Party
 
 Backend de la PWA Podcast Party para Web Reactiva hecho con Node.js, Express y JavaScript.
