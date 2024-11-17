@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom"; // Para capturar el ID desde la URL
+import { useParams } from "react-router-dom"; 
 import { useFavorites } from "../context/FavoritesContext";
 import "./mobilePlayer.css";
 import { formatTime } from "../utils/formatTime";
@@ -18,7 +18,7 @@ import {
 import { getEpisodeById } from "../services/data";
 
 const MobilePlayer = ({ episodeIds }) => {
-  const { id: initialEpisodeId } = useParams(); // Capturamos el ID del primer episodio desde los params
+  const { id: initialEpisodeId } = useParams(); 
   const audioRef = useRef(null);
   const [episode, setEpisode] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -28,13 +28,12 @@ const MobilePlayer = ({ episodeIds }) => {
   const [currentIndex, setCurrentIndex] = useState(null);
   const { favorites, toggleFavorite } = useFavorites();
 
-  // Buscar el índice inicial basado en el ID de los params
   useEffect(() => {
     if (initialEpisodeId && episodeIds) {
       const index = episodeIds.findIndex((id) => id === initialEpisodeId);
       if (index !== -1) {
-        setCurrentIndex(index); // Configura el índice inicial
-        fetchEpisodeById(initialEpisodeId); // Obtén el episodio inicial
+        setCurrentIndex(index);
+        fetchEpisodeById(initialEpisodeId); 
       } else {
         console.error("Initial episode ID not found in episodeIds array.");
       }
@@ -107,18 +106,18 @@ const MobilePlayer = ({ episodeIds }) => {
 
     let newIndex;
     if (direction === "next") {
-      newIndex = (currentIndex + 1) % episodeIds.length; // Circular next
+      newIndex = (currentIndex + 1) % episodeIds.length; 
     } else if (direction === "previous") {
-      newIndex = (currentIndex - 1 + episodeIds.length) % episodeIds.length; // Circular previous
+      newIndex = (currentIndex - 1 + episodeIds.length) % episodeIds.length; 
     }
 
     const nextEpisodeId = episodeIds[newIndex];
     try {
       const newEpisode = await getEpisodeById(nextEpisodeId);
       setEpisode(newEpisode);
-      setCurrentIndex(newIndex); // Actualiza el índice
-      setIsPlaying(false); // Pausar por defecto
-      setProgress(0); // Reiniciar progreso
+      setCurrentIndex(newIndex); 
+      setIsPlaying(false); 
+      setProgress(0); 
       setCurrentTime(0);
     } catch (error) {
       console.error("Error fetching adjacent episode:", error);
