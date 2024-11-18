@@ -9,7 +9,7 @@ const swaggerOptions = {
           description: 'Rutas de la API de GT-PodcastParty para poder escuchar el podcast de Web Reactiva.',
         },
       },
-  apis: ['./routes/*.js'],
+  apis: ['./documentation/swagger/*.js'],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
