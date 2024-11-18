@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { storeTokens, storeUser } from '../utils/indexedDB';
 import './registerPage.css';
+import blueLaptop from '../assets/blueLaptop.png';
 
 const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
+  const [showModal, setShowModal] = useState(false); 
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
@@ -32,7 +34,12 @@ const RegisterPage = () => {
         await storeTokens(data.accessToken, data.refreshToken);
         await storeUser({ email });
 
-        navigate('/');
+        setShowModal(true); 
+
+        setTimeout(() => {
+          setShowModal(false); 
+          navigate('/');
+        }, 2000);
       } else {
         console.error('Error al registrarse');
       }
@@ -75,9 +82,20 @@ const RegisterPage = () => {
           <button className="register__button" type="submit">Crear cuenta</button>
         </form>
       </div>
+
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <img src={blueLaptop} alt="laptop-image" />
+            <h4 className='modal__title-register'>¡Se ha realizado el registro con éxito!</h4>
+            <p>Redirigiendo a la página principal</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default RegisterPage;
+
 
