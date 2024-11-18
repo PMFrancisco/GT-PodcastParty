@@ -20,5 +20,6 @@ jobs:
         destination-username: 'PMFrancisco'
         destination-repository: 'clon-podcastParty'
         destination-directory: '.' 
+        commit-username: 'PMFrancisco'
         commit-email: 'francisco.perez.munoz@gmail.com'
         commit-message: 'Sync from private repository'
