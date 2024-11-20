@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { getEpisodes } from "../services/data";
+
 import AudioPlayer from "../components/AudioPlayer";
 import EpisodeDetail from "../components/EpisodeDetail";
 
@@ -14,11 +15,10 @@ import useMediaSession from "../utils/mediaSession";
 import { formatTime } from "../utils/formatTime";
 import { formatText } from "../utils/formatText";
 import { useFavorites } from "../context/FavoritesContext";
-import { getAllEpisodes } from "../services/data";
 
 import "./podcastList.css";
 
-const PodcastList = () => {
+const PodcastList = ({ isAuthenticated, onLogout }) => {
   const [episodes, setEpisodes] = useState([]);
   const [currentEpisodeIndex, setCurrentEpisodeIndex] = useState(null);
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
@@ -141,10 +141,25 @@ const PodcastList = () => {
 
   return (
     <div className="podcastList__main">
-      <div className="podcastList__aside">
-        <button className="podcastList__aside-button">Iniciar sesión</button>
-        <button className="podcastList__aside-button">Registrarte</button>
-      </div>
+      {isAuthenticated ? (
+        <div className="podcastList__asideLogin">
+          <div className="podcastList__aside-titleLogin"></div>
+          <div className="podcastList__aside-bannerLogin">
+          <Link to='/episodios' className="podcastList__aside-list">Episodios</Link>
+          <Link to='/favourites' className="podcastList__aside-list">Favoritos</Link>
+          <Link onClick={() => { onLogout()}} className="podcastList__aside-list">Cerrar Sesión</Link>
+          </div>
+        </div>
+      ) : (
+        <div className="podcastList__aside">
+          <Link to="/login" className="podcastList__aside-button">
+            Iniciar Sesión
+          </Link>
+          <Link to="/register" className="podcastList__aside-button">
+            Registrarte
+          </Link>
+        </div>
+      )}
       <div className="podcastList_cardGrid">
         {selectedEpisode && (
           <EpisodeDetail
@@ -178,7 +193,6 @@ const PodcastList = () => {
             <ul className="podcast__list">
               {episodes.map((episode, index) => {
                 const content = formatText(episode.content);
-                const previewContent = getFirstNWords(content, 20);
                 const isFavorite = favorites.includes(episode.id);
                 return (
                   <li

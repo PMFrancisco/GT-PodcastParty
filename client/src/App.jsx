@@ -65,7 +65,7 @@ function App() {
         <Header isAuthenticated={isAuthenticated} onLogout={handleLogout} />
         <Routes>
           <Route path="/" element={<HomePage isAuthenticated={isAuthenticated}/>} />
-          <Route path="/episodes" element={<PodcastList />} />
+          <Route path="/episodes" element={<PodcastList isAuthenticated={isAuthenticated} onLogout={handleLogout}/>} />
           <Route 
             path="/register" 
             element={<RegisterPage onAuthenticate={handleAuthentication} />} 
