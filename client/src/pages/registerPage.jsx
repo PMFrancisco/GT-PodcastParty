@@ -105,11 +105,10 @@ const RegisterPage = () => {
         </form>
       </div>
 
-      {/* Modal */}
       {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
+        <div className="modal__register">
+          <div className="modal__register-content">
+            <button className="modal__login-close" onClick={() => setShowModal(false)}>×</button>
             {isSuccess ? (
               <>
                 <img src={blueLaptop} alt="laptop-image" />

@@ -64,8 +64,8 @@ const LoginPage = ({ onAuthenticate }) => {
         {error && <p>{error}</p>}
 
         {showModal && (
-          <div className="modal">
-            <div className="modal-content">
+          <div className="modal__login">
+            <div className="modal__content-login">
               <img src={robotImage} alt="robot-image" />
               <h4 className='modal__title-login'>¡Te damos la bienvenida!</h4>
               <p>Sesión iniciada con éxito con la cuenta {email}</p>

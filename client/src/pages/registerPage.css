@@ -70,7 +70,7 @@
   margin-top: 16px;
 }
 
-.modal {
+.modal__register {
   position: fixed;
   top: 0;
   left: 0;
@@ -83,7 +83,7 @@
   z-index: 1000;
 }
 
-.modal-content {
+.modal__register-content {
   background-color: white;
   padding: 20px 25px;
   border-radius: 10px;
@@ -98,12 +98,12 @@
   align-items: center;
 }
 
-.modal-content p {
+.modal__register-content p {
   margin: 0;
   color: #333;
 }
 
-.modal-content img {
+.modal__register-content img {
   width: 80px;
   height: auto;
   margin-bottom: 10px;
@@ -112,6 +112,20 @@
 .modal__title-register {
   color: #56c2b7;
 }
+.modal__register-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #555;
+}
+.modal__login-close :hover {
+    color: #000;
+  }
 
 @media (max-width: 768px) {
   .register__container {

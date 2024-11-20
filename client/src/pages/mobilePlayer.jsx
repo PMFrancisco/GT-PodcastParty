@@ -137,8 +137,7 @@ const MobilePlayer = ({ episodeIds }) => {
         <img
           src={episode.image}
           className="mobilePlayer__image"
-          alt="Episodio"
-        />
+          alt="Episodio" />
         <div className="mobilePage__main-title">
           <span>{episode.title}</span>
           <button
@@ -148,16 +147,14 @@ const MobilePlayer = ({ episodeIds }) => {
             <img
               src={isFavorite ? heartFilled : heart}
               alt="Favorito"
-              className="fav_icon"
-            />
+              className="fav_icon" />
           </button>
         </div>
         <audio
           ref={audioRef}
           src={episode.audioInfo.url}
           preload="metadata"
-          onTimeUpdate={handleTimeUpdate}
-        />
+          onTimeUpdate={handleTimeUpdate} />
 
         <div className="mobile__progress">
           <input
@@ -166,8 +163,7 @@ const MobilePlayer = ({ episodeIds }) => {
             max="100"
             value={isNaN(progress) ? 0 : progress}
             onChange={handleProgressChange}
-            className="mobile__progress-bar"
-          />
+            className="mobile__progress-bar" />
           <div className="mobile__progress-time">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
