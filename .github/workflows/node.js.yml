@@ -4,27 +4,22 @@ on:
   push:
     branches:
       - main
+      - develop
 
 jobs:
-  copy-repo:
+  sync:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout source repository
-      uses: actions/checkout@v3
+    - name: Push files to public repository
+      uses: nkoppel/push-files-to-another-repository@v1.1.3
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
       with:
-        repository: AdoptaUnJuniorPlatform/GT-PodcastParty
-        token: ${{ secrets.API_TOKEN_GITHUB }}
-
-    - name: Set up Git
-      run: |
-        git config user.name "PMFrancisco"
-        git config user.email "francisco.perez.munoz@gmail.com"
-
-    - name: Mirror to target repository
-      run: |
-        git remote add destination https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/PMFrancisco/clon-podcastParty.git
-        git push destination main --force
-        
-
-
+        source-files: './'
+        destination-username: 'PMFrancisco'
+        destination-repository: 'clon-podcastParty'
+        destination-directory: '.' 
+        commit-username: 'PMFrancisco'
+        commit-email: 'francisco.perez.munoz@gmail.com'
+        commit-message: 'Sync from private repository'
