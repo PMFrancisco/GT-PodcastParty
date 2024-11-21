@@ -17,9 +17,9 @@ jobs:
         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
       with:
         source-files: './'
-        destination-username: 'Oliver R.C'
+        destination-username: 'Popitus'
         destination-repository: 'PruebasAction'
         destination-branch: 'main'
-        commit-username: 'Popitus'
+        commit-username: 'Oliver R.C'
         commit-email: 'francisco.perez.munoz@gmail.com'
         commit-message: 'Sync from private repository'
