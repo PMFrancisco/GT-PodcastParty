@@ -20,6 +20,6 @@ jobs:
         destination-username: 'Popitus'
         destination-repository: 'PruebasAction'
         destination-branch: 'main'
-        commit-username: 'Oliver R.C'
+        commit-username: 'Popitus'
         commit-email: 'francisco.perez.munoz@gmail.com'
         commit-message: 'Sync from private repository'
