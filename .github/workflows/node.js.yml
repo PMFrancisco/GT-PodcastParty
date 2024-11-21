@@ -17,7 +17,7 @@ jobs:
         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
       with:
         source-files: './'
-        destination-username: 'PMFrancisco'
+        destination-username: 'https://github.com/PMFrancisco'
         destination-repository: 'clon-podcastParty'
         destination-branch: 'main'
         commit-username: 'PMFrancisco'
