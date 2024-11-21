@@ -11,12 +11,12 @@ jobs:
     steps:
       - uses: sator-imaging/Copy-to-Another-Repository@v1
         with:
-          target-filepath: '.'
+          target-filepath: './'
           output-branch: 'main'
           output-repo: 'PMFrancisco/clon-podcastParty'
           git-token: ${{ secrets.API_TOKEN_GITHUB }}
           commit-message-prefix: '[Sync] '
-          output-directory: '.'
+          output-directory: './'
           pr-branch-prefix: "sync/"
           pr-title: "Sincronización automática"
           pr-message: "Sincronización desde el repositorio original"
