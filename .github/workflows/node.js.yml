@@ -23,9 +23,8 @@ jobs:
       with:
         source-files: './'
         destination-username: 'PMFrancisco'
-        destination-repository: 'clon-podcastParty'
+        destination-repository: 'https://${{ secrets.API_TOKEN_GITHUB }}@github.com/PMFrancisco/clon-podcastParty.git'
         destination-directory: './' 
         commit-username: 'PMFrancisco'
         commit-email: 'francisco.perez.munoz@gmail.com'
         commit-message: 'Sync from private repository'
-        destination-repo-url: 'https://${{ secrets.API_TOKEN_GITHUB }}@github.com/PMFrancisco/clon-podcastParty.git'
