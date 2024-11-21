@@ -1,30 +1,26 @@
 name: Sync to Remote Repository
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch: # Permite ejecutar la acción manualmente
 
 jobs:
-  copy-repository:
+  copy-repo:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout source repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Copy to Another Repository
-        uses: sator-imaging/Copy-to-Another-Repository@v1
-        with:
-          target-filepath: '.'
-          output-branch: 'main'
-          output-repo: 'PMFrancisco/clon-podcastParty'
-          git-token: ${{ secrets.API_TOKEN_GITHUB }}
-          commit-message-prefix: '[Sync] '
-          output-directory: '.'
-          pr-branch-prefix: "sync/"
-          pr-title: "Sincronización automática"
-          pr-message: "Sincronización desde el repositorio original"
-          git-name: "PMFrancisco"
-          git-email: 'francisco.perez.munoz@gmail.com'
+    steps:
+    - name: Checkout source repository
+      uses: actions/checkout@v3
+      with:
+        repository: AdoptaUnJuniorPlatform/GT-PodcastParty
+        token: ${{ secrets.API_TOKEN_GITHUB }}
+
+    - name: Set up Git
+      run: |
+        git config user.name "PMFrancisco"
+        git config user.email "francisco.perez.munoz@gmail.com"
+
+    - name: Mirror to target repository
+      run: |
+        git remote add destination https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/PMFrancisco/clon-podcastParty.git
+        git push --force destination
+
