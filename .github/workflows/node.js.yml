@@ -1,7 +1,9 @@
 name: Sync to Remote Repository
 
 on:
-  workflow_dispatch: # Permite ejecutar la acción manualmente
+  push:
+    branches:
+      - main
 
 jobs:
   copy-repo:
