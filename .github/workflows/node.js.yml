@@ -17,9 +17,9 @@ jobs:
         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
       with:
         source-files: './'
-        destination-username: 'PMFrancisco.github.io'
+        destination-username: 'PMFrancisco'
         destination-repository: 'clon-podcastParty'
-        destination-directory: '.' 
+        destination-directory: './' 
         commit-username: 'PMFrancisco'
         commit-email: 'francisco.perez.munoz@gmail.com'
         commit-message: 'Sync from private repository'
