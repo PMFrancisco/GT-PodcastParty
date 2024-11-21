@@ -17,7 +17,7 @@ jobs:
         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
       with:
         source-files: './'
-        destination-username: 'Popitus'
+        destination-username: 'Oliver R.C'
         destination-repository: 'PruebasAction'
         destination-branch: 'main'
         commit-username: 'Popitus'
