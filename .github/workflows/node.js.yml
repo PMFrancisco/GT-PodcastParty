@@ -4,27 +4,21 @@ on:
   push:
     branches:
       - main
-      - develop
 
 jobs:
-  sync:
+  copy-repository:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout source repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
-    - name: Push files to public repository
-      uses: nkoppel/push-files-to-another-repository@v1.1.3
-      env:
-        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-      with:
-        source-files: './'
-        destination-username: 'PMFrancisco'
-        destination-repository: 'https://${{ secrets.API_TOKEN_GITHUB }}@github.com/PMFrancisco/clon-podcastParty.git'
-        destination-directory: './' 
-        commit-username: 'PMFrancisco'
-        commit-email: 'francisco.perez.munoz@gmail.com'
-        commit-message: 'Sync from private repository'
+      - uses: sator-imaging/Copy-to-Another-Repository@v1
+        with:
+          target-filepath: '.'
+          output-branch: 'main'
+          output-repo: 'PMFrancisco/clon-podcastParty'
+          git-token: ${{ secrets.API_TOKEN_GITHUB }}
+          commit-message-prefix: '[Sync] '
+          output-directory: ''
+          pr-branch-prefix: "sync/"
+          pr-title: "Sincronización automática"
+          pr-message: "Sincronización desde el repositorio original"
+          git-name: "PMFrancisco"
+          git-email: 'francisco.perez.munoz@gmail.com'
