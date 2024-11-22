@@ -265,6 +265,40 @@ npm start
 }
 ```
 
+### Recuperar IDs de episodios
+
+```http
+  GET /episodes/ids
+```
+
+#### Respuestas
+
+```http
+ 200 OK
+  
+[
+  "61641297",
+  "61641298",
+  ...
+]
+```
+
+```http
+ 404 Not Found
+  
+{
+  "message": "No se encontraron episodios"
+}
+```
+
+```http
+ 500 Internal Server Error
+  
+{
+  "message": "Mensaje de error"
+}
+```
+
 ### Recuperar un episodio
 
 ```http
