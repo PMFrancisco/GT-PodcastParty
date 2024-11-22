@@ -1,11 +1,11 @@
 import { getTokens } from "../utils/indexedDB";
 
-const API_URL = "https://gt-podcastparty-so1e.onrender.com";
+const API_URL = import.meta.env.REACT_APP_API_URL || "http://localhost:3000";
 
 export const getEpisodes = async (page = 1) => {
-  const API_URL = `https://gt-podcastparty-so1e.onrender.com/episodes?page=${page}`;
+  const url = `${API_URL}/episodes?page=${page}`;
   try {
-    const response = await fetch(API_URL);
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Server error: ${response.status}`);
     }
@@ -24,8 +24,8 @@ export const getAllEpisodes = async () => {
 
   try {
     while (currentPage <= totalPages) {
-      const API_URL = `https://gt-podcastparty-so1e.onrender.com/episodes?page=${currentPage}`;
-      const response = await fetch(API_URL);
+      const url = `${API_URL}/episodes?page=${currentPage}`;
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`Server error: ${response.status}`);
       }
@@ -40,8 +40,6 @@ export const getAllEpisodes = async () => {
     throw error;
   }
 };
-
-
 
 export const getEpisodeById = async (id) => {
   try {
