@@ -11,9 +11,12 @@ import {
   faCircleDown,
 } from "@fortawesome/free-solid-svg-icons";
 import "./AudioPlayer.css";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { formatTime } from "../utils/formatTime";
 import heart from "../assets/heart.svg";
+import { updateLastListened } from "../services/data";
+
+const API_URL = import.meta.env.REACT_APP_API_URL || "http://localhost:3000";
 
 const AudioPlayer = ({
   url,
@@ -21,6 +24,7 @@ const AudioPlayer = ({
   onBackwardEpisode,
   titleEpisode,
   podcastImage,
+  podcastId
 }) => {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -30,7 +34,7 @@ const AudioPlayer = ({
   const [isVolumeControlVisible, setIsVolumeControlVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [volume, setVolume] = useState(1);
-  const { id } = useParams(); 
+  const { id } = useParams();
 
   const togglePlayPause = () => {
     const audio = audioRef.current;
@@ -39,6 +43,7 @@ const AudioPlayer = ({
       audio.pause();
     } else {
       audio.play();
+      updateLastListened(podcastId);
     }
 
     setIsPlaying(!isPlaying);
@@ -95,7 +100,9 @@ const AudioPlayer = ({
 
   const updateVolumeBackground = (volumeValue) => {
     return {
-      background: `linear-gradient(to top, #fff ${volumeValue * 100}%, #c0c0c0 ${volumeValue * 100}%)`,
+      background: `linear-gradient(to top, #fff ${
+        volumeValue * 100
+      }%, #c0c0c0 ${volumeValue * 100}%)`,
     };
   };
 
@@ -128,8 +135,9 @@ const AudioPlayer = ({
 
     if (audio && url) {
       audio.src = url;
-      audio.play(); 
-      setIsPlaying(true); 
+      audio.play();
+      setIsPlaying(true);
+      updateLastListened(podcastId);
     }
 
     return () => {
@@ -137,7 +145,7 @@ const AudioPlayer = ({
         audio.pause();
       }
     };
-  }, [url]);
+  }, [url, podcastId]);
 
   const isMobilePage = isMobile && id;
 
@@ -166,7 +174,9 @@ const AudioPlayer = ({
             </button>
           </div>
           <div className="mobile-progress">
-            <span className="mobile-progess__span">{formatTime(currentTime)}</span>
+            <span className="mobile-progess__span">
+              {formatTime(currentTime)}
+            </span>
             <input
               type="range"
               min="0"
@@ -186,7 +196,11 @@ const AudioPlayer = ({
       ) : (
         <div className="container">
           <div className="audioplayer__info">
-            <img src={podcastImage} alt="podcast-img" className="audioplayer__info-img" />
+            <img
+              src={podcastImage}
+              alt="podcast-img"
+              className="audioplayer__info-img"
+            />
             <p>{titleEpisode}</p>
             <img src={heart} alt="" className="audioplayer__info-fav" />
           </div>
@@ -201,7 +215,10 @@ const AudioPlayer = ({
               <button onClick={onBackwardEpisode} className="previous-btn">
                 <FontAwesomeIcon icon={faBackwardStep} />
               </button>
-              <button onClick={() => (audioRef.current.currentTime -= 15)} className="previous-btn">
+              <button
+                onClick={() => (audioRef.current.currentTime -= 15)}
+                className="previous-btn"
+              >
                 <FontAwesomeIcon icon={faBackward} />
               </button>
               <button onClick={togglePlayPause} className="play-pause-btn">
@@ -211,7 +228,10 @@ const AudioPlayer = ({
                   <FontAwesomeIcon icon={faPlay} />
                 )}
               </button>
-              <button onClick={() => (audioRef.current.currentTime += 15)} className="next-btn">
+              <button
+                onClick={() => (audioRef.current.currentTime += 15)}
+                className="next-btn"
+              >
                 <FontAwesomeIcon icon={faForward} />
               </button>
               <button onClick={onNextEpisode} className="next-btn">
@@ -220,7 +240,9 @@ const AudioPlayer = ({
             </div>
 
             <div className="progress-container">
-              <span className="mobile-progess__span">{formatTime(currentTime)}</span>
+              <span className="mobile-progess__span">
+                {formatTime(currentTime)}
+              </span>
               <input
                 type="range"
                 min="0"
@@ -229,7 +251,9 @@ const AudioPlayer = ({
                 onChange={handleProgressChange}
                 className="audioplayer__progressBar"
               />
-              <span className="mobile-progess__span">{formatTime(duration)}</span>
+              <span className="mobile-progess__span">
+                {formatTime(duration)}
+              </span>
             </div>
           </div>
 
@@ -238,7 +262,12 @@ const AudioPlayer = ({
               <FontAwesomeIcon icon={faCircleDown} />
             </button>
             <div className="volume-control">
-              <button className="button-audioplayer" onClick={() => setIsVolumeControlVisible(!isVolumeControlVisible)}>
+              <button
+                className="button-audioplayer"
+                onClick={() =>
+                  setIsVolumeControlVisible(!isVolumeControlVisible)
+                }
+              >
                 <FontAwesomeIcon icon={faVolumeLow} />
               </button>
               {isVolumeControlVisible && (
