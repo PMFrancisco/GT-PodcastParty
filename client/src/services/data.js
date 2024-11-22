@@ -121,3 +121,24 @@ export const removeFavorite = async (podcastId) => {
     throw error;
   }
 };
+
+export const updateLastListened = async (podcastId) => {
+  try {
+    const tokens = await getTokens();
+    if (!tokens || !tokens.accessToken) throw new Error("No token found");
+
+    const response = await fetch(`${API_URL}/users/lastListened/${podcastId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${tokens.accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to update last listened");
+    }
+  } catch (error) {
+    console.error("Error updating last listened:", error);
+  }
+};

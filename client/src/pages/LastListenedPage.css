@@ -1,0 +1,92 @@
+
+.lastListenedPage__main {
+  display: flex;
+  margin-right: 80px;
+  max-width: 100%;
+}
+
+.lastListenedPage__aside {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  margin-right: 10px;
+  height: 100vh;
+  background-image: url(../assets/ban28.png);
+  background-repeat: no-repeat;
+  color: #000;
+  gap: 20px;
+}
+
+.lastListenedPage__aside-button {
+  width: 250px;
+  height: 40px;
+  background-color: #e6715c;
+  text-align: center;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.lastListenedPage_cardGrid {
+  width: 100%;
+  overflow: hidden;
+}
+
+.lastListenedPage__episode-title {
+  font-family: 'Roboto';
+  font-weight: 300;
+  margin-top: 30px;
+}
+
+.lastListenedPage__list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  gap: 15px;
+}
+
+.lastListenedPage__list-card {
+  width: calc(100% - 40px);
+  max-width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #000;
+  padding: 10px;
+}
+
+.lastListenedPage__list-card:hover {
+  outline: 1px solid #000;
+  border-radius: 8px;
+}
+
+.lastListenedPage__infoList {
+  display: flex;
+  align-items: center;
+}
+
+.lastListenedPage__list-titleEpisode {
+  font-weight: 400;
+  padding-left: 10px;
+}
+
+.lastListenedPage__list-img {
+  width: 80px;
+  height: 80px;
+}
+
+.lastListenedPage__buttonList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.lastListenedPage__list-duration {
+  font-size: 14px;
+  color: #000;
+}

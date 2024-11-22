@@ -263,6 +263,7 @@ const PodcastList = ({ isAuthenticated, onLogout }) => {
           {isPlayerVisible && currentEpisodeIndex !== null && (
             <div className="player-popup">
               <AudioPlayer
+                podcastId={episodes[currentEpisodeIndex].id}
                 titleEpisode={episodes[currentEpisodeIndex].title}
                 url={episodes[currentEpisodeIndex].audioInfo.url}
                 onNextEpisode={handleNextEpisode}
