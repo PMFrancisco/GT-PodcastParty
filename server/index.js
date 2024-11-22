@@ -12,8 +12,8 @@ const PORT = process.env.PORT || 3000;
 
 connectDB();
 
-const whitelist = process.env.CORS_WHITELIST.split(',');
-/* const corsOptions = {
+/* const whitelist = process.env.CORS_WHITELIST.split(',');
+const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
