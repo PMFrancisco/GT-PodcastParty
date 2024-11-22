@@ -16,7 +16,7 @@ import { formatTime } from "../utils/formatTime";
 import heart from "../assets/heart.svg";
 import { updateLastListened } from "../services/data";
 
-const API_URL = import.meta.env.REACT_APP_API_URL || "http://localhost:3000";
+const API_URL = import.meta.env.VITE_API_URL
 
 const AudioPlayer = ({
   url,
