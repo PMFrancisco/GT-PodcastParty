@@ -17,7 +17,7 @@ const formatEpisodes = (episodes) => {
   });
 };
 
-const getEpisodes = async (req, res) => {
+const getEpisodesPaginated = async (req, res) => {
   try {
     const feed = await fetchFeed();
 
@@ -64,7 +64,27 @@ const getEpisodeById = async (req, res) => {
   }
 };
 
+const getEpisodeIds = async (req, res) => {
+  try {
+    const feed = await fetchFeed();
+
+    if (feed.items && feed.items.length > 0) {
+      const episodeIds = feed.items.map((item) => {
+        const idNumber = item.guid.match(/\d+$/)[0];
+        return idNumber;
+      });
+
+      res.json(episodeIds);
+    } else {
+      res.status(404).json({ message: "No se encontraron episodios" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
-  getEpisodes,
+  getEpisodesPaginated,
   getEpisodeById,
+  getEpisodeIds,
 };

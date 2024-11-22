@@ -155,3 +155,41 @@
  *                   type: string
  *                   example: "Error al obtener el feed RSS"
  */
+
+/**
+ * @swagger
+ * /episodes/ids:
+ *   get:
+ *     summary: Retrieve all episode IDs
+ *     tags: [Episodes]
+ *     responses:
+ *       '200':
+ *         description: A list of episode IDs
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
+ *                 example: "61641297"
+ *       '404':
+ *         description: No episodes found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "No se encontraron episodios"
+ *       '500':
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error al obtener el feed RSS"
+ */
