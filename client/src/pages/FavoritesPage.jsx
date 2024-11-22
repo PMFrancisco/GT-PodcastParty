@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getEpisodes } from "../services/data";
-import { useFavorites } from "../context/FavoritesContext"; 
+import { useFavorites } from "../context/FavoritesContext";
 import EpisodeDetail from "../components/EpisodeDetail";
 import heartFilled from "../assets/heart-fill.svg";
 import heart from "../assets/heart.svg";
@@ -41,8 +41,24 @@ const FavoritesPage = () => {
   return (
     <div className="favoritesPage__main">
       <div className="favoritesPage__aside">
-        <button onClick={() => navigate("/episodes")} className="favoritesPage__aside-button">Episodios</button>
-        <button onClick={() => navigate("/favorites")} className="favoritesPage__aside-button">Favoritos</button>
+        <button
+          onClick={() => navigate("/episodes")}
+          className="favoritesPage__aside-button"
+        >
+          Episodios
+        </button>
+        <button
+          onClick={() => navigate("/favorites")}
+          className="favoritesPage__aside-button"
+        >
+          Favoritos
+        </button>
+        <button
+          onClick={() => navigate("/last-listened")}
+          className="lastListenedPage__aside-button"
+        >
+          Escuchados Recientemente
+        </button>
       </div>
       <div className="favoritesPage_cardGrid">
         {selectedEpisode && (
@@ -63,17 +79,31 @@ const FavoritesPage = () => {
                 onClick={() => handleEpisodeClick(episode)}
               >
                 <div className="favoritesPage__infoList">
-                  <img src={episode.image} alt="podcast-img" className="favoritesPage__list-img" />
-                  <p className="favoritesPage__list-titleEpisode">{episode.title}</p>
+                  <img
+                    src={episode.image}
+                    alt="podcast-img"
+                    className="favoritesPage__list-img"
+                  />
+                  <p className="favoritesPage__list-titleEpisode">
+                    {episode.title}
+                  </p>
                 </div>
                 <div className="favoritesPage__buttonList">
-                  <button onClick={(e) => { e.stopPropagation(); toggleFavorite(episode.id); }}>
-                    <img 
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFavorite(episode.id);
+                    }}
+                  >
+                    <img
                       src={heartFilled}
-                      alt="fav-icon" 
-                      className="favoritesPage__fav-icon" />
+                      alt="fav-icon"
+                      className="favoritesPage__fav-icon"
+                    />
                   </button>
-                  <p className="favoritesPage__list-duration">{formatTime(episode.duration)}</p>
+                  <p className="favoritesPage__list-duration">
+                    {formatTime(episode.duration)}
+                  </p>
                 </div>
               </li>
             ))}

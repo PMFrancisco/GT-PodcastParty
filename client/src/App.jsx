@@ -59,15 +59,19 @@ function App() {
         });
 
         if (!response.ok) {
-          throw new Error("Error logging out");
+          const errorText = await response.text();
+          throw new Error(`Error logging out: ${response.status} ${errorText}`);
         }
-
-        await clearTokens();
-        setIsAuthenticated(false);
       } catch (error) {
         console.error("Error logging out:", error);
+        if (error.name === "TypeError") {
+          console.error("Network error or CORS issue");
+        }
       }
     }
+
+    await clearTokens();
+    setIsAuthenticated(false);
   };
 
   useEffect(() => {
