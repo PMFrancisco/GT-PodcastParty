@@ -11,6 +11,8 @@ import { FavoritesProvider } from './context/FavoritesContext';
 import { getTokens, storeTokens, clearTokens } from './utils/indexedDB';
 import { getAllEpisodes } from './services/data'; 
 
+const API_URL = import.meta.env.REACT_APP_API_URL || "http://localhost:3000";
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [episodes, setEpisodes] = useState([]); 
@@ -41,8 +43,25 @@ function App() {
   };
 
   const handleLogout = async () => {
-    await clearTokens();
-    setIsAuthenticated(false);
+    const tokens = await getTokens();
+    if (tokens && tokens.refreshToken) {
+      try {
+        const response = await fetch(`${API_URL}/auth/logout`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ refreshToken: tokens.refreshToken }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Error logging out');
+        }
+
+        await clearTokens();
+        setIsAuthenticated(false);
+      } catch (error) {
+        console.error('Error logging out:', error);
+      }
+    }
   };
 
   useEffect(() => {
