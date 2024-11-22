@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 connectDB();
 
 const whitelist = process.env.CORS_WHITELIST.split(',');
-const corsOptions = {
+/* const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
@@ -21,12 +21,15 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   }
-};
+}; */
 
 app.use(passport.initialize());
 app.use(express.json());
 app.use(morgan("dev"));
-app.use(cors(corsOptions));
+/* app.use(cors(corsOptions)); */
+
+app.use(cors()); // Allow requests from any origin
+
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/", require("./routes"));
