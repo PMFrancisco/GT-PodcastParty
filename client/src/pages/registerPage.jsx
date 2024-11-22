@@ -4,6 +4,8 @@ import { storeTokens, storeUser } from '../utils/indexedDB';
 import './registerPage.css';
 import blueLaptop from '../assets/blueLaptop.png';
 
+const API_URL = import.meta.env.REACT_APP_API_URL || "http://localhost:3000";
+
 const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,7 +26,7 @@ const RegisterPage = () => {
     }
 
     try {
-      const response = await fetch('https://gt-podcastparty-so1e.onrender.com/auth/register', {
+      const response = await fetch(`${API_URL}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

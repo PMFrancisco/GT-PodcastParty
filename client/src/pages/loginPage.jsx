@@ -3,6 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import './loginPage.css';
 import robotImage from '../assets/download.png';
 
+const API_URL = import.meta.env.REACT_APP_API_URL || "http://localhost:3000";
+
 const LoginPage = ({ onAuthenticate }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,7 +16,7 @@ const LoginPage = ({ onAuthenticate }) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('https://gt-podcastparty-so1e.onrender.com/auth/login', {
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
