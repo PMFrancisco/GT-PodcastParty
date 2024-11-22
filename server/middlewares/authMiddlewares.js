@@ -91,16 +91,21 @@ const refreshToken = async (req, res) => {
 
   try {
     const user = await User.findOne({ refreshToken });
-    if (!user) return res.status(403).json({ message: "User not found" });
+    if (!user) {
+      return res.status(403).json({ message: "User not found" });
+    }
 
     jwt.verify(
       refreshToken,
       process.env.JWT_REFRESH_SECRET,
       async (err, decoded) => {
-        if (err)
+        if (err) {
           return res.status(403).json({ message: "Invalid refresh token" });
+        }
 
-        const { accessToken, refreshToken: newRefreshToken } = generateTokens(decoded.id);
+        const { accessToken, refreshToken: newRefreshToken } = generateTokens(
+          decoded.id
+        );
         await saveUserWithToken(user, newRefreshToken);
 
         res.json({
