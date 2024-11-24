@@ -11,6 +11,8 @@ export const FavoritesProvider = ({ children }) => {
   const fetchFavorites = async () => {
     try {
       const data = await getUsersData(); 
+      console.log(data);
+      
       setFavorites(data.favorites || []);
     } catch (error) {
       console.error("Error fetching favorites:", error);

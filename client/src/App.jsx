@@ -16,7 +16,7 @@ import { FavoritesProvider } from "./context/FavoritesContext";
 import { getTokens, storeTokens, clearTokens } from "./utils/indexedDB";
 import LastListenedPage from "./pages/LastListenedPage";
 
-const API_URL = import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_API_URL;
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -98,8 +98,32 @@ function App() {
             path="/login"
             element={<LoginPage onAuthenticate={handleAuthentication} />}
           />
-          <Route path="/favorites" element={<FavoritesPage isAuthenticated={isAuthenticated} onLogout={handleLogout}/>} />
-          <Route path="/last-listened" element={<LastListenedPage />} />
+          <Route
+            path="/favorites"
+            element={
+              isAuthenticated ? (
+                <FavoritesPage
+                  isAuthenticated={isAuthenticated}
+                  onLogout={handleLogout}
+                />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />{" "}
+          <Route
+            path="/last-listened"
+            element={
+              isAuthenticated ? (
+                <LastListenedPage
+                  isAuthenticated={isAuthenticated}
+                  onLogout={handleLogout}
+                />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
           <Route
             path="/player/:id"
             element={<MobilePlayer episodeIds={episodeIds} />}

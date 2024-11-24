@@ -12,6 +12,9 @@ const MainSidebar = ({ isAuthenticated, onLogout }) => {
             <Link to="/episodes" className="podcastList__aside-list">
               Episodios
             </Link>
+            <Link to="/last-listened" className="podcastList__aside-list">
+              Historial
+            </Link>
             <Link to="/favorites" className="podcastList__aside-list">
               Favoritos
             </Link>

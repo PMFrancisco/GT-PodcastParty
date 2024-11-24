@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useFavorites } from "../context/FavoritesContext";
 import heart from "../assets/heart.svg";
 import heartFilled from "../assets/heart-fill.svg";
-import download from "../assets/circle-down-regular.svg";
+import download from "../assets/circle-down-regular.png";
 import episodeBackground from "../assets/ModalBackground.png";
 import { formatTime } from "../utils/formatTime";
 import "./EpisodeDetail.css";
@@ -74,10 +74,15 @@ const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
           </div>
           <div className="modal-episode-content">
             <div>
-              <p className="modal-episode-titles">Escrito por: Daniel Primo</p>
-              <p className="modal-episode-titles">
-                Duración total: {formatTime(episode.duration)} min
-              </p>
+              <div className="modal__info">
+                <p className="modal-episode-titles">
+                  Escrito por: Daniel Primo
+                </p>
+                <p className="modal-episode-titles">
+                  Duración total: {formatTime(episode.duration)} min
+                </p>
+              </div>
+
               <ContenidoRenderizado texto={episode.content} />
             </div>
           </div>
@@ -116,7 +121,7 @@ const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
             </div>
           </div>
           <div className="modal-episode-content">
-            <div>
+            <div className="modal__info">
               <p className="modal-episode-titles">Escrito por: Daniel Primo</p>
               <p className="modal-episode-titles">
                 Duración total: {formatTime(episode.duration)} min

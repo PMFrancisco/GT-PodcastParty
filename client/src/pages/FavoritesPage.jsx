@@ -134,19 +134,6 @@ const FavoritesPage = ({ isAuthenticated, onLogout }) => {
         ) : (
           <p>No tienes episodios favoritos.</p>
         )}
-
-        {isPlayerVisible && currentEpisodeIndex !== null && (
-          <div className="player-popup">
-            <AudioPlayer
-              podcastId={episodes[currentEpisodeIndex].id}
-              titleEpisode={episodes[currentEpisodeIndex].title}
-              url={episodes[currentEpisodeIndex].audioInfo.url}
-              onNextEpisode={handleNextEpisode}
-              onBackwardEpisode={handlePreviousEpisode}
-              podcastImage={episodes[currentEpisodeIndex].image}
-            />
-          </div>
-        )}
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ import EpisodeDetail from "../components/EpisodeDetail";
 
 import heart from "../assets/heart-purple.svg";
 import heartFilled from "../assets/heart-fill.svg";
-import download from "../assets/circle-down-regular.svg";
+import download from "../assets/circle-down-regular.png";
 import next from "../assets/next.svg";
 import mobileSection from "../assets/xcel2.png";
 
