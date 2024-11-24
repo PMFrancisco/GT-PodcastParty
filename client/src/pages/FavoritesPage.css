@@ -32,6 +32,7 @@
   .favoritesPage_cardGrid {
     width: 100%;
     overflow: hidden;
+    padding-left: 50px;
   }
   
   .favoritesPage__episode-title {

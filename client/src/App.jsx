@@ -14,14 +14,12 @@ import LoginPage from "./pages/loginPage";
 import MobilePlayer from "./pages/mobilePlayer";
 import { FavoritesProvider } from "./context/FavoritesContext";
 import { getTokens, storeTokens, clearTokens } from "./utils/indexedDB";
-import { getAllEpisodes } from "./services/data";
 import LastListenedPage from "./pages/LastListenedPage";
 
-const API_URL = import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_API_URL;
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [episodes, setEpisodes] = useState([]);
   const [episodeIds, setEpisodeIds] = useState([]);
 
   useEffect(() => {
@@ -74,20 +72,6 @@ function App() {
     setIsAuthenticated(false);
   };
 
-  useEffect(() => {
-    const fetchEpisodes = async () => {
-      try {
-        const allEpisodes = await getAllEpisodes();
-        setEpisodes(allEpisodes);
-        setEpisodeIds(allEpisodes.map((episode) => episode.id));
-      } catch (error) {
-        console.error("Error fetching episodes:", error);
-      }
-    };
-
-    fetchEpisodes();
-  }, []);
-
   return (
     <FavoritesProvider>
       <Router>
@@ -114,8 +98,32 @@ function App() {
             path="/login"
             element={<LoginPage onAuthenticate={handleAuthentication} />}
           />
-          <Route path="/favorites" element={<FavoritesPage />} />
-          <Route path="/last-listened" element={<LastListenedPage />} />
+          <Route
+            path="/favorites"
+            element={
+              isAuthenticated ? (
+                <FavoritesPage
+                  isAuthenticated={isAuthenticated}
+                  onLogout={handleLogout}
+                />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />{" "}
+          <Route
+            path="/last-listened"
+            element={
+              isAuthenticated ? (
+                <LastListenedPage
+                  isAuthenticated={isAuthenticated}
+                  onLogout={handleLogout}
+                />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
           <Route
             path="/player/:id"
             element={<MobilePlayer episodeIds={episodeIds} />}
