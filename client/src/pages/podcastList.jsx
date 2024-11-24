@@ -17,6 +17,8 @@ import { formatText } from "../utils/formatText";
 import { useFavorites } from "../context/FavoritesContext";
 
 import "./podcastList.css";
+import MainSidebar from "../components/MainSidebar";
+import Spinner from "../components/Spinner";
 
 const PodcastList = ({ isAuthenticated, onLogout }) => {
   const [episodes, setEpisodes] = useState([]);
@@ -141,25 +143,7 @@ const PodcastList = ({ isAuthenticated, onLogout }) => {
 
   return (
     <div className="podcastList__main">
-      {isAuthenticated ? (
-        <div className="podcastList__asideLogin">
-          <div className="podcastList__aside-titleLogin"></div>
-          <div className="podcastList__aside-bannerLogin">
-          <Link to='/episodios' className="podcastList__aside-list">Episodios</Link>
-          <Link to='/favourites' className="podcastList__aside-list">Favoritos</Link>
-          <Link onClick={() => { onLogout()}} className="podcastList__aside-list">Cerrar Sesión</Link>
-          </div>
-        </div>
-      ) : (
-        <div className="podcastList__aside">
-          <Link to="/login" className="podcastList__aside-button">
-            Iniciar Sesión
-          </Link>
-          <Link to="/register" className="podcastList__aside-button">
-            Registrarte
-          </Link>
-        </div>
-      )}
+      <MainSidebar isAuthenticated={isAuthenticated} onLogout={onLogout} />
       <div className="podcastList_cardGrid">
         {selectedEpisode && (
           <EpisodeDetail
@@ -185,11 +169,9 @@ const PodcastList = ({ isAuthenticated, onLogout }) => {
 
         <div className="podcastList__episode">
           <h3 className="podcastList__episode-title">Lista de episodios</h3>
-          {isLoading ? (
-            <div className="spinner">
-              <div className="spinner-whitespace"></div>
-            </div>
+          {isLoading ? (<Spinner />
           ) : (
+            
             <ul className="podcast__list">
               {episodes.map((episode, index) => {
                 const content = formatText(episode.content);
@@ -245,19 +227,25 @@ const PodcastList = ({ isAuthenticated, onLogout }) => {
           )}
 
           <div className="pagination">
-            <img
-              src={next}
-              onClick={() => goToPage(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="pagination__previous-icon"
-            />
-            {renderPageNumbers()}
-            <img
-              src={next}
-              onClick={() => goToPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="pagination__next-icon"
-            />
+            {!isLoading && (
+              <>
+                <img
+                  src={next}
+                  onClick={() => goToPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="pagination__previous-icon"
+                  alt="Previous"
+                />
+                {renderPageNumbers()}
+                <img
+                  src={next}
+                  onClick={() => goToPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="pagination__next-icon"
+                  alt="Next"
+                />
+              </>
+            )}
           </div>
 
           {isPlayerVisible && currentEpisodeIndex !== null && (

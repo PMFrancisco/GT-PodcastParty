@@ -66,30 +66,6 @@ export const getEpisodes = async (page = 1) => {
   }
 };
 
-export const getAllEpisodes = async () => {
-  let allEpisodes = [];
-  let currentPage = 1;
-  const totalPages = 15;
-
-  try {
-    while (currentPage <= totalPages) {
-      const url = `${API_URL}/episodes?page=${currentPage}`;
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Server error: ${response.status}`);
-      }
-      const data = await response.json();
-      allEpisodes = [...allEpisodes, ...data];
-      currentPage++;
-    }
-
-    return allEpisodes;
-  } catch (error) {
-    console.error("Error fetching episodes:", error);
-    throw error;
-  }
-};
-
 export const getEpisodeById = async (id) => {
   try {
     const response = await fetch(`${API_URL}/episodes/${id}`);
