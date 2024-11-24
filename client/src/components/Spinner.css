@@ -1,0 +1,34 @@
+.spinner_container{
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.spinner {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: relative;
+    animation: spin 1s ease infinite;
+    margin: auto;
+    background: linear-gradient(45deg, #e6715c, #9747ff, #56c2b7);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .spinner-whitespace {
+    width: 70px;
+    height: 70px;
+    background-color: white;
+    border-radius: 50%;
+  }
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
