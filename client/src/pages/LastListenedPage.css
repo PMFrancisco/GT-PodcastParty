@@ -2,7 +2,7 @@
 .lastListenedPage__main {
   display: flex;
   margin-right: 80px;
-  max-width: 100%;
+  max-width: 100%;;
 }
 
 .lastListenedPage__aside {
@@ -33,12 +33,14 @@
 .lastListenedPage_cardGrid {
   width: 100%;
   overflow: hidden;
+  padding: 10px;
 }
 
 .lastListenedPage__episode-title {
   font-family: 'Roboto';
-  font-weight: 300;
+  font-weight: 400;
   margin-top: 30px;
+  margin-bottom: 10px;
 }
 
 .lastListenedPage__list {
@@ -60,7 +62,7 @@
 }
 
 .lastListenedPage__list-card:hover {
-  outline: 1px solid #000;
+  outline: 1px solid #9747ff;
   border-radius: 8px;
 }
 

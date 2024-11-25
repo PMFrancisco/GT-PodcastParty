@@ -9,7 +9,7 @@
     overflow-x: auto;
     display: flex;
     margin-bottom: 20px;
-    height: 420px;
+    height: 440px;
   }
   
   .carousel-container::-webkit-scrollbar {
@@ -27,12 +27,43 @@
     background-color: white;
     width: 270px;
     height: 277px;
-    border: 2px solid #c0c0c0;
+    border: 2px solid #c0c0c0;;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     flex: 0 0 270px;
     transition: transform 0.3s ease;
     padding-bottom: 10px;
+  }
+  .prev-button,
+  .next-button {
+    position: absolute;
+    margin-top: 60px;
+    top: 100%;
+    background-color: #6c36ff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease;
+  }
+
+  .next-button {
+    right: 10px;
+  }
+    
+  .prev-button {
+      left: 10px;
+  }
+
+  .prev-button:hover,
+  .next-button:hover {
+      background-color: #5a54d2;
   }
   
   .episode-card.expanded {
@@ -49,7 +80,7 @@
   .episode-card:hover {
     transform: scale(1.05);
     margin-top: 10px;
-    height: 342px;
+    height: 302px;
     border-radius: 8px;
     transition: height 0.3s ease;
   }
@@ -62,14 +93,9 @@
   
   .episode-image{
     width: 100%; 
-    height: 177px; 
+    height: 100%; 
     object-fit: cover; 
     border-radius: 8px 8px 0px 0px;
-    transition: height 0.3s ease;
-  }
-  
-  .episode-image:hover {
-    height: 250px;
     transition: height 0.3s ease;
   }
   
@@ -103,7 +129,7 @@
     overflow: hidden;
     text-overflow: ellipsis; 
     height: 82px; 
-    padding: 0 5px;
+    padding: 10px 5px;
   }
   
   .episode-title.expanded-title {
@@ -133,7 +159,6 @@
     transition: background-color 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 8px;
   }
   
   .listen-now:hover {
@@ -194,7 +219,6 @@
     overflow-y: auto;
   }
 }
-
 @media screen and (max-width: 768px) {
   .recommended-container {
     padding: 0px 15px;
@@ -206,53 +230,76 @@
     flex: 0 0 220px;
   }
 
+  .prev-button,
+  .next-button {
+    width: 40px;
+    height: 40px;
+    margin-top: -30px;
+  }
+
+  .next-button {
+    right: 5px;
+  }
+
+  .prev-button {
+    left: 5px;
+  }
+
   .episode-card.expanded {
     flex-direction: column;
     height: auto;
     padding: 10px;
     align-items: center;
+    position: relative;
+  }
+
+  .close-details {
+    position: absolute;
+    top: 10px;
+    right: 10px;
   }
 
   .episode-image.expanded-image {
     width: 180px;
     height: auto;
-    margin-right: 0;
   }
 
   .episode-title {
     font-size: 18px;
-    height: 60px;
+    height: auto;  
   }
 
   .episode-description {
     font-size: 12px;
-    margin-top: 0px;
-    width: 100%;
-    height: 100px;
-    max-height: 150px;
+    width: 200px;
+    height: 80px;
+    max-height: 200px;
   }
 
   .listen-now {
-    width: 100%;
-    margin-top: 15px;
+    display: flex;
     justify-content: center;
+    align-self:normal
   }
 }
 
 @media screen and (max-width: 480px) {
   .episode-card {
     width: 180px;
-    height: 230px;
+    height: 280px;
     flex: 0 0 180px;
+    border: 2px solid #c0c0c0;;
   }
 
   .episode-image {
-    height: 140px;
+    height: fit-content;
   }
 
   .episode-title {
     font-size: 16px;
-    height: 50px;
+    height: auto;
+    text-align: center;
+    padding: 0%
   }
 
   .view-all button {
@@ -261,8 +308,26 @@
   }
 
   .episode-card.expanded {
-    width: 95%;
-    max-height: 80vh;
-    overflow-y: auto;
+    align-items: center;
+    position: relative;
+  }
+
+  .close-details {
+    position: absolute;
+    top: -2px;
+    right: -8px;
+    font-size: 40px;
+  }
+
+  .episode-description {
+    font-size: 12px;
+    height: 80px;
+  }
+
+  .listen-now {
+    width:fit-content;
+    align-self:center;
+    padding: 12px;
+    position: relative;
   }
 }

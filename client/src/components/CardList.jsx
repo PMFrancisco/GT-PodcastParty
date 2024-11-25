@@ -16,8 +16,11 @@ const CardList = () => {
 
   return (
   <div className="card-list">
-      {items.map(item => (
-        <div className="card" key={item.id}>
+      {items.map((item, index) => (
+        <div 
+        className={`card ${index === items.length - 1 ? 'last-card' : ''}`} 
+        key={item.id}
+        >
           <img src={item.icon} alt={item.label} className="icon" />
           <div className="label">{item.label}</div>
         </div>

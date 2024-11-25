@@ -13,8 +13,8 @@
   padding: 10px;
   background-color: white;
   border-radius: 10px;
-  width: calc(100dvw - 360px);
-  height: calc(100dvh - 100px);
+  width: calc(100dvw - 310px);
+  height: calc(100dvh - 90px);
   border-radius: 20px;
   z-index: 1001;
   box-shadow: 10px 10px 15px 10px rgba(0, 0, 0, 0.2);
