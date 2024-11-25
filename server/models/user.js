@@ -19,8 +19,9 @@ const userSchema = new mongoose.Schema({
     default: [],
   },
   lastListened: {
-    type: String,
-    default: null,
+    type: Array,
+    default: [],
+    max: 10,
   },
 });
 

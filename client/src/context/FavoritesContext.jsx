@@ -5,12 +5,14 @@ const FavoritesContext = createContext();
 
 export const useFavorites = () => useContext(FavoritesContext);
 
-export const FavoritesProvider = ({ children }) => {
+export const FavoritesProvider = ({ children, isAuthenticated }) => {
   const [favorites, setFavorites] = useState([]);
 
   const fetchFavorites = async () => {
     try {
       const data = await getUsersData(); 
+      console.log(data);
+      
       setFavorites(data.favorites || []);
     } catch (error) {
       console.error("Error fetching favorites:", error);
@@ -32,8 +34,10 @@ export const FavoritesProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchFavorites();
-  }, []);
+    if (isAuthenticated) {
+      fetchFavorites();
+    }
+  }, [isAuthenticated]); 
 
   return (
     <FavoritesContext.Provider value={{ favorites, toggleFavorite }}>

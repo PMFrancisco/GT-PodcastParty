@@ -1,4 +1,3 @@
-
 # Backend de Podcast Party
 
 Backend de la PWA Podcast Party para Web Reactiva hecho con Node.js, Express y JavaScript.
@@ -266,6 +265,40 @@ npm start
 }
 ```
 
+### Recuperar IDs de episodios
+
+```http
+  GET /episodes/ids
+```
+
+#### Respuestas
+
+```http
+ 200 OK
+  
+[
+  "61641297",
+  "61641298",
+  ...
+]
+```
+
+```http
+ 404 Not Found
+  
+{
+  "message": "No se encontraron episodios"
+}
+```
+
+```http
+ 500 Internal Server Error
+  
+{
+  "message": "Mensaje de error"
+}
+```
+
 ### Recuperar un episodio
 
 ```http
@@ -408,6 +441,54 @@ npm start
 
 {
   "message": "User not found"
+}
+```
+
+```http
+500 Internal Server Error
+
+{
+  "message": "Mensaje de error"
+}
+```
+
+
+### Actualizar último episodio escuchado
+
+```http
+  POST /lastListened/:podcastId
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `podcastId`      | `string` | **Required**. ID del episodio escuchado recientemente |
+| Header | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `accessToken`      | `string` | **Required**. JWT access token |
+
+#### Respuestas
+
+```http
+200 OK
+
+{
+  "message": "Podcast moved to the top of last listened"
+}
+```
+
+```http
+200 OK
+
+{
+  "message": "Podcast added to last listened"
+}
+```
+
+```http
+400 Bad Request
+
+{
+  "message": "Podcast ID is required"
 }
 ```
 
