@@ -16,7 +16,7 @@ import {
   faForwardStep,
   faBackwardStep,
 } from "@fortawesome/free-solid-svg-icons";
-import { getEpisodeById } from "../services/data";
+import { getEpisodeById, updateLastListened } from "../services/data";
 
 const MobilePlayer = ({ episodeIds }) => {
   const { id: initialEpisodeId } = useParams(); 
@@ -98,7 +98,7 @@ const MobilePlayer = ({ episodeIds }) => {
         audio.pause();
       } else {
         audio.play();
-        updateLastListened(podcastId);
+        updateLastListened(episode.id);
 
       }
       setIsPlaying(!isPlaying);
