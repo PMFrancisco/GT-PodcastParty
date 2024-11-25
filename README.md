@@ -54,7 +54,7 @@ web-reactiva/
 
     ├── services/          # Conexión con la base de datos
 
-	   ├── utils/          # Funciones reutilizables
+	├── utils/          # Funciones reutilizables
 
     ├── App.jsx         # Componente principal de React
 
