@@ -41,18 +41,31 @@ Esta aplicación está configurada como PWA con soporte para:
 ## Estructura del Proyecto
 
 web-reactiva/
+
 ├── public/             # Archivos públicos estáticos (favicon, manifest, etc.)
+
 ├── src/
-│   ├── assets/         # Recursos como imágenes o estilos
-│   ├── components/     # Componentes reutilizables de React
-│   ├── pages/          # Vistas o páginas principales
- │	  ├── services/          # Conexión con la base de datos
- │	  ├── utils/          # Funciones reutilizables
-│   ├── App.jsx         # Componente principal de React
-│   ├── main.jsx        # Entrada principal de la aplicación
-├── index.html          # Archivo HTML principal
+
+    ├── assets/         # Recursos como imágenes o estilos
+
+    ├── components/     # Componentes reutilizables de React
+
+    ├── pages/          # Vistas o páginas principales
+
+    ├── services/          # Conexión con la base de datos
+
+	   ├── utils/          # Funciones reutilizables
+
+    ├── App.jsx         # Componente principal de React
+
+    ├── main.jsx        # Entrada principal de la aplicación
+
+    ├── index.html          # Archivo HTML principal
+
 ├── vite.config.js      # Configuración de Vite
+
 ├── package.json        # Dependencias y scripts del proyecto
+
 └── README.md           # Documentación del proyecto
 
 ¡Gracias por usar **Web Reactiva PWA**!
