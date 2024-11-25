@@ -28,7 +28,7 @@ VITE_HOST=<0.0.0.0>
 
 5.  Inicia el servidor en modo desarrollo
 ```bash
-    npm run dev
+npm run dev
 ```
 O en modo producción, primero lanzaremos
 ```bash
