@@ -6,34 +6,7 @@
   margin-right: 80px;
   width: 100%;
 }
-.podcastList__aside {
-  position: sticky;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 300px;
-  margin-right: 10px;
-  height: 100vh;
-  background-image: url(../assets/ban28.png);
-  background-repeat: no-repeat;
-  color: #000;
-  gap: 20px;
-}
-.podcastList__aside-button {
-  width: 250px;
-  height: 40px;
-  background-color: #e6715c;
-  border-radius: 10px;
-  margin: 10px;
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #d5e6ea;
-}
+
 .podcast__section {
   display: flex;
   flex-direction: column;
@@ -70,36 +43,6 @@
   margin-top: 30px;
 }
 
-.podcastList__asideLogin {
-  width: 300px;
-  margin-right: 10px;
-  box-shadow: 10px 0px 15px rgba(0, 0, 0, 0.2);
-}
-
-.podcastList__aside-titleLogin {
-  width: 100%;
-  height: 25px;
-  background-color: #9747ff;
-}
-.podcastList__aside-list {
-  text-decoration: none;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  color: #000;
-  margin-left: 15px;
-}
-.podcastList__aside-list:hover{
-  background-color: #9747ff42;
-
-}
-.podcastList__aside-bannerLogin {
-  display: flex;
-  flex-direction: column;
-  margin: 5px;
-  gap: 25px;
-}
-
 .title__sectionTitle {
   margin-left: 35px;
   padding-top: 15px;
@@ -131,7 +74,7 @@
   padding: 10px;
 }
 .podcast__list-card:hover {
-  outline: 1px solid #000;
+  outline: 1px solid #9747ff;
   border-radius: 8px;
 }
 .podcast__list-card.active {
@@ -238,35 +181,6 @@
 }
 .pagination__next-icon:hover {
   background-color: #e6715c;
-}
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  position: relative;
-  animation: spin 1s ease infinite;
-  margin: auto;
-  background: linear-gradient(45deg, #e6715c, #9747ff, #56c2b7);
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.spinner-whitespace {
-  width: 30px;
-  height: 30px;
-  background-color: white;
-  border-radius: 50%;
-}
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
 }
 
 @media (max-width: 1024px) {

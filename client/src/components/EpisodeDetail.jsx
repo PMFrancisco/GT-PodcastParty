@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useFavorites } from "../context/FavoritesContext";
 import heart from "../assets/heart.svg";
 import heartFilled from "../assets/heart-fill.svg";
-import download from "../assets/circle-down-regular.svg";
+import download from "../assets/circle-down-regular.png";
 import episodeBackground from "../assets/ModalBackground.png";
 import { formatTime } from "../utils/formatTime";
 import "./EpisodeDetail.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
+import { updateLastListened } from "../services/data"
 
 const ContenidoRenderizado = ({ texto }) => {
   return (
@@ -24,6 +25,7 @@ const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
   const isFavorite = favorites.includes(episode.id);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);
   const navigate = useNavigate();
+ 
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 480);
@@ -31,8 +33,12 @@ const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handlePlay = () => {
-    navigate(`/player/${episode.id}`, { state: { episode } });
+  const handlePlay = async () => {
+    try {
+      navigate(`/player/${episode.id}`, { state: { episode } });
+    } catch (error) {
+      console.error("Error while starting playback:", error);
+    }
   };
 
   if (!isOpen) return null;
@@ -74,10 +80,15 @@ const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
           </div>
           <div className="modal-episode-content">
             <div>
-              <p className="modal-episode-titles">Escrito por: Daniel Primo</p>
-              <p className="modal-episode-titles">
-                Duración total: {formatTime(episode.duration)} min
-              </p>
+              <div className="modal__info">
+                <p className="modal-episode-titles">
+                  Escrito por: Daniel Primo
+                </p>
+                <p className="modal-episode-titles">
+                  Duración total: {formatTime(episode.duration)} min
+                </p>
+              </div>
+
               <ContenidoRenderizado texto={episode.content} />
             </div>
           </div>
@@ -116,7 +127,7 @@ const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
             </div>
           </div>
           <div className="modal-episode-content">
-            <div>
+            <div className="modal__info">
               <p className="modal-episode-titles">Escrito por: Daniel Primo</p>
               <p className="modal-episode-titles">
                 Duración total: {formatTime(episode.duration)} min

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { getEpisodes, getUsersData } from "../services/data";
 import EpisodeDetail from "../components/EpisodeDetail";
+import MainSidebar from "../components/MainSidebar";
+
 import { formatTime } from "../utils/formatTime";
 
 import "./LastListenedPage.css";
 
-const LastListenedPage = () => {
+const LastListenedPage = (isAuthenticated, onLogout) => {
   const [lastListenedEpisodes, setLastListenedEpisodes] = useState([]);
   const [selectedEpisode, setSelectedEpisode] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,7 +32,6 @@ const LastListenedPage = () => {
         setLastListenedEpisodes(sortedEpisodes);
       } catch (error) {
         console.error("Error fetching last listened episodes:", error);
-        setError("No se pudieron cargar los episodios escuchados recientemente.");
       }
     };
     fetchLastListened();
@@ -42,11 +44,7 @@ const LastListenedPage = () => {
 
   return (
     <div className="lastListenedPage__main">
-      <div className="lastListenedPage__aside">
-        <button onClick={() => navigate("/episodes")} className="lastListenedPage__aside-button">Episodios</button>
-        <button onClick={() => navigate("/favorites")} className="lastListenedPage__aside-button">Favoritos</button>
-        <button onClick={() => navigate("/lastListened")} className="lastListenedPage__aside-button">Escuchados Recientemente</button>
-      </div>
+        <MainSidebar isAuthenticated={isAuthenticated} onLogout={onLogout} />
       <div className="lastListenedPage_cardGrid">
         {selectedEpisode && (
           <EpisodeDetail
@@ -76,7 +74,7 @@ const LastListenedPage = () => {
             ))}
           </ul>
         ) : (
-          <p>No tienes episodios escuchados recientemente.</p>
+          <div className="listened__error"><img width="30" height="30" src="https://img.icons8.com/emoji/48/warning-emoji.png" alt="warning-emoji" /><p>En desarrollo, ¡próximamente disponible!</p></div>
         )}
       </div>
     </div>

@@ -1,0 +1,74 @@
+.podcastList__aside {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    margin-right: 10px;
+    height: 100vh;
+    background-image: url(../assets/ban28.png);
+    background-repeat: no-repeat;
+    color: #000;
+    gap: 20px;
+  }
+  .podcastList__aside-button {
+    width: 250px;
+    height: 40px;
+    background-color: #e6715c;
+    border-radius: 10px;
+    margin: 10px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #d5e6ea;
+  }
+  
+.podcastList__asideLogin {
+    width: 300px;
+    margin-right: 10px;
+    box-shadow: 10px 0px 15px rgba(0, 0, 0, 0.2);
+    min-height: 100vh;
+  }
+  
+  .podcastList__aside-titleLogin {
+    width: 100%;
+    height: 25px;
+    background-color: #9747ff;
+  }
+  .podcastList__aside-list {
+    text-decoration: none;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    color: #000;
+    padding-left: 15px;
+  }
+  .podcastList__aside-list:hover{
+    background-color: #9747ff42;
+  
+  }
+  .podcastList__aside-bannerLogin {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    gap: 25px;
+  }
+  
+@media (max-width: 768px) {
+  .podcastList__aside {
+    display: none;
+  }
+  .podcastList__asideLogin {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .header__back {
+    margin-left: 20px;
+  }
+}

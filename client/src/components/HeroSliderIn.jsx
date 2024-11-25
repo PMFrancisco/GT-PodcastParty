@@ -9,7 +9,7 @@ import imgT4log from '../assets/T4-hero-log.png';
 import HeroImage from '../assets/imageHero.png';
 
 const HeroSliderIn = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 475);
+  const [isMobile, setIsMobile] = useState(window.innerWidth >= 475);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 475);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom"; 
 import { useFavorites } from "../context/FavoritesContext";
+import useMediaSession from "../utils/mediaSession";
 import "./mobilePlayer.css";
 import { formatTime } from "../utils/formatTime";
 import favicon from "../assets/favicon.png";
@@ -29,16 +30,17 @@ const MobilePlayer = ({ episodeIds }) => {
   const { favorites, toggleFavorite } = useFavorites();
 
   useEffect(() => {
-    if (initialEpisodeId && episodeIds) {
+    if (initialEpisodeId && episodeIds && episodeIds.length > 0) {
       const index = episodeIds.findIndex((id) => id === initialEpisodeId);
       if (index !== -1) {
         setCurrentIndex(index);
-        fetchEpisodeById(initialEpisodeId); 
+        fetchEpisodeById(initialEpisodeId);
       } else {
-        console.error("Initial episode ID not found in episodeIds array.");
+        
       }
     }
   }, [initialEpisodeId, episodeIds]);
+  
 
   const fetchEpisodeById = async (id) => {
     try {
@@ -123,6 +125,23 @@ const MobilePlayer = ({ episodeIds }) => {
       console.error("Error fetching adjacent episode:", error);
     }
   };
+
+  useMediaSession({
+    title: episode?.title || "Cargando...",
+    artist: episode?.author || "Desconocido", 
+    album: "Podcast",
+    artwork: [
+      {
+        src: episode?.image || favicon,
+        sizes: "512x512",
+        type: "image/png",
+      },
+    ],
+    onPlay: togglePlayPause,
+    onPause: togglePlayPause,
+    onNext: () => fetchAdjacentEpisode("next"),
+    onPrevious: () => fetchAdjacentEpisode("previous"),
+  });
 
   if (!episode) {
     return <p>Cargando episodio...</p>;
