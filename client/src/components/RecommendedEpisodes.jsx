@@ -3,7 +3,15 @@ import { getEpisodes } from '../services/data';
 import './RecommendedEpisodes.css';
 import { useNavigate } from 'react-router-dom';
 import { IoIosPlay, IoIosClose, IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
-import { formatText } from '../utils/formatText';
+
+const ContenidoRenderizado = ({ texto }) => {
+  return (
+    <div
+      className="episode-description-overflow"
+      dangerouslySetInnerHTML={{ __html: texto }}
+    />
+  );
+};
 
 const RecommendedEpisodes = () => {
   const [episodes, setEpisodes] = useState([]);
@@ -61,58 +69,85 @@ const RecommendedEpisodes = () => {
   return (
     <div className="recommended-container">
       <div className="carousel-wrapper">
-        
-        <div className="carousel-container" ref={carouselRef}>
-          <div className="episodes-carousel">
         <button className="prev-button" onClick={handlePrevClick}>
           <IoIosArrowBack />
         </button>
-        <button className="next-button" onClick={handleNextClick}>
-          <IoIosArrowForward />
-        </button>
+        <div className="carousel-container" ref={carouselRef}>
+          <div className="episodes-carousel">
             {episodes.map((episode) => (
               <div
                 key={episode.pubDate}
-                className={`episode-card ${isExpanded && selectedEpisode === episode ? 'expanded' : ''}`}
+                className={`episode-card ${
+                  isExpanded && selectedEpisode === episode ? "expanded" : ""
+                }`}
                 onClick={() => handleEpisodeClick(episode)}
               >
                 <img
                   src={episode.image}
                   alt={episode.title}
-                  className={`episode-image ${isExpanded && selectedEpisode === episode ? 'expanded-image' : ''}`}
+                  className={`episode-image ${
+                    isExpanded && selectedEpisode === episode
+                      ? "expanded-image"
+                      : ""
+                  }`}
                 />
-                <div className={`episode-content ${isExpanded && selectedEpisode === episode ? 'expanded-content' : ''}`}>
+                <div
+                  className={`episode-content ${
+                    isExpanded && selectedEpisode === episode
+                      ? "expanded-content"
+                      : ""
+                  }`}
+                >
                   <div className="episode-header">
-                    <h3 className={`episode-title ${isExpanded && selectedEpisode === episode ? 'expanded-title' : ''}`}>
+                    <h3
+                      className={`episode-title ${
+                        isExpanded && selectedEpisode === episode
+                          ? "expanded-title"
+                          : ""
+                      }`}
+                    >
                       {episode.title}
                     </h3>
                     {isExpanded && selectedEpisode === episode && (
-                      <button className="close-details" onClick={handleCloseClick}><IoIosClose /></button>
+                      <button
+                        className="close-details"
+                        onClick={handleCloseClick}
+                      >
+                        <IoIosClose />
+                      </button>
                     )}
                   </div>
                   {isExpanded && selectedEpisode === episode && (
-                    <>
-                      <p className="episode-description">
-                        {formatText(episode.content)}
-                      </p>
-                      <button className="listen-now" onClick={handlePlayEpisode}><IoIosPlay />Escuchar ahora</button>
-                    </>
+                    <div>
+                      <div className="episode-description">
+                        <ContenidoRenderizado texto={episode.content} />
+                      </div>
+                      <button
+                        className="listen-now"
+                        onClick={handlePlayEpisode}
+                      >
+                        <IoIosPlay />
+                        Escuchar ahora
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
             ))}
           </div>
         </div>
-        
+        <button className="next-button" onClick={handleNextClick}>
+          <IoIosArrowForward />
+        </button>
       </div>
       <div>
         <p className="text-aligned">¿Te gustaría escuchar más?</p>
         <div className="view-all">
-          <button onClick={() => navigate('/episodes')}>Episodios</button>
+          <button onClick={() => navigate("/episodes")}>Episodios</button>
         </div>
       </div>
     </div>
-  );
+  );  
 };
 
 export default RecommendedEpisodes;
