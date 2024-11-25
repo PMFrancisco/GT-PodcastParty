@@ -98,6 +98,8 @@ const MobilePlayer = ({ episodeIds }) => {
         audio.pause();
       } else {
         audio.play();
+        updateLastListened(podcastId);
+
       }
       setIsPlaying(!isPlaying);
     }
