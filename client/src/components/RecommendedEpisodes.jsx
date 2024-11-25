@@ -64,6 +64,12 @@ const RecommendedEpisodes = () => {
         
         <div className="carousel-container" ref={carouselRef}>
           <div className="episodes-carousel">
+        <button className="prev-button" onClick={handlePrevClick}>
+          <IoIosArrowBack />
+        </button>
+        <button className="next-button" onClick={handleNextClick}>
+          <IoIosArrowForward />
+        </button>
             {episodes.map((episode) => (
               <div
                 key={episode.pubDate}
@@ -97,12 +103,7 @@ const RecommendedEpisodes = () => {
             ))}
           </div>
         </div>
-        <button className="prev-button" onClick={handlePrevClick}>
-          <IoIosArrowBack />
-        </button>
-        <button className="next-button" onClick={handleNextClick}>
-          <IoIosArrowForward />
-        </button>
+        
       </div>
       <div>
         <p className="text-aligned">¿Te gustaría escuchar más?</p>
