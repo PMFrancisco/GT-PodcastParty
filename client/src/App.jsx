@@ -98,7 +98,7 @@ function App() {
             element={<HomePage isAuthenticated={isAuthenticated} />}
           />
           <Route
-            path="/episodes"
+            path="/episodios"
             element={
               <PodcastList
                 isAuthenticated={isAuthenticated}
@@ -107,15 +107,15 @@ function App() {
             }
           />
           <Route
-            path="/register"
+            path="/registro"
             element={<RegisterPage onAuthenticate={handleAuthentication} />}
           />
           <Route
             path="/login"
             element={<LoginPage onAuthenticate={handleAuthentication} />}
           />
-          <Route path="/favorites" element={<FavoritesPage />} />
-          <Route path="/last-listened" element={<LastListenedPage />} />
+          <Route path="/favoritos" element={<FavoritesPage />} />
+          <Route path="/historial" element={<LastListenedPage />} />
           <Route
             path="/player/:id"
             element={<MobilePlayer episodeIds={episodeIds} />}
