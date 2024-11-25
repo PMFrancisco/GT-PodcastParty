@@ -98,7 +98,7 @@ function App() {
             element={<HomePage isAuthenticated={isAuthenticated} />}
           />
           <Route
-            path="/episodes"
+            path="/episodios"
             element={
               <PodcastList
                 isAuthenticated={isAuthenticated}
@@ -107,7 +107,7 @@ function App() {
             }
           />
           <Route
-            path="/register"
+            path="/registro"
             element={<RegisterPage onAuthenticate={handleAuthentication} />}
           />
           <Route
@@ -115,7 +115,7 @@ function App() {
             element={<LoginPage onAuthenticate={handleAuthentication} />}
           />
           <Route
-            path="/favorites"
+            path="/favoritos"
             element={
               isAuthenticated ? (
                 <FavoritesPage
@@ -128,7 +128,7 @@ function App() {
             }
           />
           <Route
-            path="/last-listened"
+            path="/historial"
             element={
               isAuthenticated ? (
                 <LastListenedPage
