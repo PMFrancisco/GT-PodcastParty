@@ -8,6 +8,7 @@ import MainSidebar from "../components/MainSidebar";
 import { formatTime } from "../utils/formatTime";
 
 import "./LastListenedPage.css";
+import Spinner from "../components/Spinner";
 
 const LastListenedPage = (isAuthenticated, onLogout) => {
   const [lastListenedEpisodes, setLastListenedEpisodes] = useState([]);
@@ -74,7 +75,7 @@ const LastListenedPage = (isAuthenticated, onLogout) => {
             ))}
           </ul>
         ) : (
-          <div className="listened__error"><img width="30" height="30" src="https://img.icons8.com/emoji/48/warning-emoji.png" alt="warning-emoji" /><p>En desarrollo, ¡próximamente disponible!</p></div>
+          <Spinner>En desarrollo, ¡próximamente disponible!</Spinner>
         )}
       </div>
     </div>
