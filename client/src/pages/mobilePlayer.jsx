@@ -29,7 +29,7 @@ const MobilePlayer = ({ episodeIds }) => {
   const [currentIndex, setCurrentIndex] = useState(null);
   const { favorites, toggleFavorite } = useFavorites();
 
-  useEffect(() => {
+ /*  useEffect(() => {
     if (initialEpisodeId && episodeIds) {
       const index = episodeIds.findIndex((id) => id === initialEpisodeId);
       if (index !== -1) {
@@ -39,7 +39,7 @@ const MobilePlayer = ({ episodeIds }) => {
         console.error("Initial episode ID not found in episodeIds array.");
       }
     }
-  }, [initialEpisodeId, episodeIds]);
+  }, [initialEpisodeId, episodeIds]); */
 
   const fetchEpisodeById = async (id) => {
     try {

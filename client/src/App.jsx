@@ -15,12 +15,26 @@ import MobilePlayer from "./pages/mobilePlayer";
 import { FavoritesProvider } from "./context/FavoritesContext";
 import { getTokens, storeTokens, clearTokens } from "./utils/indexedDB";
 import LastListenedPage from "./pages/LastListenedPage";
+import { getEpisodesIds } from "./services/data"; 
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [episodeIds, setEpisodeIds] = useState([]);
+
+  useEffect(() => {
+    const fetchEpisodeIds = async () => {
+      try {
+        const ids = await getEpisodesIds();
+        setEpisodeIds(ids);
+      } catch (error) {
+        console.error("Error fetching episode IDs:", error);
+      }
+    };
+
+    fetchEpisodeIds();
+  }, []);
 
   useEffect(() => {
     const checkTokens = async () => {
@@ -73,7 +87,7 @@ function App() {
   };
 
   return (
-    <FavoritesProvider>
+    <FavoritesProvider isAuthenticated={isAuthenticated} >
       <Router>
         <Header isAuthenticated={isAuthenticated} onLogout={handleLogout} />
         <Routes>
@@ -110,7 +124,7 @@ function App() {
                 <Navigate to="/login" replace />
               )
             }
-          />{" "}
+          />
           <Route
             path="/last-listened"
             element={

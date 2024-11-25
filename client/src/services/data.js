@@ -80,6 +80,24 @@ export const getEpisodeById = async (id) => {
   }
 };
 
+export const getEpisodesIds = async () => {
+  try {
+    const response = await fetchWithToken(`${API_URL}/episodes/ids`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching ids:", error);
+    throw error;
+  }
+};
+
+
+
 export const getUsersData = async () => {
   try {
     const response = await fetchWithToken(`${API_URL}/users`, {
