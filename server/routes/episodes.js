@@ -7,7 +7,7 @@ const {
 } = require("../middlewares/episodesMiddlewares");
 
 router.get("/", getEpisodesPaginated);
-router.get("/:id", getEpisodeById);
 router.get("/ids", getEpisodeIds);
+router.get("/:id", getEpisodeById);
 
 module.exports = router;
