@@ -1,8 +1,40 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Frontend de Podcast Party
 
-Currently, two official plugins are available:
+Frontend de la PWA Podcast Party para Web Reactiva hecho con JavaScript, Vite y React.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Despliegue
+
+### Despliegue en local
+
+1.  Clona el repositorio
+```bash
+  git clone git@github.com:AdoptaUnJuniorPlatform/GT-PodcastParty.git 
+```
+2.  Navega al directorio del cliente
+```bash
+cd GT-PodcastParty/client
+```
+3.  Instala las dependencias
+```bash
+npm install
+```
+4.  Crea un archivo  `.env`  en la raíz del directorio  `server`  y añade las siguientes variables de entorno:
+
+```
+VITE_PORT=<puerto_deseado>
+VITE_HOST=<0.0.0.0>
+```
+
+5.  Inicia el servidor en modo desarrollo
+```bash
+    npm run dev
+```
+O en modo producción, primero lanzaremos
+```bash
+npm run build
+```
+Para construir la carpeta .dist de archivos estáticos. Y una vez creada la carpeta, lanzaremos
+```bash
+npm run preview
+```
