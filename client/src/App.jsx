@@ -15,7 +15,7 @@ import MobilePlayer from "./pages/mobilePlayer";
 import { FavoritesProvider } from "./context/FavoritesContext";
 import { getTokens, storeTokens, clearTokens } from "./utils/indexedDB";
 import LastListenedPage from "./pages/LastListenedPage";
-import { getAllEpisodes } from "./services/data"; 
+import { getEpisodesIds } from "./services/data"; 
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -27,9 +27,10 @@ function App() {
   useEffect(() => {
     const fetchEpisodes = async () => {
       try {
-        const allEpisodes = await getAllEpisodes();
-        setEpisodes(allEpisodes);
-        setEpisodeIds(allEpisodes.map((episode) => episode.id));
+        const allEpisodes = await getEpisodesIds();
+        setEpisodeIds(allEpisodes);
+        console.log(allEpisodes);
+        
       } catch (error) {
         console.error("Error fetching episodes:", error);
       }
