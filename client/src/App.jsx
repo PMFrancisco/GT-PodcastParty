@@ -15,25 +15,27 @@ import MobilePlayer from "./pages/mobilePlayer";
 import { FavoritesProvider } from "./context/FavoritesContext";
 import { getTokens, storeTokens, clearTokens } from "./utils/indexedDB";
 import LastListenedPage from "./pages/LastListenedPage";
-import { getEpisodesIds } from "./services/data"; 
+import { getAllEpisodes } from "./services/data"; 
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [episodes, setEpisodes] = useState([]);
   const [episodeIds, setEpisodeIds] = useState([]);
 
   useEffect(() => {
-    const fetchEpisodeIds = async () => {
+    const fetchEpisodes = async () => {
       try {
-        const ids = await getEpisodesIds();
-        setEpisodeIds(ids);
+        const allEpisodes = await getAllEpisodes();
+        setEpisodes(allEpisodes);
+        setEpisodeIds(allEpisodes.map((episode) => episode.id));
       } catch (error) {
-        console.error("Error fetching episode IDs:", error);
+        console.error("Error fetching episodes:", error);
       }
     };
 
-    fetchEpisodeIds();
+    fetchEpisodes();
   }, []);
 
   useEffect(() => {
@@ -140,7 +142,8 @@ function App() {
           />
           <Route
             path="/player/:id"
-            element={<MobilePlayer episodeIds={episodeIds} />}
+            element={<MobilePlayer episodeIds={episodeIds || []} />
+          }
           />
           <Route
             path="*"

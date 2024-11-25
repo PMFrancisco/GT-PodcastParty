@@ -57,3 +57,18 @@
     margin: 5px;
     gap: 25px;
   }
+  
+@media (max-width: 768px) {
+  .podcastList__aside {
+    display: none;
+  }
+  .podcastList__asideLogin {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .header__back {
+    margin-left: 20px;
+  }
+}

@@ -35,7 +35,6 @@ const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
 
   const handlePlay = async () => {
     try {
-      await updateLastListened(episode.id);
       navigate(`/player/${episode.id}`, { state: { episode } });
     } catch (error) {
       console.error("Error while starting playback:", error);

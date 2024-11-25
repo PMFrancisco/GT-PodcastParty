@@ -29,17 +29,18 @@ const MobilePlayer = ({ episodeIds }) => {
   const [currentIndex, setCurrentIndex] = useState(null);
   const { favorites, toggleFavorite } = useFavorites();
 
- /*  useEffect(() => {
-    if (initialEpisodeId && episodeIds) {
+  useEffect(() => {
+    if (initialEpisodeId && episodeIds && episodeIds.length > 0) {
       const index = episodeIds.findIndex((id) => id === initialEpisodeId);
       if (index !== -1) {
         setCurrentIndex(index);
-        fetchEpisodeById(initialEpisodeId); 
+        fetchEpisodeById(initialEpisodeId);
       } else {
-        console.error("Initial episode ID not found in episodeIds array.");
+        
       }
     }
-  }, [initialEpisodeId, episodeIds]); */
+  }, [initialEpisodeId, episodeIds]);
+  
 
   const fetchEpisodeById = async (id) => {
     try {
