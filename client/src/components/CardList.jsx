@@ -1,7 +1,7 @@
 import React from 'react'
 import './CardList.css'
 import heartIcon from '../assets/heart.png';
-import historyIcon from '../assets/history.png';
+import historyIcon from '../assets/history.svg';
 import recomendationIcon from '../assets/recomendation.png';
 import downloadIcon from '../assets/download.png';
 

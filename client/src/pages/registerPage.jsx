@@ -142,9 +142,18 @@ const RegisterPage = () => {
       </div>
 
       {showModal && (
-        <div className="modal__register">
-          <div className="modal__register-content">
-            <button className="modal__login-close" onClick={() => setShowModal(false)}>×</button>
+        <div className="modal__register" onClick={() => setShowModal(false)}>
+          <div
+            className="modal__register-content"
+            onClick={(e) => e.stopPropagation()} 
+          >
+            <button
+              className="modal__login-close"
+              onClick={() => setShowModal(false)}
+              aria-label="Cerrar modal"
+            >
+              ×
+            </button>
             {isSuccess ? (
               <>
                 <img src={blueLaptop} alt="laptop-image" />
@@ -152,7 +161,10 @@ const RegisterPage = () => {
                 <p>Redirigiendo a la página principal</p>
               </>
             ) : (
-              <p>{modalMessage}</p>
+              <>
+                <h4 className="modal__title-register">Error</h4>
+                <p>{modalMessage}</p>
+              </>
             )}
           </div>
         </div>
@@ -162,3 +174,4 @@ const RegisterPage = () => {
 };
 
 export default RegisterPage;
+
