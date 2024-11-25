@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { getEpisodes } from '../services/data';
 import './RecommendedEpisodes.css';
 import { useNavigate } from 'react-router-dom';
-import { IoIosPlay, IoIosClose } from "react-icons/io";
+import { IoIosPlay, IoIosClose, IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { formatText } from '../utils/formatText';
 
 const RecommendedEpisodes = () => {
@@ -11,6 +11,7 @@ const RecommendedEpisodes = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const carouselRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,45 +43,67 @@ const RecommendedEpisodes = () => {
   };
 
   const handlePlayEpisode = () => {
-    navigate(`/episodes`, {state: { episode: selectedEpisode } });
-  } 
+    navigate(`/episodes`, { state: { episode: selectedEpisode } });
+  };
+
+  const handleNextClick = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollLeft += 300;
+    }
+  };
+
+  const handlePrevClick = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollLeft -= 300;
+    }
+  };
 
   return (
     <div className="recommended-container">
-      <div className="carousel-container">
-        <div className="episodes-carousel">
-          {episodes.map((episode) => (
-            <div
-              key={episode.pubDate}
-              className={`episode-card ${isExpanded && selectedEpisode === episode ? 'expanded' : ''}`}
-              onClick={() => handleEpisodeClick(episode)}
-            >
-              <img
-                src={episode.image}
-                alt={episode.title}
-                className={`episode-image ${isExpanded && selectedEpisode === episode ? 'expanded-image' : ''}`}
-              />
-              <div className={`episode-content ${isExpanded && selectedEpisode === episode ? 'expanded-content' : ''}`}>
-                <div className="episode-header">
-                  <h3 className={`episode-title ${isExpanded && selectedEpisode === episode ? 'expanded-title' : ''}`}>
-                    {episode.title}
-                  </h3>
+      <div className="carousel-wrapper">
+        
+        <div className="carousel-container" ref={carouselRef}>
+          <div className="episodes-carousel">
+        <button className="prev-button" onClick={handlePrevClick}>
+          <IoIosArrowBack />
+        </button>
+        <button className="next-button" onClick={handleNextClick}>
+          <IoIosArrowForward />
+        </button>
+            {episodes.map((episode) => (
+              <div
+                key={episode.pubDate}
+                className={`episode-card ${isExpanded && selectedEpisode === episode ? 'expanded' : ''}`}
+                onClick={() => handleEpisodeClick(episode)}
+              >
+                <img
+                  src={episode.image}
+                  alt={episode.title}
+                  className={`episode-image ${isExpanded && selectedEpisode === episode ? 'expanded-image' : ''}`}
+                />
+                <div className={`episode-content ${isExpanded && selectedEpisode === episode ? 'expanded-content' : ''}`}>
+                  <div className="episode-header">
+                    <h3 className={`episode-title ${isExpanded && selectedEpisode === episode ? 'expanded-title' : ''}`}>
+                      {episode.title}
+                    </h3>
+                    {isExpanded && selectedEpisode === episode && (
+                      <button className="close-details" onClick={handleCloseClick}><IoIosClose /></button>
+                    )}
+                  </div>
                   {isExpanded && selectedEpisode === episode && (
-                    <button className="close-details" onClick={handleCloseClick}><IoIosClose /></button>
+                    <>
+                      <p className="episode-description">
+                        {formatText(episode.content)}
+                      </p>
+                      <button className="listen-now" onClick={handlePlayEpisode}><IoIosPlay />Escuchar ahora</button>
+                    </>
                   )}
                 </div>
-                {isExpanded && selectedEpisode === episode && (
-                  <>
-                    <p className="episode-description">
-                    {formatText(episode.content)}
-                    </p>
-                    <button className="listen-now" onClick={handlePlayEpisode}><IoIosPlay/>Escuchar ahora</button>
-                  </>
-                )}
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
+        
       </div>
       <div>
         <p className="text-aligned">¿Te gustaría escuchar más?</p>
