@@ -5,7 +5,7 @@ const FavoritesContext = createContext();
 
 export const useFavorites = () => useContext(FavoritesContext);
 
-export const FavoritesProvider = ({ children }) => {
+export const FavoritesProvider = ({ children, isAuthenticated }) => {
   const [favorites, setFavorites] = useState([]);
 
   const fetchFavorites = async () => {
@@ -34,8 +34,10 @@ export const FavoritesProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchFavorites();
-  }, []);
+    if (isAuthenticated) {
+      fetchFavorites();
+    }
+  }, [isAuthenticated]); 
 
   return (
     <FavoritesContext.Provider value={{ favorites, toggleFavorite }}>

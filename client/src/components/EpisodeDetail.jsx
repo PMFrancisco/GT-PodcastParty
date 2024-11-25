@@ -9,6 +9,7 @@ import { formatTime } from "../utils/formatTime";
 import "./EpisodeDetail.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
+import { updateLastListened } from "../services/data"
 
 const ContenidoRenderizado = ({ texto }) => {
   return (
@@ -24,6 +25,7 @@ const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
   const isFavorite = favorites.includes(episode.id);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);
   const navigate = useNavigate();
+ 
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 480);
@@ -31,8 +33,12 @@ const EpisodeDetail = ({ episode, onClose, onPlay, isOpen }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handlePlay = () => {
-    navigate(`/player/${episode.id}`, { state: { episode } });
+  const handlePlay = async () => {
+    try {
+      navigate(`/player/${episode.id}`, { state: { episode } });
+    } catch (error) {
+      console.error("Error while starting playback:", error);
+    }
   };
 
   if (!isOpen) return null;

@@ -32,7 +32,6 @@ const LastListenedPage = (isAuthenticated, onLogout) => {
         setLastListenedEpisodes(sortedEpisodes);
       } catch (error) {
         console.error("Error fetching last listened episodes:", error);
-        setError("No se pudieron cargar los episodios escuchados recientemente.");
       }
     };
     fetchLastListened();
@@ -75,7 +74,7 @@ const LastListenedPage = (isAuthenticated, onLogout) => {
             ))}
           </ul>
         ) : (
-          <p>No tienes episodios escuchados recientemente.</p>
+          <div className="listened__error"><img width="30" height="30" src="https://img.icons8.com/emoji/48/warning-emoji.png" alt="warning-emoji" /><p>En desarrollo, ¡próximamente disponible!</p></div>
         )}
       </div>
     </div>

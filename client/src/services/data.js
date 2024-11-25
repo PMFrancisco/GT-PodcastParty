@@ -80,6 +80,46 @@ export const getEpisodeById = async (id) => {
   }
 };
 
+export const getEpisodesIds = async () => {
+  try {
+    const response = await fetchWithToken(`${API_URL}/episodes/ids`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching ids:", error);
+    throw error;
+  }
+};
+
+export const getAllEpisodes = async () => {
+  let allEpisodes = [];
+  let currentPage = 1;
+  const totalPages = 15;
+
+  try {
+    while (currentPage <= totalPages) {
+      const url = `${API_URL}/episodes?page=${currentPage}`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+      const data = await response.json();
+      allEpisodes = [...allEpisodes, ...data];
+      currentPage++;
+    }
+
+    return allEpisodes;
+  } catch (error) {
+    console.error("Error fetching episodes:", error);
+    throw error;
+  }
+};
+
 export const getUsersData = async () => {
   try {
     const response = await fetchWithToken(`${API_URL}/users`, {

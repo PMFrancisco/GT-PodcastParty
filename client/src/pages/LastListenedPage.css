@@ -92,3 +92,8 @@
   font-size: 14px;
   color: #000;
 }
+.listened__error{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
