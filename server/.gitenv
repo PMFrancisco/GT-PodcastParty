@@ -1,4 +1,4 @@
-MONGO_URI=mongodb+srv://franciscoperezmunoz:VOmKBzV4eyaEGHYF@maincluster.mlzcf.mongodb.net/?retryWrites=true&w=majority&appName=MainCluster
+MONGO_URI=
 JWT_SECRET=
 JWT_REFRESH_SECRET=
 PORT=
